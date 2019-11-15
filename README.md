@@ -1,3 +1,3 @@
-# Diet Gummy Bears
+# Gummy Bears
 
-Animalsniffer signatures for Android APIs desugared by D8.
+D8 sugar for all of your animal sniffing needs.
