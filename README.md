@@ -1,2 +1,3 @@
-# gummybears
-Animalsniffer signatures for Android APIs desugared by D8
+# Diet Gummy Bears
+
+Animalsniffer signatures for Android APIs desugared by D8.
