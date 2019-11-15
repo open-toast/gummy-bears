@@ -45,5 +45,26 @@ afterEvaluate {
                 }
             }
         }
+
+        val remoteUrl = project.properties[
+            if (version.toString().endsWith("-SNAPSHOT")) {
+                "publish.remote.url.snapshots"
+            } else {
+                "publish.remote.url.releases"
+            }
+        ] as String?
+
+        repositories {
+            if (remoteUrl != null) {
+                maven {
+                    name = "remote"
+                    setUrl(remoteUrl)
+                    credentials {
+                        username = properties["artifactory_user"] as String
+                        password = properties["artifactory_password"] as String
+                    }
+                }
+            }
+        }
     }
 }
