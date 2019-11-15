@@ -1,0 +1,9 @@
+# Generated
+build
+out
+.gradle
+.idea
+*.iml
+
+# Log file
+*.log
