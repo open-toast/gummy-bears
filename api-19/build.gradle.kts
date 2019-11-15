@@ -2,6 +2,7 @@ plugins {
     java
     `maven-publish`
     id("ru.vyarus.animalsniffer") version "1.5.0"
+    id("de.undercouch.download") version "4.0.1"
 }
 
 dependencies {
@@ -9,18 +10,29 @@ dependencies {
 }
 
 configure<ru.vyarus.gradle.plugin.animalsniffer.signature.AnimalSnifferSignatureExtension> {
-    val api = project.name.substringAfter("api-")
-    val sdk = project.file(System.getenv("ANDROID_HOME") + "/platforms/android-$api/android.jar")
-
-    if (!sdk.exists()) {
-        throw GradleException("$sdk does not exist")
-    }
-
     files(configurations.compileClasspath)
-    files(sdk)
+    files(project.file("$buildDir/sdk/android-4.4.2/android.jar"))
+}
+
+val sdkFile = "android-19_r04.zip"
+
+tasks.register<de.undercouch.gradle.tasks.download.Download>("downloadSdk")  {
+    tempAndMove(true)
+    src("https://dl-ssl.google.com/Android/repository/$sdkFile")
+    dest("$buildDir/$sdkFile")
+}
+
+tasks.register<Copy>("unpackSdk") {
+    dependsOn("downloadSdk")
+    from(zipTree("$buildDir/$sdkFile"))
+    into("$buildDir/sdk")
 }
 
 afterEvaluate {
+    tasks.named("animalsnifferSignature") {
+        dependsOn("unpackSdk")
+    }
+
     configure<PublishingExtension> {
         publications {
             create<MavenPublication>("signature") {
