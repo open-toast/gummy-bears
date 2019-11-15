@@ -1,0 +1,10 @@
+# Generated
+local.properties
+build
+out
+.gradle
+.idea
+*.iml
+
+# Log file
+*.log
