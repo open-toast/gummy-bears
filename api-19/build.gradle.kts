@@ -18,6 +18,7 @@ val sdkFile = "android-19_r04.zip"
 
 tasks.register<de.undercouch.gradle.tasks.download.Download>("downloadSdk")  {
     tempAndMove(true)
+    onlyIfModified(true)
     src("https://dl-ssl.google.com/Android/repository/$sdkFile")
     dest("$buildDir/$sdkFile")
 }
