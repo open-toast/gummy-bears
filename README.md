@@ -18,4 +18,4 @@ When the APK is assembled, D8 (the Android Dexer) transforms java bytecode into 
 
 The set of desugared methods is defined by the version of D8, which itself is defined by the android gradle plugin, as well as the minimum SDK level.
 
-This project provides a safe and more accurate set of signatures for Android 4.4/Android Gradle 3.x. In the future, it will provide an expanded set of signatures for Android Gradle 4.x including `java.time`, `ConcurrentHashMap`, etc.
+This project provides a safe and more accurate set of signatures for Android 4.4/Android Gradle 3.x. The additional _sugary_ signatures are generated from hand-written stubs. The reference point for the stubs is the [D8 source code](https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java). In the future, it will provide an expanded set of signatures for Android Gradle 4.x including `java.time`, `ConcurrentHashMap`, etc.
