@@ -10,7 +10,7 @@ def artifactory = 'https://artifactory.eng.toasttab.com/artifactory'
 
 pipeline {
   agent {
-    label 'agent'
+    label 'tw-agent'
   }
   environment {
     JAVA_HOME = "${tool name: 'corretto8'}"
