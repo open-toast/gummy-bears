@@ -1,12 +1,6 @@
 package java.lang;
 
-import java.math.BigInteger;
-
 public abstract class Long extends Number implements Comparable<Long> {
-    private static BigInteger toUnsignedBigInteger(long i) {
-        throw new RuntimeException();
-    }
-
     public static int hashCode(long value) {
         throw new RuntimeException();
     }

@@ -8,8 +8,4 @@ public abstract class Character implements java.io.Serializable, Comparable<Char
     public static int hashCode(char i) {
         throw new RuntimeException();
     }
-
-    public static String toString(int i) {
-        throw new RuntimeException();
-    }
 }
