@@ -29,7 +29,7 @@ pipeline {
     }
     stage('Build Project') {
       steps {
-        doGradle 'build assembleRelease'
+        doGradle 'build'
       }
     }
     stage('Deploy') {

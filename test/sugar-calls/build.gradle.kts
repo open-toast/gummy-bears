@@ -18,7 +18,7 @@ tasks.register<JavaExec>("generateStubCalls") {
     args = listOf(configurations.getByName("sugar").asPath, "${project.buildDir}/generated-sources/java/main")
 }
 
-tasks.named<org.gradle.api.tasks.compile.JavaCompile>("compileJava") {
+tasks.named<JavaCompile>("compileJava") {
     dependsOn("generateStubCalls")
 }
 

@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(libraries.javapoet)
-    implementation(libraries.javassist)
+    implementation(libraries.r8)
     implementation(kotlin("stdlib-jdk8"))
 }

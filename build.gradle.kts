@@ -4,10 +4,10 @@ buildscript {
         gradlePluginPortal()
         jcenter()
     }
+}
 
-    dependencies {
-        classpath("com.android.tools.build:gradle:3.5.2")
-    }
+plugins {
+    kotlin("jvm") version versions.kotlin apply false
 }
 
 subprojects {
