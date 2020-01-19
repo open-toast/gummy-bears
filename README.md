@@ -1,6 +1,8 @@
 # Gummy Bears
 
-D8 sugar for all of your _animal sniffing_ needs.
+_D8 sugar for all of your animal sniffing needs_.
+
+This project provides _Animal Sniffer_ signatures for Android API levels 19 and above that account for additional APIs available via desugaring. Read the [Background](#background) section below if none of this makes sense.
 
 ## Background
 
