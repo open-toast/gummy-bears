@@ -61,9 +61,9 @@ Maven:
     <version>1.16</version>
     <configuration>
         <signature>
-        <groupId>com.toasttab</groupId>
-        <artifactId>gummy-bears-api-21</artifactId>
-        <version>0.0.1</version>
+            <groupId>com.toasttab</groupId>
+            <artifactId>gummy-bears-api-21</artifactId>
+            <version>0.0.1</version>
         </signature>
     </configuration>
 </plugin>
