@@ -74,8 +74,4 @@ This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE)
 
 ## Acknowledgments
 
-Thanks to the authors of
-
-* [Animal Sniffer](https://www.mojohaus.org/animal-sniffer/index.html)
-* [gradle-animalsniffer-plugin](https://github.com/xvik/gradle-animalsniffer-plugin)
-* [R8 and D8](https://r8.googlesource.com/r8)
+:+1: to the authors of [Animal Sniffer](https://www.mojohaus.org/animal-sniffer/index.html), [gradle-animalsniffer-plugin](https://github.com/xvik/gradle-animalsniffer-plugin), [R8 and D8](https://r8.googlesource.com/r8).
