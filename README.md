@@ -1,4 +1,4 @@
-# Gummy Bears
+# Gummy Bears [![CircleCI](https://circleci.com/gh/open-toast/gummy-bears.svg?style=svg)](https://circleci.com/gh/open-toast/gummy-bears)
 
 _D8 sugar for all of your animal sniffing needs_.
 
