@@ -47,6 +47,7 @@ fun Project.buildSignatures(
     apply(plugin = "maven-publish")
     apply(plugin = "ru.vyarus.animalsniffer")
     apply(plugin = "de.undercouch.download")
+    apply(plugin = "signing")
 
     configurations {
         create(scopes.sugar)
@@ -101,7 +102,7 @@ fun Project.buildSignatures(
 
         configure<PublishingExtension> {
             publications {
-                create<MavenPublication>("signature") {
+                sign(create<MavenPublication>("signature") {
                     groupId = "${project.group}"
                     version = "${project.version}"
                     artifactId = "gummy-bears-api-$apiLevel"
@@ -109,29 +110,12 @@ fun Project.buildSignatures(
                         extension = "signature"
                         builtBy(tasks.named("animalsnifferSignature"))
                     }
-                }
+
+                    standardPom()
+                })
             }
 
-            val remoteUrl = project.properties[
-                if (version.toString().endsWith("-SNAPSHOT")) {
-                    "publish.remote.url.snapshots"
-                } else {
-                    "publish.remote.url.releases"
-                }
-            ] as String?
-
-            repositories {
-                if (remoteUrl != null) {
-                    maven {
-                        name = "remote"
-                        setUrl(remoteUrl)
-                        credentials {
-                            username = properties["artifactory_user"] as String
-                            password = properties["artifactory_password"] as String
-                        }
-                    }
-                }
-            }
+            publishReleasesToRemote(version)
         }
     }
 }

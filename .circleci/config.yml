@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:
+    context: OSS
     working_directory: ~/repo
     docker:
       - image: circleci/openjdk:8-jdk
