@@ -4,13 +4,13 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.configure
 import org.gradle.plugins.signing.SigningExtension
 
-private object Gpg {
+private object Pgp {
     val key by lazy {
-        System.getenv("GPG_KEY")
+        System.getenv("PGP_KEY")
     }
 
     val password by lazy {
-        System.getenv("GPG_PASSWORD")
+        System.getenv("PGP_PASSWORD")
     }
 }
 
@@ -57,7 +57,7 @@ fun MavenPublication.standardPom() {
 
 fun Project.sign(publication: MavenPublication) {
     configure<SigningExtension> {
-        useInMemoryPgpKeys(Gpg.key, Gpg.password)
+        useInMemoryPgpKeys(Pgp.key, Pgp.password)
         sign(publication)
     }
 }
