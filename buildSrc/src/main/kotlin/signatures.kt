@@ -115,7 +115,7 @@ fun Project.buildSignatures(
                 })
             }
 
-            withRemote(version)
+            publishReleasesToRemote(version)
         }
     }
 }

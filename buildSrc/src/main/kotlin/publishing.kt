@@ -26,7 +26,7 @@ private object Remote {
     val url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 }
 
-fun PublishingExtension.withRemote(version: Any) {
+fun PublishingExtension.publishReleasesToRemote(version: Any) {
     if (!version.toString().endsWith("-SNAPSHOT")) {
         repositories {
             maven {
