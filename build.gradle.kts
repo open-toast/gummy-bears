@@ -25,7 +25,7 @@ plugins {
     kotlin("jvm") version versions.kotlin apply false
 }
 
-subprojects {
+allprojects {
     group = "com.toasttab.android"
     version = "0.0.2-SNAPSHOT"
 
@@ -34,3 +34,5 @@ subprojects {
         jcenter()
     }
 }
+
+promoteStagingRepo()

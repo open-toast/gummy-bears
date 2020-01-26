@@ -75,6 +75,10 @@ fun Project.buildSignatures(
         systemProperty("sdk", sdk)
         systemProperty("jar", configurations.getByName(scopes.sugarCalls).asPath)
         systemProperty("dexout", project.buildDir)
+
+        reports {
+            junitXml.destination = file("${rootProject.buildDir}/test-results")
+        }
     }
 
     configure<ru.vyarus.gradle.plugin.animalsniffer.signature.AnimalSnifferSignatureExtension> {
@@ -86,12 +90,12 @@ fun Project.buildSignatures(
         tempAndMove(true)
         onlyIfModified(true)
         src("https://dl.google.com/android/repository/$sdkFile")
-        dest("$buildDir/$sdkFile")
+        dest("${rootProject.buildDir}/sdk-archives/$sdkFile")
     }
 
     tasks.register<Copy>(downloadTasks.unpack) {
         dependsOn(downloadTasks.download)
-        from(zipTree("$buildDir/$sdkFile"))
+        from(zipTree("${rootProject.buildDir}/sdk-archives/$sdkFile"))
         into("$buildDir/sdk")
     }
 

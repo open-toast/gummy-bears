@@ -1,4 +1,4 @@
-version: 2
+version: 2.0
 jobs:
   build:
     context: OSS
@@ -13,5 +13,29 @@ jobs:
     steps:
       - checkout
 
-      # run tests!
-      - run: gradle check
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+      - restore_cache:
+          key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
+
+      - run: ./gradlew check
+
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+      - save_cache:
+          paths:
+            - build/sdk-archives
+          key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
+
+      - store_test_results:
+          path: build/test-results
+
+      - run: "[[ \"$CIRCLE_BRANCH\" == master ]] && ./gradlew publish || echo skipping publishing"

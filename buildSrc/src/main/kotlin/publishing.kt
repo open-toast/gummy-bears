@@ -1,8 +1,11 @@
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.plugins.signing.SigningExtension
+
+import io.codearte.gradle.nexus.NexusStagingExtension
 
 private object Pgp {
     val key by lazy {
@@ -59,5 +62,14 @@ fun Project.sign(publication: MavenPublication) {
     configure<SigningExtension> {
         useInMemoryPgpKeys(Pgp.key, Pgp.password)
         sign(publication)
+    }
+}
+
+fun Project.promoteStagingRepo() {
+    apply(plugin = "io.codearte.nexus-staging")
+
+    configure<NexusStagingExtension> {
+        username = Remote.username
+        password = Remote.password
     }
 }

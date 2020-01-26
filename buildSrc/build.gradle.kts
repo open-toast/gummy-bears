@@ -25,4 +25,5 @@ plugins {
 dependencies {
     implementation("de.undercouch:gradle-download-task:4.0.2")
     implementation("ru.vyarus:gradle-animalsniffer-plugin:1.5.0")
+    implementation("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2")
 }
