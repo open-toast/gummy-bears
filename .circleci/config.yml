@@ -12,5 +12,27 @@ jobs:
 
     steps:
       - checkout
+
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+      - restore_cache:
+          key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
+
       - run: ./gradlew check
+
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+      - save_cache:
+          paths:
+            - build/sdk-archives
+          key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
+
       - run: "[[ \"$CIRCLE_BRANCH\" == master ]] && ./gradlew publish"

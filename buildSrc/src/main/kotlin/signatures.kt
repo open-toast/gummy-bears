@@ -65,7 +65,7 @@ fun Project.buildSignatures(
         add("testImplementation", libraries.truth)
     }
 
-    val sdk = project.file("${rootProject.buildDir}/sdk/$sdkDir/android.jar")
+    val sdk = project.file("$buildDir/sdk/$sdkDir/android.jar")
 
     tasks.withType<Test> {
         dependsOn("unpackSdk")
@@ -86,12 +86,12 @@ fun Project.buildSignatures(
         tempAndMove(true)
         onlyIfModified(true)
         src("https://dl.google.com/android/repository/$sdkFile")
-        dest("$buildDir/$sdkFile")
+        dest("${rootProject.buildDir}/sdk-archives/$sdkFile")
     }
 
     tasks.register<Copy>(downloadTasks.unpack) {
         dependsOn(downloadTasks.download)
-        from(zipTree("$buildDir/$sdkFile"))
+        from(zipTree("${rootProject.buildDir}/sdk-archives/$sdkFile"))
         into("$buildDir/sdk")
     }
 
