@@ -35,4 +35,7 @@ jobs:
             - build/sdk-archives
           key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
 
-      - run: "[[ \"$CIRCLE_BRANCH\" == master ]] && ./gradlew publish"
+      - store_test_results:
+          path: build/test-results
+
+      - run: "[[ \"$CIRCLE_BRANCH\" == master ]] && ./gradlew publish || echo skipping publishing"

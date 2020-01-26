@@ -72,6 +72,10 @@ fun Project.buildSignatures(
         dependsOn(":sugar:build")
         dependsOn(":test:sugar-calls:build")
 
+        reports {
+            junitXml.destination = file("${rootProject.buildDir}/test-results")
+        }
+
         systemProperty("sdk", sdk)
         systemProperty("jar", configurations.getByName(scopes.sugarCalls).asPath)
         systemProperty("dexout", project.buildDir)
