@@ -1,7 +1,7 @@
-version: 2.1
+version: 2.0
 jobs:
   build:
-    # context: OSS
+    context: OSS
     working_directory: ~/repo
     docker:
       - image: circleci/openjdk:8-jdk
@@ -12,8 +12,9 @@ jobs:
 
     steps:
       - checkout
-      - run: ./gradlew check
-      - when:
-          condition: << pipeline.git.branch	>> == master
-          steps:
-            - run: ./gradlew publish
+      - run: 
+          name: build and test
+          command: ./gradlew check
+      - run:
+          name: publish release
+          command: [[ "$CIRCLE_BRANCH" == "master" ]] && ./gradlew publish
