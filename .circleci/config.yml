@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.0
 jobs:
   build:
     context: OSS
@@ -12,11 +12,13 @@ jobs:
 
     steps:
       - checkout
-      - run: ./gradlew check
-      - when:
-          condition:
+      - run: 
+          name: build and test
+          command: ./gradlew check
+      - run: 
+          name: publish release
+          command: ./gradlew publish
+          when:
             branches:
               only:
                 - master
-          steps:
-            - run: ./gradlew publish
