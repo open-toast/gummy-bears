@@ -14,8 +14,6 @@ jobs:
       - checkout
       - run: ./gradlew check
       - when:
-          condition:
-            branches:
-              only: master
+          condition: << pipeline.git.branch	== master >>
           steps:
             - run: ./gradlew publish
