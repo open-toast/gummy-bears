@@ -12,6 +12,11 @@ jobs:
 
     steps:
       - checkout
-
-      # run tests!
-      - run: gradle check
+      - run: ./gradlew check
+      - when:
+          condition:
+            branches:
+              only:
+                - master
+          steps:
+            - run: ./gradlew publish
