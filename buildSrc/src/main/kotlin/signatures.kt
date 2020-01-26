@@ -65,7 +65,7 @@ fun Project.buildSignatures(
         add("testImplementation", libraries.truth)
     }
 
-    val sdk = project.file("$buildDir/sdk/$sdkDir/android.jar")
+    val sdk = project.file("${rootProject.buildDir}/sdk/$sdkDir/android.jar")
 
     tasks.withType<Test> {
         dependsOn("unpackSdk")
