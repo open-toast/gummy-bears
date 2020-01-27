@@ -1,7 +1,7 @@
-version: 2.0
+version: 2.1
+
 jobs:
   build:
-    context: OSS
     working_directory: ~/repo
     docker:
       - image: circleci/openjdk:8-jdk
@@ -20,7 +20,9 @@ jobs:
       - restore_cache:
           key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
 
-      - run: ./gradlew check
+      - run:
+          name: Build and test
+          command: ./gradlew check
 
       - save_cache:
           paths:
@@ -38,4 +40,13 @@ jobs:
       - store_test_results:
           path: build/test-results
 
-      - run: "[[ \"$CIRCLE_BRANCH\" == master ]] && ./gradlew publish || echo skipping publishing"
+      - run:
+          name: Deploy (if release)
+          command: "if [[ \"$CIRCLE_BRANCH\" == master ]]; then ./gradlew publish; else echo skipping publishing; fi"
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build:
+          context: OSS
