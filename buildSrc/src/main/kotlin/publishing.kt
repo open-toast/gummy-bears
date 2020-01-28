@@ -9,7 +9,7 @@ import io.codearte.gradle.nexus.NexusStagingExtension
 
 private object Pgp {
     val key by lazy {
-        System.getenv("PGP_KEY")
+        System.getenv("PGP_KEY")?.replace('$', '\n')
     }
 
     val password by lazy {
