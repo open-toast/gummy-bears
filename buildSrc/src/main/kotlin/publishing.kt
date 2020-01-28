@@ -46,6 +46,9 @@ fun PublishingExtension.publishReleasesToRemote(version: Any) {
 
 fun MavenPublication.standardPom() {
     pom {
+        name.set("Gummy Bears")
+        description.set("Animalsniffer signatures for Android")
+        url.set("https://github.com/open-toast/gummy-bears")
         scm {
             url.set("https://github.com/open-toast/gummy-bears")
         }
@@ -53,6 +56,13 @@ fun MavenPublication.standardPom() {
             license {
                 name.set("The Apache License, Version 2.0")
                 url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("Toast")
+                name.set("Toast Open Source")
+                email.set("opensource@toasttab.com")
             }
         }
     }
