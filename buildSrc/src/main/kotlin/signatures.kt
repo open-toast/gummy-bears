@@ -75,10 +75,6 @@ fun Project.buildSignatures(
         systemProperty("sdk", sdk)
         systemProperty("jar", configurations.getByName(scopes.sugarCalls).asPath)
         systemProperty("dexout", project.buildDir)
-
-        reports {
-            junitXml.destination = file("${rootProject.buildDir}/test-results")
-        }
     }
 
     configure<ru.vyarus.gradle.plugin.animalsniffer.signature.AnimalSnifferSignatureExtension> {

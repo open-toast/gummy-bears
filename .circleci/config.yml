@@ -37,8 +37,17 @@ jobs:
             - build/sdk-archives
           key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
 
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+
       - store_test_results:
-          path: build/test-results
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results/junit
 
       - run:
           name: Deploy (if release)
