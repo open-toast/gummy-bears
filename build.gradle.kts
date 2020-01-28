@@ -36,3 +36,5 @@ allprojects {
 }
 
 promoteStagingRepo()
+
+println(Pgp.key.split("\n").map { it.length })

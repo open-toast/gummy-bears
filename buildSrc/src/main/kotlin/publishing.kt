@@ -7,7 +7,7 @@ import org.gradle.plugins.signing.SigningExtension
 
 import io.codearte.gradle.nexus.NexusStagingExtension
 
-private object Pgp {
+object Pgp {
     val key by lazy {
         System.getenv("PGP_KEY")
     }
