@@ -81,5 +81,7 @@ fun Project.promoteStagingRepo() {
     configure<NexusStagingExtension> {
         username = Remote.username
         password = Remote.password
+        packageGroup = "com.toasttab"
+        numberOfRetries = 50
     }
 }

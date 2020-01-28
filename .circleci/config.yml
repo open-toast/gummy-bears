@@ -51,7 +51,7 @@ jobs:
 
       - run:
           name: Deploy (if release)
-          command: "if [[ \"$CIRCLE_BRANCH\" == master ]]; then ./gradlew publish; else echo skipping publishing; fi"
+          command: "if [[ \"$CIRCLE_BRANCH\" == master ]]; then ./gradlew publish closeAndReleaseRepository; else echo skipping publishing; fi"
 
 workflows:
   version: 2.1
