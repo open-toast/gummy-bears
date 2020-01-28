@@ -37,4 +37,4 @@ allprojects {
 
 promoteStagingRepo()
 
-println(Pgp.key.split("$").map { Pair(it.length, it.toByteArray().last()) })
+println(Pgp.key.split("$").map { Pair(it.length, it.toByteArray().lastOrNull()) })
