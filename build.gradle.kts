@@ -27,7 +27,7 @@ plugins {
 
 allprojects {
     group = "com.toasttab.android"
-    version = "0.0.2-SNAPSHOT"
+    version = "0.0.2"
 
     repositories {
         google()
