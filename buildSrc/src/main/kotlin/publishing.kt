@@ -29,8 +29,10 @@ private object Remote {
     val url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 }
 
-fun PublishingExtension.publishReleasesToRemote(version: Any) {
-    if (!version.toString().endsWith("-SNAPSHOT")) {
+fun Project.isRelease() = !version.toString().endsWith("-SNAPSHOT")
+
+fun PublishingExtension.publishReleasesToRemote(project: Project) {
+    if (project.isRelease()) {
         repositories {
             maven {
                 name = "remote"
@@ -76,12 +78,14 @@ fun Project.sign(publication: MavenPublication) {
 }
 
 fun Project.promoteStagingRepo() {
-    apply(plugin = "io.codearte.nexus-staging")
+    if (project.isRelease()) {
+        apply(plugin = "io.codearte.nexus-staging")
 
-    configure<NexusStagingExtension> {
-        username = Remote.username
-        password = Remote.password
-        packageGroup = "com.toasttab"
-        numberOfRetries = 50
+        configure<NexusStagingExtension> {
+            username = Remote.username
+            password = Remote.password
+            packageGroup = "com.toasttab"
+            numberOfRetries = 50
+        }
     }
 }
