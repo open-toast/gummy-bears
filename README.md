@@ -39,7 +39,7 @@ plugins {
 }
 
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.0.2')
+    signature('com.toasttab.android:gummy-bears-api-24:0.1.0')
 }
 ```
 
@@ -51,7 +51,7 @@ plugins {
 }
 
 dependencies {
-    add("signature", "com.toasttab.android:gummy-bears-api-24:0.0.2")
+    add("signature", "com.toasttab.android:gummy-bears-api-24:0.1.0")
 }
 ```
 
@@ -66,7 +66,7 @@ Maven:
         <signature>
             <groupId>com.toasttab</groupId>
             <artifactId>gummy-bears-api-21</artifactId>
-            <version>0.0.2</version>
+            <version>0.1.0</version>
         </signature>
     </configuration>
 </plugin>
