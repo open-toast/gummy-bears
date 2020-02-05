@@ -28,14 +28,15 @@ import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 
-private object scopes {
+private object Scopes {
     const val sugar = "sugar"
     const val sugarCalls = "sugarCalls"
 }
 
-private object downloadTasks {
+private object Tasks {
     const val download = "downloadSdk"
     const val unpack = "unpackSdk"
+    const val signature = "animalsnifferSignature"
 }
 
 fun Project.buildSignatures(
@@ -50,15 +51,15 @@ fun Project.buildSignatures(
     apply(plugin = "signing")
 
     configurations {
-        create(scopes.sugar)
-        create(scopes.sugarCalls)
+        create(Scopes.sugar)
+        create(Scopes.sugarCalls)
     }
 
     dependencies {
         add("implementation", kotlin("stdlib-jdk8"))
 
-        add(scopes.sugar, project(":sugar"))
-        add(scopes.sugarCalls, project(":test:sugar-calls"))
+        add(Scopes.sugar, project(":sugar"))
+        add(Scopes.sugarCalls, project(":test:sugar-calls"))
 
         add("testImplementation", project(":test:d8-common"))
         add("testImplementation", libraries.junit)
@@ -73,31 +74,31 @@ fun Project.buildSignatures(
         dependsOn(":test:sugar-calls:build")
 
         systemProperty("sdk", sdk)
-        systemProperty("jar", configurations.getByName(scopes.sugarCalls).asPath)
+        systemProperty("jar", configurations.getByName(Scopes.sugarCalls).asPath)
         systemProperty("dexout", project.buildDir)
     }
 
     configure<ru.vyarus.gradle.plugin.animalsniffer.signature.AnimalSnifferSignatureExtension> {
-        files(configurations.getByName("compileClasspath").asPath)
+        files(configurations.getByName(Scopes.sugar).asPath)
         files(sdk)
     }
 
-    tasks.register<de.undercouch.gradle.tasks.download.Download>(downloadTasks.download)  {
+    tasks.register<de.undercouch.gradle.tasks.download.Download>(Tasks.download)  {
         tempAndMove(true)
         onlyIfModified(true)
         src("https://dl.google.com/android/repository/$sdkFile")
         dest("${rootProject.buildDir}/sdk-archives/$sdkFile")
     }
 
-    tasks.register<Copy>(downloadTasks.unpack) {
-        dependsOn(downloadTasks.download)
+    tasks.register<Copy>(Tasks.unpack) {
+        dependsOn(Tasks.download)
         from(zipTree("${rootProject.buildDir}/sdk-archives/$sdkFile"))
         into("$buildDir/sdk")
     }
 
     afterEvaluate {
-        tasks.named("animalsnifferSignature") {
-            dependsOn(downloadTasks.unpack)
+        tasks.named(Tasks.signature) {
+            dependsOn(Tasks.unpack)
         }
 
         configure<PublishingExtension> {
@@ -108,7 +109,7 @@ fun Project.buildSignatures(
                     artifactId = "gummy-bears-api-$apiLevel"
                     artifact("${project.buildDir}/animalsniffer/signature/${project.name}.sig") {
                         extension = "signature"
-                        builtBy(tasks.named("animalsnifferSignature"))
+                        builtBy(tasks.named(Tasks.signature))
                     }
 
                     standardPom()
