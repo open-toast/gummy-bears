@@ -21,11 +21,13 @@ Let's look at [Integer.hashCode(int)](https://developer.android.com/reference/ja
 
 When the APK is assembled, D8 (the Android Dexer) transforms java bytecode into Android (Dalvik/Art) bytecode. As part of that transformation, it rewrites (or _desugars_) some instructions and API calls. For example, lambdas are desuraged into anonymous classes, `try-with-resources` is desugared into a Dalvik-compatible set of instructions that matches the semantics of _regular_ Java's `try-with-resources`, and `Integer.hashCode(int)` is rewritten into a call to a synthetic class which is then added to the APK by D8.
 
+[This article](https://jakewharton.com/d8-library-desugaring/) explains desugaring in detail.
+
 ### Gummy Bears
 
 The set of desugared methods is defined by the version of D8, which itself is defined by the android gradle plugin, as well as the minimum SDK level.
 
-This project provides a safe and more accurate set of signatures for Android 4.4-10 + Android Gradle 3.x. The additional _sugary_ signatures are generated from hand-written stubs. The reference point for the stubs is the [D8 source code](https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java). In the future, it will provide an expanded set of signatures for Android Gradle 4.x including `java.time`, `ConcurrentHashMap`, etc.
+This project provides a safe and more accurate set of signatures for Android 4.4-10 + Android Gradle 3.x. The additional _sugary_ signatures are generated from hand-written stubs. The reference point for the stubs is the [D8 source code](https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java). In the future, it will provide an expanded set of signatures for Android Gradle 4's _core library desugaring_, including `java.time`, `ConcurrentHashMap`, etc.
 
 ## How to use
 
