@@ -13,15 +13,8 @@
  * limitations under the License.
  */
 
-rootProject.name = "gummybears"
-
-include(
-    "sugar",
-    "test:d8-common",
-    "test:sugar-call-generator",
-    "test:sugar-calls"
+buildSignatures(
+    apiLevel = name,
+    sdkDir = "android-11",
+    sdkFile = "platform-30_r03.zip"
 )
-
-(19..30).forEach {
-    include("api:$it")
-}
