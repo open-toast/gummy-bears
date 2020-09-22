@@ -15,6 +15,6 @@
 
 buildSignatures(
     apiLevel = name,
-    sdkDir = "android-30",
+    sdkDir = "android-11",
     sdkFile = "platform-30_r03.zip"
 )
