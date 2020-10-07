@@ -35,7 +35,7 @@ This project also provides experimental sets of signatures for Android Gradle 4'
 
 Specify the latest version `com.toasttab.android:gummy-bears-api-${api}` as the set of signatures for Animal Sniffer.
 
-Gradle:
+### Gradle
 
 ```groovy
 plugins {
@@ -47,7 +47,15 @@ dependencies {
 }
 ```
 
-Gradle Kotlin DSL:
+With core library desugaring:
+
+```
+dependencies {
+    signature('com.toasttab.android:gummy-bears-api-24:0.1.0:coreLib')
+}
+```
+
+### Gradle Kotlin DSL
 
 ```kotlin
 plugins {
@@ -59,7 +67,7 @@ dependencies {
 }
 ```
 
-Maven:
+### Maven
 
 ```xml
 <plugin>
@@ -75,6 +83,7 @@ Maven:
     </configuration>
 </plugin>
 ```
+
 ## License
 
 This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE) file for details.
