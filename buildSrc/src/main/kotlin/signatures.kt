@@ -104,6 +104,8 @@ fun Project.buildSignatures(
     }
 
     tasks.register<BuildSignatureTask>(Tasks.signatures) {
+        dependsOn(Tasks.unpack)
+
         files(configurations.getByName(Scopes.sugar).asPath)
         files(sdk)
 
@@ -112,6 +114,8 @@ fun Project.buildSignatures(
 
     if (coreLibDesugaring) {
         tasks.register<BuildSignatureTask>(Tasks.signaturesCoreLib) {
+            dependsOn(Tasks.unpack)
+
             files(configurations.getByName(Scopes.sugar).asPath)
             files(configurations.getByName(Scopes.coreLibDesugaring).asPath)
             files(sdk)
@@ -122,13 +126,9 @@ fun Project.buildSignatures(
     }
 
     afterEvaluate {
-        tasks.named(Tasks.signatures) {
-            dependsOn(Tasks.unpack)
-        }
-
         configure<PublishingExtension> {
             publications {
-                sign(create<MavenPublication>("signature") {
+                sign(create<MavenPublication>(Tasks.signatures) {
                     groupId = "${project.group}"
                     version = "${project.version}"
                     artifactId = "gummy-bears-api-$apiLevel"
@@ -141,7 +141,7 @@ fun Project.buildSignatures(
                 })
 
                 if (coreLibDesugaring) {
-                    sign(create<MavenPublication>("signatureCoreLibDesugaring") {
+                    sign(create<MavenPublication>(Tasks.signaturesCoreLib) {
                         groupId = "${project.group}"
                         version = "${project.version}"
                         artifactId = "gummy-bears-api-$apiLevel"
