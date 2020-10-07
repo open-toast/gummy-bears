@@ -27,13 +27,15 @@ When the APK is assembled, D8 (the Android Dexer) transforms java bytecode into 
 
 The set of desugared methods is defined by the version of D8, which itself is defined by the android gradle plugin, as well as the minimum SDK level.
 
-This project provides a safe and more accurate set of signatures for Android 4.4-10 + Android Gradle 3.x. The additional _sugary_ signatures are generated from hand-written stubs. The reference point for the stubs is the [D8 source code](https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java). In the future, it will provide an expanded set of signatures for Android Gradle 4's _core library desugaring_, including `java.time`, `ConcurrentHashMap`, etc.
+This project provides a safe and more accurate set of signatures for Android 4.4-10 + Android Gradle 3+. The additional _sugary_ signatures are generated from hand-written stubs. The reference point for the stubs is the [D8 source code](https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java).
+
+This project also provides experimental sets of signatures for Android Gradle 4's _core library desugaring_, including `java.time`, `ConcurrentHashMap`, etc. The artifacts are tagged with the `coreLib` classifier and are available for Android 4.4-8.1.
 
 ## How to use
 
 Specify the latest version `com.toasttab.android:gummy-bears-api-${api}` as the set of signatures for Animal Sniffer.
 
-Gradle:
+### Gradle
 
 ```groovy
 plugins {
@@ -41,11 +43,19 @@ plugins {
 }
 
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.1.0')
+    signature('com.toasttab.android:gummy-bears-api-24:0.2.0')
 }
 ```
 
-Gradle Kotlin DSL:
+With core library desugaring:
+
+```groovy
+dependencies {
+    signature('com.toasttab.android:gummy-bears-api-24:0.2.0:coreLib')
+}
+```
+
+### Gradle Kotlin DSL
 
 ```kotlin
 plugins {
@@ -53,11 +63,11 @@ plugins {
 }
 
 dependencies {
-    add("signature", "com.toasttab.android:gummy-bears-api-24:0.1.0")
+    add("signature", "com.toasttab.android:gummy-bears-api-24:0.2.0")
 }
 ```
 
-Maven:
+### Maven
 
 ```xml
 <plugin>
@@ -68,11 +78,12 @@ Maven:
         <signature>
             <groupId>com.toasttab</groupId>
             <artifactId>gummy-bears-api-21</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </signature>
     </configuration>
 </plugin>
 ```
+
 ## License
 
 This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE) file for details.
