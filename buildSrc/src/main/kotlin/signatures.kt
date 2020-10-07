@@ -27,22 +27,32 @@ import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import ru.vyarus.gradle.plugin.animalsniffer.signature.BuildSignatureTask
 
 private object Scopes {
     const val sugar = "sugar"
     const val sugarCalls = "sugarCalls"
+    const val coreLibDesugaring = "coreLibDesugaring"
 }
 
 private object Tasks {
     const val download = "downloadSdk"
     const val unpack = "unpackSdk"
-    const val signature = "animalsnifferSignature"
+
+    const val signatures = "buildSignatures"
+    const val signaturesCoreLib = "buildSignaturesCoreLib"
+}
+
+private object Outputs {
+    const val signatures = "signatures"
+    const val signaturesCoreLib = "signaturesCoreLib"
 }
 
 fun Project.buildSignatures(
     apiLevel: String,
     sdkFile: String,
-    sdkDir: String
+    sdkDir: String,
+    coreLibDesugaring: Boolean = false
 ) {
     apply(plugin = "kotlin")
     apply(plugin = "maven-publish")
@@ -53,6 +63,7 @@ fun Project.buildSignatures(
     configurations {
         create(Scopes.sugar)
         create(Scopes.sugarCalls)
+        create(Scopes.coreLibDesugaring)
     }
 
     dependencies {
@@ -60,6 +71,7 @@ fun Project.buildSignatures(
 
         add(Scopes.sugar, project(":sugar"))
         add(Scopes.sugarCalls, project(":test:sugar-calls"))
+        add(Scopes.coreLibDesugaring, libraries.desugarJdkLibs)
 
         add("testImplementation", project(":test:d8-common"))
         add("testImplementation", libraries.junit)
@@ -78,11 +90,6 @@ fun Project.buildSignatures(
         systemProperty("dexout", project.buildDir)
     }
 
-    configure<ru.vyarus.gradle.plugin.animalsniffer.signature.AnimalSnifferSignatureExtension> {
-        files(configurations.getByName(Scopes.sugar).asPath)
-        files(sdk)
-    }
-
     tasks.register<de.undercouch.gradle.tasks.download.Download>(Tasks.download)  {
         tempAndMove(true)
         onlyIfModified(true)
@@ -96,8 +103,26 @@ fun Project.buildSignatures(
         into("$buildDir/sdk")
     }
 
+    tasks.register<BuildSignatureTask>(Tasks.signatures) {
+        files(configurations.getByName(Scopes.sugar).asPath)
+        files(sdk)
+
+        outputName = Outputs.signatures
+    }
+
+    if (coreLibDesugaring) {
+        tasks.register<BuildSignatureTask>(Tasks.signaturesCoreLib) {
+            files(configurations.getByName(Scopes.sugar).asPath)
+            files(configurations.getByName(Scopes.coreLibDesugaring).asPath)
+            files(sdk)
+            exclude("java.lang.*8")
+
+            outputName = Outputs.signaturesCoreLib
+        }
+    }
+
     afterEvaluate {
-        tasks.named(Tasks.signature) {
+        tasks.named(Tasks.signatures) {
             dependsOn(Tasks.unpack)
         }
 
@@ -107,13 +132,28 @@ fun Project.buildSignatures(
                     groupId = "${project.group}"
                     version = "${project.version}"
                     artifactId = "gummy-bears-api-$apiLevel"
-                    artifact("${project.buildDir}/animalsniffer/signature/${project.name}.sig") {
+                    artifact("${project.buildDir}/animalsniffer/${Tasks.signatures}/${Outputs.signatures}.sig") {
                         extension = "signature"
-                        builtBy(tasks.named(Tasks.signature))
+                        builtBy(tasks.named(Tasks.signatures))
                     }
 
                     standardPom()
                 })
+
+                if (coreLibDesugaring) {
+                    sign(create<MavenPublication>("signatureCoreLibDesugaring") {
+                        groupId = "${project.group}"
+                        version = "${project.version}"
+                        artifactId = "gummy-bears-api-$apiLevel"
+                        artifact("${project.buildDir}/animalsniffer/${Tasks.signaturesCoreLib}/${Outputs.signaturesCoreLib}.sig") {
+                            extension = "signature"
+                            classifier = "coreLib"
+                            builtBy(tasks.named(Tasks.signaturesCoreLib))
+                        }
+
+                        standardPom()
+                    })
+                }
             }
 
             publishReleasesToRemote(project)

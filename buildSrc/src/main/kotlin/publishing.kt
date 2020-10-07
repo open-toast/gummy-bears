@@ -71,9 +71,11 @@ fun MavenPublication.standardPom() {
 }
 
 fun Project.sign(publication: MavenPublication) {
-    configure<SigningExtension> {
-        useInMemoryPgpKeys(Pgp.key, Pgp.password)
-        sign(publication)
+    if (Pgp.key != null) {
+        configure<SigningExtension> {
+            useInMemoryPgpKeys(Pgp.key, Pgp.password)
+            sign(publication)
+        }
     }
 }
 
