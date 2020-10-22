@@ -15,6 +15,9 @@
 
 package com.toasttab.android
 
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.JavaFile
@@ -99,14 +102,13 @@ class ApiUseGenerator : CliktCommand() {
         generateStubCallers(cls).writeTo(output)
     }
 
-
+    override fun run() {
+        listClasses(File(jar)).forEach {
+            write(it, File(output))
+        }
+    }
 }
 
 fun main(args: Array<String>) {
-    val jarLocation = args[0]
-    val output = File(args[1])
-
-    listClasses(File(jarLocation)).forEach {
-        write(it, output)
-    }
+    ApiUseGenerator().main(args)
 }

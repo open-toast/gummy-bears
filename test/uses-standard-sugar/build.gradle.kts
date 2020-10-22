@@ -19,6 +19,7 @@ plugins {
 
 configurations {
     create(Scopes.sugar)
+
     create(Scopes.generator).attributes {
         attribute(Attributes.usage, JAVA_RUNTIME)
     }

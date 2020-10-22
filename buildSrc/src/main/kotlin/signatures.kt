@@ -53,7 +53,12 @@ fun Project.buildSignatures(
             attribute(Attributes.usage, JAVA_RUNTIME)
         }
         create(Scopes.sugar)
-        create(Scopes.sugarCalls)
+        create(Scopes.sugarCalls).apply {
+            attributes {
+                attribute(Attributes.usage, JAVA_RUNTIME)
+            }
+            isTransitive = false
+        }
         create(Scopes.coreLibDesugaring).isTransitive = false
     }
 
