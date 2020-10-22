@@ -17,8 +17,6 @@ jobs:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
           key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
-      - restore_cache:
-          key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
 
       - run:
           name: Build and test
@@ -32,10 +30,6 @@ jobs:
           paths:
             - ~/.gradle/caches
           key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
-      - save_cache:
-          paths:
-            - build/sdk-archives
-          key: v1-sdk-cache-{{ checksum "build.gradle.kts" }}
 
       - run:
           name: Save test results

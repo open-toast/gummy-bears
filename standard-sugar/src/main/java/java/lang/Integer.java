@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Integer extends Number implements Comparable<Integer> {
+public abstract class Integer {
     public static int hashCode(int value) {
         throw new RuntimeException();
     }

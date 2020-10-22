@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Character implements java.io.Serializable, Comparable<Character> {
+public abstract class Character {
     public static int compare(char a, char b) {
         throw new RuntimeException();
     }

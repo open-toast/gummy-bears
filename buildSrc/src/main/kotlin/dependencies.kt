@@ -14,6 +14,8 @@
  */
 
 object versions {
+    const val animalSniffer = "1.16"
+    const val clikt = "3.0.1"
     const val desugarJdkLibs = "1.0.10"
     const val r8 = "1.5.68"
     const val kotlin = "1.3.60"
@@ -24,6 +26,8 @@ object versions {
 }
 
 object libraries {
+    val animalSniffer = "org.codehaus.mojo:animal-sniffer:${versions.animalSniffer}"
+    val clikt = "com.github.ajalt.clikt:clikt:${versions.clikt}"
     val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:${versions.desugarJdkLibs}"
     val r8 = "com.android.tools:r8:${versions.r8}"
     val javapoet = "com.squareup:javapoet:${versions.javapoet}"

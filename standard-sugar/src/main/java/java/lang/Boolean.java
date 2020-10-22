@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Boolean implements java.io.Serializable, Comparable<Boolean> {
+public abstract class Boolean {
     public static int hashCode(boolean b) {
         throw new RuntimeException();
     }

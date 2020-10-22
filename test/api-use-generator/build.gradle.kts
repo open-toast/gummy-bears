@@ -13,16 +13,13 @@
  * limitations under the License.
  */
 
-rootProject.name = "gummybears"
+plugins {
+    kotlin("jvm")
+}
 
-include(
-    "signature-builder",
-    "standard-sugar",
-    "test:d8-runner",
-    "test:api-use-generator",
-    "test:uses-standard-sugar"
-)
-
-(19..30).forEach {
-    include("api:$it")
+dependencies {
+    implementation(libraries.clikt)
+    implementation(libraries.javapoet)
+    implementation(libraries.javassist)
+    implementation(kotlin("stdlib-jdk8"))
 }

@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Double extends Number implements Comparable<Double> {
+public abstract class Double {
     public static boolean isFinite(double d) {
         throw new RuntimeException();
     }

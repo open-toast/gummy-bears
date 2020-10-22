@@ -13,16 +13,12 @@
  * limitations under the License.
  */
 
-rootProject.name = "gummybears"
+import org.gradle.api.attributes.Attribute
 
-include(
-    "signature-builder",
-    "standard-sugar",
-    "test:d8-runner",
-    "test:api-use-generator",
-    "test:uses-standard-sugar"
-)
-
-(19..30).forEach {
-    include("api:$it")
+object Attributes {
+    val artifactType = Attribute.of("artifactType", String::class.java)
+    val unpackedSdk = Attribute.of("unpackedSdk", Boolean::class.javaObjectType)
+    val usage = Attribute.of("org.gradle.usage", String::class.java)
 }
+
+const val JAVA_RUNTIME = "java-runtime"

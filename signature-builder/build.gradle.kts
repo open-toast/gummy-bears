@@ -14,29 +14,11 @@
  */
 
 plugins {
-    java
-}
-
-configurations {
-    create("sugar")
-    create("generator")
+    kotlin("jvm")
 }
 
 dependencies {
-    add("sugar", project(":sugar"))
-    add("generator", project(":test:sugar-call-generator"))
-}
-
-tasks.register<JavaExec>("generateStubCalls") {
-    classpath = configurations.getByName("generator").asFileTree
-    main = "com.toasttab.android.StubCallGeneratorKt"
-    args = listOf(configurations.getByName("sugar").asPath, "${project.buildDir}/generated-sources/java/main")
-}
-
-tasks.named<JavaCompile>("compileJava") {
-    dependsOn("generateStubCalls")
-}
-
-sourceSets.main {
-    java.srcDir("${project.buildDir}/generated-sources/java/main")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(libraries.animalSniffer)
+    implementation(libraries.clikt)
 }

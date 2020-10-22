@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Float extends Number implements Comparable<Float> {
+public abstract class Float {
     public static int hashCode(float d) {
         throw new RuntimeException();
     }

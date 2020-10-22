@@ -13,12 +13,10 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm")
-}
-
-dependencies {
-    implementation(libraries.javapoet)
-    implementation(libraries.javassist)
-    implementation(kotlin("stdlib-jdk8"))
+object Scopes {
+    const val generator = "generator"
+    const val sdk = "sdk"
+    const val sugar = "sugar"
+    const val sugarCalls = "sugarCalls"
+    const val coreLibDesugaring = "coreLibDesugaring"
 }

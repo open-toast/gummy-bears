@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Long extends Number implements Comparable<Long> {
+public abstract class Long {
     public static int hashCode(long value) {
         throw new RuntimeException();
     }
