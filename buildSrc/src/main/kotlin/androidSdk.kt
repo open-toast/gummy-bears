@@ -19,6 +19,7 @@ import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.artifacts.transform.TransformParameters
+import org.gradle.api.attributes.Attribute
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.dependencies
@@ -28,6 +29,8 @@ import java.util.zip.ZipFile
 const val SDK_GROUP = "com.google.android.sdk"
 
 private const val ANDROID_JAR = "android.jar"
+private val ARTIFACT_TYPE_ATTRIBUTE = Attribute.of("artifactType", String::class.java)
+private val UNPACKED_SDK_ATTRIBUTE = Attribute.of("unpackedSdk", Boolean::class.javaObjectType)
 
 /**
  * This [artifact transform](https://docs.gradle.org/current/userguide/artifact_transforms.html)
@@ -52,21 +55,21 @@ abstract class ExtractSdkTransform : TransformAction<TransformParameters.None> {
 
 fun Project.extractSdk() {
     configurations.named("sdk") {
-        attributes.attribute(Attributes.unpackedSdk, true)
+        attributes.attribute(UNPACKED_SDK_ATTRIBUTE, true)
     }
 
     dependencies {
         attributesSchema {
-            attribute(Attributes.unpackedSdk)
+            attribute(UNPACKED_SDK_ATTRIBUTE)
         }
 
         artifactTypes.create("zip") {
-            attributes.attribute(Attributes.unpackedSdk, false)
+            attributes.attribute(UNPACKED_SDK_ATTRIBUTE, false)
         }
 
         registerTransform(ExtractSdkTransform::class) {
-            from.attribute(Attributes.unpackedSdk, false).attribute(Attributes.artifactType, "zip")
-            to.attribute(Attributes.unpackedSdk, true).attribute(Attributes.artifactType, "jar")
+            from.attribute(UNPACKED_SDK_ATTRIBUTE, false).attribute(ARTIFACT_TYPE_ATTRIBUTE, "zip")
+            to.attribute(UNPACKED_SDK_ATTRIBUTE, true).attribute(ARTIFACT_TYPE_ATTRIBUTE, "jar")
         }
     }
 }
