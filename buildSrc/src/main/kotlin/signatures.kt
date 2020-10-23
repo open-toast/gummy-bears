@@ -18,6 +18,7 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
@@ -53,12 +54,7 @@ fun Project.buildSignatures(
             attribute(Attributes.usage, JAVA_RUNTIME)
         }
         create(Scopes.sugar)
-        create(Scopes.sugarCalls).apply {
-            attributes {
-                attribute(Attributes.usage, JAVA_RUNTIME)
-            }
-            isTransitive = false
-        }
+        create(Scopes.sugarCalls)
         create(Scopes.coreLibDesugaring).isTransitive = false
     }
 

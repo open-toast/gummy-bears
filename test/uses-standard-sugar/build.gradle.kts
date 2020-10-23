@@ -14,15 +14,12 @@
  */
 
 plugins {
-    java
+    `java-library`
 }
 
 configurations {
     create(Scopes.sugar)
-
-    create(Scopes.generator).attributes {
-        attribute(Attributes.usage, JAVA_RUNTIME)
-    }
+    create(Scopes.generator)
 }
 
 dependencies {
