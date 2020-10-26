@@ -63,8 +63,8 @@ fun Project.buildSignatures(
         add(Scopes.generator, project(":signature-builder"))
 
         add(Scopes.sdk, "$SDK_GROUP:$sdk@zip")
-        add(Scopes.standardSugar, project(":standard-sugar"))
-        add(Scopes.exerciseStandardSugar, project(":test:standard-sugar-treadmill"))
+        add(Scopes.standardSugar, project(":basic-sugar"))
+        add(Scopes.exerciseStandardSugar, project(":test:basic-sugar-treadmill"))
         add(Scopes.coreLibSugar, libraries.desugarJdkLibs)
 
         add("testImplementation", project(":test:d8-runner"))
@@ -73,8 +73,8 @@ fun Project.buildSignatures(
     }
 
     tasks.withType<Test> {
-        dependsOn(":standard-sugar:build")
-        dependsOn(":test:standard-sugar-treadmill:build")
+        dependsOn(":basic-sugar:build")
+        dependsOn(":test:basic-sugar-treadmill:build")
 
         systemProperty("sdk", configurations.getByName(Scopes.sdk).asPath)
         systemProperty("jar", configurations.getByName(Scopes.exerciseStandardSugar).asPath)

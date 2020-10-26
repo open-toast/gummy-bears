@@ -23,7 +23,7 @@ configurations {
 }
 
 dependencies {
-    add(Scopes.standardSugar, project(":standard-sugar"))
+    add(Scopes.standardSugar, project(":basic-sugar"))
     add(Scopes.generator, project(":test:api-treadmill"))
 }
 
