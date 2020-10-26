@@ -44,6 +44,9 @@ jobs:
           path: ~/test-results/junit
 
       - run:
+          name: Deploy locally
+          command: ./gradlew publishToMavenLocal
+      - run:
           name: Deploy (if release)
           command: "if [[ \"$CIRCLE_BRANCH\" == master ]]; then ./gradlew publish closeAndReleaseRepository -Dorg.gradle.internal.http.socketTimeout=120000 -Dorg.gradle.internal.network.retry.max.attempts=1 -Dorg.gradle.internal.publish.checksums.insecure=true; else echo skipping publishing; fi"
 
