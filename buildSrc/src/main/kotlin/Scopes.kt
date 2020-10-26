@@ -16,7 +16,7 @@
 object Scopes {
     const val generator = "generator"
     const val sdk = "sdk"
-    const val sugar = "sugar"
-    const val sugarCalls = "sugarCalls"
-    const val coreLibDesugaring = "coreLibDesugaring"
+    const val standardSugar = "sugar"
+    const val exerciseStandardSugar = "exerciseStandardSugar"
+    const val coreLibSugar = "coreLibSugar"
 }

@@ -19,8 +19,8 @@ include(
     "signature-builder",
     "standard-sugar",
     "test:d8-runner",
-    "test:api-use-generator",
-    "test:uses-standard-sugar"
+    "test:api-treadmill",
+    "test:standard-sugar-treadmill"
 )
 
 (19..30).forEach {

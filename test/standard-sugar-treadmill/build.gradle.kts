@@ -18,13 +18,13 @@ plugins {
 }
 
 configurations {
-    create(Scopes.sugar)
+    create(Scopes.standardSugar)
     create(Scopes.generator)
 }
 
 dependencies {
-    add(Scopes.sugar, project(":standard-sugar"))
-    add(Scopes.generator, project(":test:api-use-generator"))
+    add(Scopes.standardSugar, project(":standard-sugar"))
+    add(Scopes.generator, project(":test:api-treadmill"))
 }
 
 tasks.register<JavaExec>("generateClasses") {
@@ -32,7 +32,7 @@ tasks.register<JavaExec>("generateClasses") {
     main = "com.toasttab.android.ApiUseGeneratorKt"
     args = listOf(
         "--jar",
-        configurations.getByName(Scopes.sugar).asPath,
+        configurations.getByName(Scopes.standardSugar).asPath,
         "--output",
         "${project.buildDir}/generated-sources/java/main"
     )
