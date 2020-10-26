@@ -118,7 +118,7 @@ fun Project.buildSignatures(
                     groupId = "${project.group}"
                     version = "${project.version}"
                     artifactId = "gummy-bears-api-$apiLevel"
-                    artifact("$buildDir/${Outputs.signatures}.sig") {
+                    artifact("$buildDir/${Outputs.signatures}") {
                         extension = "signature"
                         builtBy(tasks.named(Tasks.signatures))
                     }
@@ -131,7 +131,7 @@ fun Project.buildSignatures(
                         groupId = "${project.group}"
                         version = "${project.version}"
                         artifactId = "gummy-bears-api-$apiLevel"
-                        artifact("$buildDir/${Outputs.signaturesCoreLib}.sig") {
+                        artifact("$buildDir/${Outputs.signaturesCoreLib}") {
                             extension = "signature"
                             classifier = "coreLib"
                             builtBy(tasks.named(Tasks.signaturesCoreLib))
