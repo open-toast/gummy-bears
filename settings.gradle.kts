@@ -16,10 +16,11 @@
 rootProject.name = "gummybears"
 
 include(
-    "sugar",
-    "test:d8-common",
-    "test:sugar-call-generator",
-    "test:sugar-calls"
+    "signature-builder",
+    "basic-sugar",
+    "test:d8-runner",
+    "test:api-treadmill",
+    "test:basic-sugar-treadmill"
 )
 
 (19..30).forEach {

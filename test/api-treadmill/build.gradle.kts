@@ -13,8 +13,13 @@
  * limitations under the License.
  */
 
-buildSignatures(
-    apiLevel = name,
-    sdk = "platform-26:r02",
-    coreLibDesugaring = true
-)
+plugins {
+    kotlin("jvm")
+}
+
+dependencies {
+    implementation(libraries.clikt)
+    implementation(libraries.javapoet)
+    implementation(libraries.javassist)
+    implementation(kotlin("stdlib-jdk8"))
+}

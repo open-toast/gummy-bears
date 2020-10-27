@@ -15,7 +15,6 @@
 
 buildSignatures(
     apiLevel = name,
-    sdkDir = "android-7.1.1",
-    sdkFile = "platform-25_r03.zip",
+    sdk = "platform-25:r03",
     coreLibDesugaring = true
 )

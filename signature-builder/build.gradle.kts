@@ -13,8 +13,12 @@
  * limitations under the License.
  */
 
-buildSignatures(
-    apiLevel = name,
-    sdk = "platform-26:r02",
-    coreLibDesugaring = true
-)
+plugins {
+    kotlin("jvm")
+}
+
+dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(libraries.animalSniffer)
+    implementation(libraries.clikt)
+}

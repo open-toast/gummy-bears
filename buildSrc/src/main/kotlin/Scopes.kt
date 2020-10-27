@@ -13,8 +13,10 @@
  * limitations under the License.
  */
 
-buildSignatures(
-    apiLevel = name,
-    sdk = "platform-26:r02",
-    coreLibDesugaring = true
-)
+object Scopes {
+    const val generator = "generator"
+    const val sdk = "sdk"
+    const val standardSugar = "sugar"
+    const val exerciseStandardSugar = "exerciseStandardSugar"
+    const val coreLibSugar = "coreLibSugar"
+}

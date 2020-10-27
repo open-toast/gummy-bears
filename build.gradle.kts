@@ -32,6 +32,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+
+        androidSdk()
     }
 }
 
