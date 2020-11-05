@@ -43,7 +43,7 @@ plugins {
 }
 
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.2.0')
+    signature('com.toasttab.android:gummy-bears-api-24:0.2.0@signature')
 }
 ```
 
@@ -51,7 +51,7 @@ With core library desugaring:
 
 ```groovy
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.2.0:coreLib')
+    signature('com.toasttab.android:gummy-bears-api-24:0.2.0:coreLib@signature')
 }
 ```
 
@@ -63,7 +63,7 @@ plugins {
 }
 
 dependencies {
-    add("signature", "com.toasttab.android:gummy-bears-api-24:0.2.0")
+    add("signature", "com.toasttab.android:gummy-bears-api-24:0.2.0@signature")
 }
 ```
 
