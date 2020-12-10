@@ -18,7 +18,7 @@ object versions {
     const val clikt = "3.0.1"
     const val desugarJdkLibs = "1.0.10"
     const val r8 = "1.5.68"
-    const val kotlin = "1.4.10"
+    const val kotlin = "1.4.21"
     const val javapoet = "1.11.1"
     const val javassist = "3.26.0-GA"
     const val junit = "4.12"
