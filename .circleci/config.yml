@@ -1,27 +1,24 @@
 version: 2.1
 
-jobs:
-  build:
-    working_directory: ~/repo
+executors:
+  builder:
+    working_directory: ~/code
     docker:
-      - image: circleci/openjdk:8-jdk
-
+      - image: cimg/openjdk:8.0
     environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
+      JAVA_OPTS: "-Xmx3200m"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
+commands:
+  read_cache:
     steps:
-      - checkout
-
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
           key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
 
-      - run:
-          name: Build and test
-          command: ./gradlew check
-
+  write_cache:
+    steps:
       - save_cache:
           paths:
             - ~/.gradle/wrapper
@@ -31,6 +28,19 @@ jobs:
             - ~/.gradle/caches
           key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
 
+jobs:
+  build:
+    executor: builder
+    steps:
+      - checkout
+      - read_cache
+
+      - run:
+          name: Build and test
+          command: ./gradlew check
+
+      - write_cache
+
       - run:
           name: Save test results
           command: |
@@ -38,21 +48,28 @@ jobs:
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
 
-      - store_test_results:
-          path: ~/test-results
-      - store_artifacts:
-          path: ~/test-results/junit
-
       - run:
           name: Deploy locally
           command: ./gradlew publishToMavenLocal
+
+  release:
+    executor: builder
+    steps:
+      - checkout
+      - read_cache
       - run:
-          name: Deploy (if release)
-          command: "if [[ \"$CIRCLE_BRANCH\" == master ]]; then ./gradlew publish closeAndReleaseRepository -Dorg.gradle.internal.http.socketTimeout=120000 -Dorg.gradle.internal.network.retry.max.attempts=1 -Dorg.gradle.internal.publish.checksums.insecure=true; else echo skipping publishing; fi"
+          name: Publish release
+          command: "./gradlew publishToRemote closeAndReleaseRepository publishPlugins -Dorg.gradle.internal.http.socketTimeout=120000 -Dorg.gradle.internal.network.retry.max.attempts=1 -Dorg.gradle.internal.publish.checksums.insecure=true"
 
 workflows:
   version: 2.1
   build:
     jobs:
-      - build:
+      - build
+      - release:
           context: OSS
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/

@@ -25,9 +25,9 @@ plugins {
     kotlin("jvm") version versions.kotlin apply false
 }
 
-allprojects {
+subprojects {
     group = "com.toasttab.android"
-    version = "0.4.0-SNAPSHOT"
+    version = rootProject.version
 
     repositories {
         google()
