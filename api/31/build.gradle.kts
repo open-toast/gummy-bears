@@ -13,27 +13,7 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath("gradle.plugin.net.vivin:gradle-semantic-build-versioning:4.0.0")
-    }
-}
-
-apply(plugin = "net.vivin.gradle-semantic-build-versioning")
-
-rootProject.name = "gummybears"
-
-include(
-    "signature-builder",
-    "basic-sugar",
-    "test:d8-runner",
-    "test:api-treadmill",
-    "test:basic-sugar-treadmill"
+buildSignatures(
+    apiLevel = name,
+    sdk = "platform-31:r01"
 )
-
-(19..31).forEach {
-    include("api:$it")
-}
