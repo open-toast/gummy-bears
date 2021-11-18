@@ -15,14 +15,14 @@
 
 object versions {
     const val animalSniffer = "1.16"
-    const val clikt = "3.0.1"
-    const val desugarJdkLibs = "1.0.10"
+    const val clikt = "3.3.0"
+    const val desugarJdkLibs = "1.1.5"
     const val r8 = "1.5.68"
-    const val kotlin = "1.4.21"
-    const val javapoet = "1.11.1"
-    const val javassist = "3.26.0-GA"
-    const val junit = "4.12"
-    const val truth = "1.0"
+    const val kotlin = "1.6.0"
+    const val javapoet = "1.13.0"
+    const val javassist = "3.28.0-GA"
+    const val junit = "4.13.2"
+    const val truth = "1.1.3"
 }
 
 object libraries {

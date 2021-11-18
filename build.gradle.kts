@@ -17,7 +17,7 @@ buildscript {
     repositories {
         google()
         gradlePluginPortal()
-        jcenter()
+        mavenCentral()
     }
 }
 
@@ -31,7 +31,7 @@ subprojects {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
         androidSdk()
     }

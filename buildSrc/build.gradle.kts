@@ -14,7 +14,7 @@
  */
 
 repositories {
-    jcenter()
+    mavenCentral()
     gradlePluginPortal()
 }
 
@@ -23,5 +23,5 @@ plugins {
 }
 
 dependencies {
-    implementation("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2")
+    implementation("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
 }
