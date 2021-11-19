@@ -83,7 +83,7 @@ fun Project.buildSignatures(
 
     tasks.register<JavaExec>(Tasks.signatures) {
         classpath = configurations.getByName("generator").asFileTree
-        main = "com.toasttab.animalsniffer.AndroidSignatureBuilderKt"
+        mainClass.set("com.toasttab.animalsniffer.AndroidSignatureBuilderKt")
         args = listOf(
             "--sdk",
             configurations.getByName(Scopes.sdk).asPath,
@@ -97,7 +97,7 @@ fun Project.buildSignatures(
     if (coreLibDesugaring) {
         tasks.register<JavaExec>(Tasks.signaturesCoreLib) {
             classpath = configurations.getByName("generator").asFileTree
-            main = "com.toasttab.animalsniffer.AndroidSignatureBuilderKt"
+            mainClass.set("com.toasttab.animalsniffer.AndroidSignatureBuilderKt")
             args = listOf(
                 "--sdk",
                 configurations.getByName(Scopes.sdk).asPath,
