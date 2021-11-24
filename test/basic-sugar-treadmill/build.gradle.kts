@@ -29,7 +29,7 @@ dependencies {
 
 tasks.register<JavaExec>("generateClasses") {
     classpath = configurations.getByName(Scopes.generator).asFileTree
-    main = "com.toasttab.android.ApiUseGeneratorKt"
+    mainClass.set("com.toasttab.android.ApiUseGeneratorKt")
     args = listOf(
         "--jar",
         configurations.getByName(Scopes.standardSugar).asPath,
