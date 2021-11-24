@@ -82,6 +82,7 @@ fun Project.buildSignatures(
     }
 
     tasks.register<JavaExec>(Tasks.signatures) {
+        dependsOn(":basic-sugar:jar")
         classpath = configurations.getByName("generator").asFileTree
         mainClass.set("com.toasttab.animalsniffer.AndroidSignatureBuilderKt")
         args = listOf(
@@ -96,6 +97,7 @@ fun Project.buildSignatures(
 
     if (coreLibDesugaring) {
         tasks.register<JavaExec>(Tasks.signaturesCoreLib) {
+            dependsOn(":basic-sugar:jar")
             classpath = configurations.getByName("generator").asFileTree
             mainClass.set("com.toasttab.animalsniffer.AndroidSignatureBuilderKt")
             args = listOf(
