@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Toast Inc.
+ * Copyright (c) 2021. Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,7 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath("gradle.plugin.net.vivin:gradle-semantic-build-versioning:4.0.0")
-    }
-}
-
-apply(plugin = "net.vivin.gradle-semantic-build-versioning")
-
-rootProject.name = "gummybears"
-
-include(
-    "signature-builder",
-    "basic-sugar",
-    "test:d8-runner",
-    "test:api-treadmill",
-    "test:basic-sugar-treadmill"
+buildSignatures(
+    apiLevel = name,
+    sdk = "platform-32:r01"
 )
-
-(19..33).forEach {
-    include("api:$it")
-}
