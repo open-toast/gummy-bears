@@ -14,13 +14,13 @@
  */
 
 object versions {
-    const val animalSniffer = "1.16"
-    const val clikt = "3.3.0"
-    const val desugarJdkLibs = "1.1.5"
+    const val animalSniffer = "1.22"
+    const val clikt = "3.5.1"
+    const val desugarJdkLibs = "1.2.2"
     const val r8 = "1.5.68"
-    const val kotlin = "1.6.0"
+    const val kotlin = "1.8.0"
     const val javapoet = "1.13.0"
-    const val javassist = "3.28.0-GA"
+    const val javassist = "3.29.2-GA"
     const val junit = "4.13.2"
     const val truth = "1.1.3"
 }
