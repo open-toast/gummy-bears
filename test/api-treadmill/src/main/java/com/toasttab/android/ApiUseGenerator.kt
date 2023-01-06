@@ -24,6 +24,7 @@ import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeName
 import com.squareup.javapoet.TypeSpec
+import com.toasttab.android.signature.transform.DesugarClassNameTransformer
 import javassist.ClassPool
 import javassist.CtClass
 import javassist.CtPrimitiveType
@@ -82,12 +83,13 @@ class ApiUseGenerator : CliktCommand() {
     }
 
     private fun generateStubCallers(cls: ClassFile): JavaFile {
-        val className = cls.name.replace(".", "_");
+        val className = cls.name.replace(".", "_")
+
         val builder = TypeSpec.classBuilder(className)
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
             .addField(
                 FieldSpec.builder(
-                    fqnToClassName(cls.name), "callee"
+                    fqnToClassName(DesugarClassNameTransformer.transform(cls.name)), "callee"
                 ).build()
             )
 

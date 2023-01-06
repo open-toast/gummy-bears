@@ -28,6 +28,7 @@ rootProject.name = "gummybears"
 
 include(
     "signature-builder",
+    "signature-transformer",
     "basic-sugar",
     "test:d8-runner",
     "test:api-treadmill",

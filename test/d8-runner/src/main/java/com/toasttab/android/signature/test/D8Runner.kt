@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.toasttab.android.test
+package com.toasttab.android.signature.test
 
 import com.android.tools.r8.BaseCompilerCommand
 import com.android.tools.r8.D8

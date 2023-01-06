@@ -16,10 +16,3 @@
 plugins {
     kotlin("jvm")
 }
-
-dependencies {
-    implementation(libraries.clikt)
-    implementation(libraries.javapoet)
-    implementation(libraries.javassist)
-    implementation(project(":signature-transformer"))
-}

@@ -4,7 +4,7 @@ executors:
   builder:
     working_directory: ~/code
     docker:
-      - image: cimg/openjdk:8.0
+      - image: cimg/openjdk:17.0
     environment:
       JAVA_OPTS: "-Xmx3200m"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false"

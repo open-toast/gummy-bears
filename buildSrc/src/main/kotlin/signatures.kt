@@ -58,8 +58,6 @@ fun Project.buildSignatures(
     dependencies {
         extractSdk()
 
-        add("testImplementation", kotlin("stdlib-jdk8"))
-
         add(Scopes.generator, project(":signature-builder"))
 
         add(Scopes.sdk, "$SDK_GROUP:$sdk@zip")

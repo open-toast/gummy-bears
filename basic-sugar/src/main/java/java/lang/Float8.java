@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Float {
+public abstract class Float8 {
     public static int hashCode(float d) {
         throw new RuntimeException();
     }

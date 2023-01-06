@@ -18,7 +18,7 @@ plugins {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(project(":signature-transformer"))
     implementation(libraries.animalSniffer)
     implementation(libraries.clikt)
 }

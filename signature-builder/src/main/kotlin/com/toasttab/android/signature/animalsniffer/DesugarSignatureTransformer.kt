@@ -13,27 +13,14 @@
  * limitations under the License.
  */
 
-package com.toasttab.animalsniffer
+package com.toasttab.android.signature.animalsniffer
 
+import com.toasttab.android.signature.transform.DesugarClassNameTransformer
+import com.toasttab.android.signature.transform.ShouldTransform
 import org.codehaus.mojo.animal_sniffer.Clazz
 
-sealed class ShouldTransform {
-    object No: ShouldTransform()
-    class Yes(val newName: String): ShouldTransform()
-}
-
 object DesugarSignatureTransformer {
-    fun shouldTransform(name: String): ShouldTransform {
-        if (name.endsWith("8")) {
-            return ShouldTransform.Yes(name.removeSuffix("8"))
-        } else if (name.substringAfterLast("/").startsWith("Desugar")) {
-            return ShouldTransform.Yes(name.substringBeforeLast("/") + "/" + name.substringAfterLast("/Desugar"))
-        } else {
-            return ShouldTransform.No
-        }
-    }
-
-    fun shouldTransform(clz: Clazz) = shouldTransform(clz.name)
+    fun shouldTransform(clz: Clazz) = DesugarClassNameTransformer.shouldTransform(clz.name)
 
     fun transform(clz: Clazz) =
         when (val shouldTransform = shouldTransform(clz)) {

@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Math {
+public abstract class Math8 {
     public static int addExact(int x, int y) {
         throw new RuntimeException();
     }

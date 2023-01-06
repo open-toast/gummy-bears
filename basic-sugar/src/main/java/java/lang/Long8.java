@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Long {
+public abstract class Long8 {
     public static int hashCode(long value) {
         throw new RuntimeException();
     }

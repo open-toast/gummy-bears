@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Double {
+public abstract class Double8 {
     public static boolean isFinite(double d) {
         throw new RuntimeException();
     }

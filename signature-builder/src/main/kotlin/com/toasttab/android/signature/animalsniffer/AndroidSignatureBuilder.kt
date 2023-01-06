@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.toasttab.animalsniffer
+package com.toasttab.android.signature.animalsniffer
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.multiple

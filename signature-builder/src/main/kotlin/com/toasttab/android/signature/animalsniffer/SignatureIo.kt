@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.toasttab.animalsniffer
+package com.toasttab.android.signature.animalsniffer
 
 import org.codehaus.mojo.animal_sniffer.Clazz
 import org.codehaus.mojo.animal_sniffer.SignatureBuilder
