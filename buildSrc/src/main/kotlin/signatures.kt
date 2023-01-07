@@ -82,7 +82,7 @@ fun Project.buildSignatures(
     tasks.register<JavaExec>(Tasks.signatures) {
         dependsOn(":basic-sugar:jar")
         classpath = configurations.getByName("generator").asFileTree
-        mainClass.set("com.toasttab.animalsniffer.AndroidSignatureBuilderKt")
+        mainClass.set("com.toasttab.android.signature.animalsniffer.AndroidSignatureBuilderKt")
         args = listOf(
             "--sdk",
             configurations.getByName(Scopes.sdk).asPath,
@@ -97,7 +97,7 @@ fun Project.buildSignatures(
         tasks.register<JavaExec>(Tasks.signaturesCoreLib) {
             dependsOn(":basic-sugar:jar")
             classpath = configurations.getByName("generator").asFileTree
-            mainClass.set("com.toasttab.animalsniffer.AndroidSignatureBuilderKt")
+            mainClass.set("com.toasttab.android.signature.animalsniffer.AndroidSignatureBuilderKt")
             args = listOf(
                 "--sdk",
                 configurations.getByName(Scopes.sdk).asPath,
