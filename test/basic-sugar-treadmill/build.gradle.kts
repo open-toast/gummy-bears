@@ -17,6 +17,11 @@ plugins {
     `java-library`
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 configurations {
     create(Scopes.standardSugar)
     create(Scopes.generator)
