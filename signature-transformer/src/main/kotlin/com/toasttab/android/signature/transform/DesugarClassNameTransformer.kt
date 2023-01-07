@@ -16,8 +16,8 @@
 package com.toasttab.android.signature.transform
 
 sealed interface ShouldTransform {
-    object No: ShouldTransform
-    class Yes(val newName: String): ShouldTransform
+    object No : ShouldTransform
+    class Yes(val newName: String) : ShouldTransform
 }
 
 object DesugarClassNameTransformer {
@@ -31,7 +31,7 @@ object DesugarClassNameTransformer {
         }
     }
 
-    fun transform(name: String) = when(val shouldTransform = shouldTransform(name)) {
+    fun transform(name: String) = when (val shouldTransform = shouldTransform(name)) {
         ShouldTransform.No -> name
         is ShouldTransform.Yes -> shouldTransform.newName
     }

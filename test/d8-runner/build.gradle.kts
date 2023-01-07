@@ -14,9 +14,9 @@
  */
 
 plugins {
-    kotlin("jvm")
+    `kotlin-conventions`
 }
 
 dependencies {
-    implementation(libraries.r8)
+    implementation(libs.r8)
 }

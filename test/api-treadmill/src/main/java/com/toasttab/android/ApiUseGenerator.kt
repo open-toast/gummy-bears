@@ -65,7 +65,7 @@ class ApiUseGenerator : CliktCommand() {
         val paramTypes = Descriptor.getParameterTypes(method.descriptor, ClassPool.getDefault())
         val returnType = Descriptor.getReturnType(method.descriptor, ClassPool.getDefault())
 
-        val params = paramTypes.indices.joinToString { "arg$it" };
+        val params = paramTypes.indices.joinToString { "arg$it" }
         val instruction = if (returnType == CtClass.voidType) "" else "return "
 
         return MethodSpec.methodBuilder(method.name)
@@ -89,7 +89,8 @@ class ApiUseGenerator : CliktCommand() {
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
             .addField(
                 FieldSpec.builder(
-                    fqnToClassName(DesugarClassNameTransformer.transform(cls.name)), "callee"
+                    fqnToClassName(DesugarClassNameTransformer.transform(cls.name)),
+                    "callee"
                 ).build()
             )
 

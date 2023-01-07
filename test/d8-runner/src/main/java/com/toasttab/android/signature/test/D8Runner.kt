@@ -31,10 +31,12 @@ class DesugaringResult(
 )
 
 object D8Runner {
-    fun run(apiLevel: Int,
-            sdk: Path = Paths.get(System.getProperty("sdk")),
-            jar: Path = Paths.get(System.getProperty("jar")),
-            output: Path = Paths.get(System.getProperty("dexout"))): DesugaringResult {
+    fun run(
+        apiLevel: Int,
+        sdk: Path = Paths.get(System.getProperty("sdk")),
+        jar: Path = Paths.get(System.getProperty("jar")),
+        output: Path = Paths.get(System.getProperty("dexout"))
+    ): DesugaringResult {
         val cmd = D8Command.builder()
             .addLibraryFiles(sdk)
             .addProgramFiles(jar)
@@ -46,13 +48,16 @@ object D8Runner {
 
         BaseCompilerCommand::class.java.declaredFields.first { it.type == Reporter::class.java }.apply {
             isAccessible = true
-        }.set(cmd, Reporter(object : DiagnosticsHandler {
-            override fun warning(diagnostic: Diagnostic) {
-                if (diagnostic is DesugarDiagnostic) {
-                    warnings.add(diagnostic.diagnosticMessage)
+        }.set(
+            cmd,
+            Reporter(object : DiagnosticsHandler {
+                override fun warning(diagnostic: Diagnostic) {
+                    if (diagnostic is DesugarDiagnostic) {
+                        warnings.add(diagnostic.diagnosticMessage)
+                    }
                 }
-            }
-        }))
+            })
+        )
 
         D8.run(cmd)
 

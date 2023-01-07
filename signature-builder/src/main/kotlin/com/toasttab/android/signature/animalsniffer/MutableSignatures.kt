@@ -36,9 +36,12 @@ class MutableSignatures {
             }
 
             Clazz(
-                clz.name, oldValue.signatures + newValue.signatures, superClass, (
-                        (oldValue.superInterfaces.toSet() + newValue.superInterfaces).toTypedArray()
-                        )
+                clz.name,
+                oldValue.signatures + newValue.signatures,
+                superClass,
+                (
+                    (oldValue.superInterfaces.toSet() + newValue.superInterfaces).toTypedArray()
+                    )
             )
         }
     }

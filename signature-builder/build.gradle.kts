@@ -14,11 +14,11 @@
  */
 
 plugins {
-    kotlin("jvm")
+    `kotlin-conventions`
 }
 
 dependencies {
     implementation(project(":signature-transformer"))
-    implementation(libraries.animalSniffer)
-    implementation(libraries.clikt)
+    implementation(libs.animalSniffer)
+    implementation(libs.clikt)
 }

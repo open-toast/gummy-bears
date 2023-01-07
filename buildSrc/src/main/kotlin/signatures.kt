@@ -27,6 +27,7 @@ import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.repositories
 
 private object Tasks {
     const val signatures = "buildSignatures"
@@ -43,9 +44,16 @@ fun Project.buildSignatures(
     sdk: String,
     coreLibDesugaring: Boolean = false
 ) {
-    apply(plugin = "kotlin")
+    apply(plugin = "kotlin-conventions")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
+
+    group = "com.toasttab.android"
+    version = rootProject.version
+
+    repositories {
+        androidSdk()
+    }
 
     configurations {
         create(Scopes.sdk)
@@ -63,11 +71,11 @@ fun Project.buildSignatures(
         add(Scopes.sdk, "$SDK_GROUP:$sdk@zip")
         add(Scopes.standardSugar, project(":basic-sugar"))
         add(Scopes.exerciseStandardSugar, project(":test:basic-sugar-treadmill"))
-        add(Scopes.coreLibSugar, libraries.desugarJdkLibs)
+        add(Scopes.coreLibSugar, libs.desugarJdkLibs)
 
         add("testImplementation", project(":test:d8-runner"))
-        add("testImplementation", libraries.junit)
-        add("testImplementation", libraries.truth)
+        add("testImplementation", libs.junit)
+        add("testImplementation", libs.truth)
     }
 
     tasks.withType<Test> {

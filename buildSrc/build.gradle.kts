@@ -23,5 +23,8 @@ plugins {
 }
 
 dependencies {
-    implementation("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
+    implementation(libs.kotlin.gradle)
+    implementation(libs.nexus.staging)
+    implementation(libs.spotless)
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
