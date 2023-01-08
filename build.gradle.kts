@@ -20,4 +20,6 @@ buildscript {
     }
 }
 
-promoteStagingRepo()
+plugins {
+    `nexus-staging-conventions`
+}

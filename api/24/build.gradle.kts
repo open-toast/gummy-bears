@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-buildSignatures(
-    apiLevel = name,
-    sdk = "platform-24:r02",
-    coreLibDesugaring = true
-)
+plugins {
+    `signatures-core-lib-conventions`
+}
+
+sdk("platform-24:r02")
