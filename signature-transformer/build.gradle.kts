@@ -14,5 +14,5 @@
  */
 
 plugins {
-    kotlin("jvm")
+    `kotlin-conventions`
 }

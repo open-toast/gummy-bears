@@ -15,26 +15,11 @@
 
 buildscript {
     repositories {
-        google()
         gradlePluginPortal()
         mavenCentral()
     }
 }
 
 plugins {
-    kotlin("jvm") version versions.kotlin apply false
+    `nexus-staging-conventions`
 }
-
-subprojects {
-    group = "com.toasttab.android"
-    version = rootProject.version
-
-    repositories {
-        google()
-        mavenCentral()
-
-        androidSdk()
-    }
-}
-
-promoteStagingRepo()

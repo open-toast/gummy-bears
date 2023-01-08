@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-buildSignatures(
-    apiLevel = name,
-    sdk = "android-22:r02",
-    coreLibDesugaring = true
-)
+plugins {
+    `signatures-core-lib-conventions`
+}
+
+sdk("android-22:r02")

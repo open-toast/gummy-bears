@@ -14,30 +14,25 @@
  */
 
 plugins {
-    `java-library`
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    `java-conventions`
 }
 
 configurations {
-    create(Scopes.standardSugar)
-    create(Scopes.generator)
+    create(Configurations.STANDARD_SUGAR)
+    create(Configurations.GENERATOR)
 }
 
 dependencies {
-    add(Scopes.standardSugar, project(":basic-sugar"))
-    add(Scopes.generator, project(":test:api-treadmill"))
+    add(Configurations.STANDARD_SUGAR, project(":basic-sugar"))
+    add(Configurations.GENERATOR, project(":test:api-treadmill"))
 }
 
 tasks.register<JavaExec>("generateClasses") {
-    classpath = configurations.getByName(Scopes.generator).asFileTree
+    classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
     mainClass.set("com.toasttab.android.ApiUseGeneratorKt")
     args = listOf(
         "--jar",
-        configurations.getByName(Scopes.standardSugar).asPath,
+        configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
         "--output",
         "${project.buildDir}/generated-sources/java/main"
     )

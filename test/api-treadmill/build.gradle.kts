@@ -14,12 +14,12 @@
  */
 
 plugins {
-    kotlin("jvm")
+    `kotlin-conventions`
 }
 
 dependencies {
-    implementation(libraries.clikt)
-    implementation(libraries.javapoet)
-    implementation(libraries.javassist)
+    implementation(libs.clikt)
+    implementation(libs.javapoet)
+    implementation(libs.javassist)
     implementation(project(":signature-transformer"))
 }

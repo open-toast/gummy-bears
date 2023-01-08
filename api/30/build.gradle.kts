@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-buildSignatures(
-    apiLevel = name,
-    sdk = "platform-30:r03"
-)
+plugins {
+    `signatures-conventions`
+}
+
+sdk("platform-30:r03")
