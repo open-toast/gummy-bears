@@ -6,8 +6,8 @@ if (isRelease()) {
     nexusPublishing {
         repositories {
             sonatype {
-                username.set(Remote.username)
-                password.set(Remote.password)
+                username.set(Remote.USERNAME)
+                password.set(Remote.PASSWORD)
             }
         }
     }
