@@ -7,7 +7,7 @@ executors:
       - image: cimg/openjdk:17.0
     environment:
       JAVA_OPTS: "-Xmx3200m"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.internal.http.socketTimeout=120000 -Dorg.gradle.internal.network.retry.max.attempts=1 -Dorg.gradle.internal.publish.checksums.insecure=true"
 
 commands:
   read_cache:
@@ -59,7 +59,7 @@ jobs:
       - read_cache
       - run:
           name: Publish release
-          command: "./gradlew publish closeAndReleaseRepository -Dorg.gradle.internal.http.socketTimeout=120000 -Dorg.gradle.internal.network.retry.max.attempts=1 -Dorg.gradle.internal.publish.checksums.insecure=true"
+          command: "./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace"
 
 workflows:
   version: 2.1

@@ -8,7 +8,7 @@ javapoet = "1.13.0"
 javassist = "3.29.2-GA"
 junit = "4.13.2"
 truth = "1.1.3"
-nexus = "0.30.0"
+nexus = "1.3.0"
 
 [libraries]
 animalSniffer = { module = "org.codehaus.mojo:animal-sniffer", version.ref = "animalSniffer" }
@@ -22,4 +22,4 @@ truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.11.0" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-nexus-staging =  { module = "io.codearte.gradle.nexus:gradle-nexus-staging-plugin", version.ref = "nexus" }
+nexus-publish = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }

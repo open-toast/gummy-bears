@@ -38,19 +38,6 @@ publishing {
             }
         }
     }
-
-    if (isRelease()) {
-        repositories {
-            maven {
-                name = "remote"
-                setUrl(Remote.url)
-                credentials {
-                    username = Remote.USERNAME
-                    password = Remote.PASSWORD
-                }
-            }
-        }
-    }
 }
 
 if (isRelease() && Pgp.KEY != null) {
