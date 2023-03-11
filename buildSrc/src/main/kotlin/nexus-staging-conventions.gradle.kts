@@ -1,12 +1,14 @@
 plugins {
-    id("io.codearte.nexus-staging")
+    id("io.github.gradle-nexus.publish-plugin")
 }
 
 if (isRelease()) {
-    nexusStaging {
-        username = Remote.USERNAME
-        password = Remote.PASSWORD
-        packageGroup = "com.toasttab"
-        numberOfRetries = 50
+    nexusPublishing {
+        repositories {
+            sonatype {
+                username.set(Remote.USERNAME)
+                password.set(Remote.PASSWORD)
+            }
+        }
     }
 }

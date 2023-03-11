@@ -24,7 +24,7 @@ plugins {
 
 dependencies {
     implementation(libs.kotlin.gradle)
-    implementation(libs.nexus.staging)
+    implementation(libs.nexus.publish)
     implementation(libs.spotless)
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
