@@ -74,7 +74,7 @@ dependencies {
     <version>1.22</version>
     <configuration>
         <signature>
-            <groupId>com.toasttab</groupId>
+            <groupId>com.toasttab.android</groupId>
             <artifactId>gummy-bears-api-21</artifactId>
             <version>0.5.0</version>
         </signature>
