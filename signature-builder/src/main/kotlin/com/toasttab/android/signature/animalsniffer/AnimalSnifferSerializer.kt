@@ -16,7 +16,6 @@
 package com.toasttab.android.signature.animalsniffer
 
 import org.codehaus.mojo.animal_sniffer.Clazz
-import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 import java.io.ObjectOutputStream
 import java.io.OutputStream
 import java.util.zip.GZIPOutputStream
