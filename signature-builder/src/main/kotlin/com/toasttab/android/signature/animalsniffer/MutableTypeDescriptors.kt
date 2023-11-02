@@ -42,7 +42,7 @@ class MutableTypeDescriptors(initial: Collection<TypeDescriptor>) {
             TypeDescriptor {
                 name = type.name
                 superName = superClass
-                interfaces = (oldType.interfaces.toSet() + newType.interfaces).toList()
+                interfaces = oldType.interfaces.merge(newType.interfaces)
 
                 fields = oldType.fields.merge(newType.fields)
                 methods = oldType.methods.merge(newType.methods)
