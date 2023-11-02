@@ -89,7 +89,7 @@ class ApiUseGenerator : CliktCommand() {
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
             .addField(
                 FieldSpec.builder(
-                    fqnToClassName(DesugarClassNameTransformer.transform(cls.name)),
+                    fqnToClassName(DesugarClassNameTransformer.transform(cls.name.replace('.', '/')).replace('/', '.')),
                     "callee"
                 ).build()
             )

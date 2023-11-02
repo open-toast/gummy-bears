@@ -15,21 +15,19 @@
 
 package com.toasttab.android.signature.animalsniffer
 
-import com.toasttab.android.signature.transform.DesugarClassNameTransformer
-import com.toasttab.android.signature.transform.ShouldTransform
 import org.codehaus.mojo.animal_sniffer.Clazz
+import protokt.v1.toasttab.expediter.v1.MemberDescriptor
+import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 
-object DesugarSignatureTransformer {
-    fun shouldTransform(clz: Clazz) = DesugarClassNameTransformer.shouldTransform(clz.name)
+object AnimalSnifferConverter {
+    fun convert(type: TypeDescriptor) = Clazz(
+        type.name,
+        (type.fields.map(::fieldSignature) + type.methods.map(::methodSignature)).toSet(),
+        type.superName,
+        type.interfaces.toTypedArray()
+    )
 
-    fun transform(clz: Clazz) =
-        when (val shouldTransform = shouldTransform(clz)) {
-            is ShouldTransform.No -> clz
-            is ShouldTransform.Yes -> Clazz(
-                shouldTransform.newName,
-                clz.signatures,
-                clz.superClass,
-                clz.superInterfaces
-            )
-        }
+    private fun fieldSignature(descriptor: MemberDescriptor) = "${descriptor.ref.name}#${descriptor.ref.signature}"
+
+    private fun methodSignature(descriptor: MemberDescriptor) = "${descriptor.ref.name}${descriptor.ref.signature}"
 }

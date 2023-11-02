@@ -20,5 +20,7 @@ plugins {
 dependencies {
     implementation(project(":signature-transformer"))
     implementation(libs.animalSniffer)
+    implementation(libs.expediter.core)
+    implementation(libs.protobuf.java)
     implementation(libs.clikt)
 }

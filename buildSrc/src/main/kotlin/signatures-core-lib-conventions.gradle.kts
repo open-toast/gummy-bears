@@ -23,6 +23,7 @@ private object Tasks {
 
 private object Outputs {
     const val signaturesCoreLib = "signaturesCoreLib.sig"
+    const val expediterCoreLib = "platformCoreLib.expediter"
 }
 
 plugins {
@@ -41,13 +42,23 @@ tasks.register<JavaExec>(Tasks.signaturesCoreLib) {
         "--desugared",
         configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
         "--output",
-        "$buildDir/${Outputs.signaturesCoreLib}"
+        "$buildDir/${Outputs.signaturesCoreLib}",
+        "--expediter-output",
+        "$buildDir/${Outputs.expediterCoreLib}",
+        "--name",
+        "Android API ${project.name} with Core Library Desugaring"
     )
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
     artifact("$buildDir/${Outputs.signaturesCoreLib}") {
         extension = "signature"
+        classifier = "coreLib"
+        builtBy(tasks.named(Tasks.signaturesCoreLib))
+    }
+
+    artifact("$buildDir/${Outputs.expediterCoreLib}") {
+        extension = "expediter"
         classifier = "coreLib"
         builtBy(tasks.named(Tasks.signaturesCoreLib))
     }

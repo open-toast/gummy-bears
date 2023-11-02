@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Integer8 {
+public final class DesugarInteger {
     public static int hashCode(int value) {
         throw new RuntimeException();
     }

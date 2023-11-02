@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Boolean8 {
+public final class DesugarBoolean {
     public static int hashCode(boolean b) {
         throw new RuntimeException();
     }

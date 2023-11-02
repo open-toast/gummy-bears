@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Character8 {
+public final class DesugarCharacter {
     public static int compare(char a, char b) {
         throw new RuntimeException();
     }

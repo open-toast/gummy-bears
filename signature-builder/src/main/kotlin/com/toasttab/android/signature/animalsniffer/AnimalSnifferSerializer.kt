@@ -13,11 +13,22 @@
  * limitations under the License.
  */
 
-plugins {
-    `java-conventions`
-}
+package com.toasttab.android.signature.animalsniffer
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+import org.codehaus.mojo.animal_sniffer.Clazz
+import protokt.v1.toasttab.expediter.v1.TypeDescriptor
+import java.io.ObjectOutputStream
+import java.io.OutputStream
+import java.util.zip.GZIPOutputStream
+
+object AnimalSnifferSerializer {
+    fun serialize(classes: Collection<Clazz>, out: OutputStream) {
+        ObjectOutputStream(GZIPOutputStream(out)).use {
+            for (cls in classes) {
+                it.writeObject(cls)
+            }
+
+            it.writeObject(null)
+        }
+    }
 }

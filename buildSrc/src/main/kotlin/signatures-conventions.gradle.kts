@@ -29,6 +29,7 @@ private object Tasks {
 
 private object Outputs {
     const val signatures = "signatures.sig"
+    const val expediter = "platform.expediter"
 }
 
 plugins {
@@ -84,13 +85,22 @@ tasks.register<JavaExec>(Tasks.signatures) {
         "--desugared",
         configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
         "--output",
-        "$buildDir/${Outputs.signatures}"
+        "$buildDir/${Outputs.signatures}",
+        "--expediter-output",
+        "$buildDir/${Outputs.expediter}",
+        "--name",
+        "Android API ${project.name}"
     )
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
     artifact("$buildDir/${Outputs.signatures}") {
         extension = "signature"
+        builtBy(tasks.named(Tasks.signatures))
+    }
+
+    artifact("$buildDir/${Outputs.expediter}") {
+        extension = "expediter"
         builtBy(tasks.named(Tasks.signatures))
     }
 }
