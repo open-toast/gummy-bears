@@ -61,9 +61,11 @@ dependencies {
     add(Configurations.EXERCISE_STANDARD_SUGAR, project(":test:basic-sugar-treadmill"))
     add(Configurations.CORE_LIB_SUGAR, libs.desugarJdkLibs)
 
-    add("testImplementation", project(":test:d8-runner"))
-    add("testImplementation", libs.junit)
-    add("testImplementation", libs.truth)
+    testImplementation(project(":test:d8-runner"))
+    testImplementation(libs.junit)
+    testImplementation(libs.strikt.core)
+    testImplementation(libs.expediter.core)
+    testImplementation(libs.protobuf.java)
 }
 
 tasks.named<Test>("test") {
@@ -75,22 +77,13 @@ tasks.named<Test>("test") {
     systemProperty("dexout", project.buildDir)
 }
 
-tasks.register<JavaExec>(Tasks.signatures) {
-    dependsOn(":basic-sugar:jar")
-    classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
-    mainClass.set("com.toasttab.android.signature.animalsniffer.AndroidSignatureBuilderKt")
-    args = listOf(
-        "--sdk",
-        configurations.getByName(Configurations.SDK).asPath,
-        "--desugared",
-        configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
-        "--output",
-        "$buildDir/${Outputs.signatures}",
-        "--expediter-output",
-        "$buildDir/${Outputs.expediter}",
-        "--name",
-        "Android API ${project.name}"
-    )
+tasks.register<SignaturesTask>(Tasks.signatures) {
+    classpath = configurations.getByName(Configurations.GENERATOR)
+    sdk = configurations.getByName(Configurations.SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_SUGAR)
+    output = project.layout.buildDirectory.file(Outputs.signatures)
+    expediterOutput = project.layout.buildDirectory.file(Outputs.expediter)
+    outputDescription = "Android API ${project.name}"
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
@@ -102,5 +95,14 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
     artifact("$buildDir/${Outputs.expediter}") {
         extension = "expediter"
         builtBy(tasks.named(Tasks.signatures))
+    }
+}
+
+tasks {
+    test {
+        environment("platform", "$buildDir/${Outputs.expediter}")
+        inputs.file("$buildDir/${Outputs.expediter}").withPropertyName(Outputs.expediter)
+
+        dependsOn(Tasks.signatures)
     }
 }

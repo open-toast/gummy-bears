@@ -30,24 +30,13 @@ plugins {
     id("signatures-conventions")
 }
 
-tasks.register<JavaExec>(Tasks.signaturesCoreLib) {
-    dependsOn(":basic-sugar:jar")
-    classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
-    mainClass.set("com.toasttab.android.signature.animalsniffer.AndroidSignatureBuilderKt")
-    args = listOf(
-        "--sdk",
-        configurations.getByName(Configurations.SDK).asPath,
-        "--desugared",
-        configurations.getByName(Configurations.CORE_LIB_SUGAR).asPath,
-        "--desugared",
-        configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
-        "--output",
-        "$buildDir/${Outputs.signaturesCoreLib}",
-        "--expediter-output",
-        "$buildDir/${Outputs.expediterCoreLib}",
-        "--name",
-        "Android API ${project.name} with Core Library Desugaring"
-    )
+tasks.register<SignaturesTask>(Tasks.signaturesCoreLib) {
+    classpath = configurations.getByName(Configurations.GENERATOR)
+    sdk = configurations.getByName(Configurations.SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_SUGAR) + configurations.getByName(Configurations.CORE_LIB_SUGAR)
+    output = project.layout.buildDirectory.file(Outputs.signaturesCoreLib)
+    expediterOutput = project.layout.buildDirectory.file(Outputs.expediterCoreLib)
+    outputDescription = "Android API ${project.name} with Core Library Desugaring"
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
@@ -61,5 +50,14 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
         extension = "expediter"
         classifier = "coreLib"
         builtBy(tasks.named(Tasks.signaturesCoreLib))
+    }
+}
+
+tasks {
+    test {
+        environment("platformCoreLib", "$buildDir/${Outputs.expediterCoreLib}")
+        inputs.file("$buildDir/${Outputs.expediterCoreLib}").withPropertyName(Outputs.expediterCoreLib)
+
+        dependsOn(Tasks.signaturesCoreLib)
     }
 }

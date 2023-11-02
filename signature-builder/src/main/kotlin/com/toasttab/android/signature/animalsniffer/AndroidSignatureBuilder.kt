@@ -29,7 +29,7 @@ class AndroidSignatureBuilder : CliktCommand() {
     private val sdk: String by option(help = "SDK jar").required()
     private val desugared: List<String> by option(help = "desugared API jar(s)").multiple()
 
-    private val name: String? by option(help = "name")
+    private val description: String? by option(help = "description")
     private val output: String? by option(help = "output")
     private val expediterOutput: String? by option(help = "expediter-output")
 
@@ -56,7 +56,7 @@ class AndroidSignatureBuilder : CliktCommand() {
 
         expediterOutput?.let {
             val file = File(it).absoluteFile
-            val descriptorsName = name ?: file.name
+            val descriptorsName = description ?: file.name
 
             file.run {
                 parentFile.mkdirs()
