@@ -15,6 +15,6 @@ java {
 
 tasks {
     jar {
-        
+        isPreserveFileTimestamps = false
     }
 }
