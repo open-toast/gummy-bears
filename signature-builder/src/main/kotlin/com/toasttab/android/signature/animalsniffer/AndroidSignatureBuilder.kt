@@ -23,7 +23,6 @@ import com.toasttab.expediter.ClasspathScanner
 import com.toasttab.expediter.TypeParsers
 import protokt.v1.toasttab.expediter.v1.TypeDescriptors
 import java.io.File
-import java.io.OutputStream
 import java.util.zip.GZIPOutputStream
 
 class AndroidSignatureBuilder : CliktCommand() {
