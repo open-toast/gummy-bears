@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Toast Inc.
+ * Copyright (c) 2023. Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,26 @@
  * limitations under the License.
  */
 
-package com.toasttab.android.signature.animalsniffer
+package com.toasttab.android.descriptors
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import com.toasttab.android.descriptors.sniffer.AnimalSnifferConverter
+import com.toasttab.android.descriptors.sniffer.AnimalSnifferSerializer
 import com.toasttab.expediter.ClasspathScanner
 import com.toasttab.expediter.TypeParsers
 import protokt.v1.toasttab.expediter.v1.TypeDescriptors
 import java.io.File
 import java.util.zip.GZIPOutputStream
 
-class AndroidSignatureBuilder : CliktCommand() {
+class AndroidTypeDescriptorBuilder : CliktCommand() {
     private val sdk: String by option(help = "SDK jar").required()
     private val desugared: List<String> by option(help = "desugared API jar(s)").multiple()
 
     private val description: String by option(help = "description").required()
-    private val output: String by option(help = "output").required()
+    private val animalSnifferOutput: String by option(help = "animal-sniffer-output").required()
     private val expediterOutput: String by option(help = "expediter-output").required()
 
     override fun run() {
@@ -44,7 +46,7 @@ class AndroidSignatureBuilder : CliktCommand() {
             }
         }
 
-        File(output).absoluteFile.run {
+        File(animalSnifferOutput).absoluteFile.run {
             parentFile.mkdirs()
 
             outputStream().use { out ->
@@ -57,7 +59,7 @@ class AndroidSignatureBuilder : CliktCommand() {
 
             GZIPOutputStream(outputStream()).use { stream ->
                 TypeDescriptors {
-                    description = this@AndroidSignatureBuilder.description
+                    description = this@AndroidTypeDescriptorBuilder.description
                     types = signatures.classes().toList()
                 }.serialize(stream)
             }
@@ -66,5 +68,5 @@ class AndroidSignatureBuilder : CliktCommand() {
 }
 
 fun main(args: Array<String>) {
-    AndroidSignatureBuilder().main(args)
+    AndroidTypeDescriptorBuilder().main(args)
 }

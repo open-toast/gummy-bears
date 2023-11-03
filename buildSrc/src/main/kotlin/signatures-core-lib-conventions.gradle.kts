@@ -14,7 +14,6 @@
  */
 
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.register
 
 private object Tasks {
@@ -30,23 +29,23 @@ plugins {
     id("signatures-conventions")
 }
 
-tasks.register<SignaturesTask>(Tasks.signaturesCoreLib) {
+tasks.register<TypeDescriptorsTask>(Tasks.signaturesCoreLib) {
     classpath = configurations.getByName(Configurations.GENERATOR)
     sdk = configurations.getByName(Configurations.SDK)
     desugar = configurations.getByName(Configurations.STANDARD_SUGAR) + configurations.getByName(Configurations.CORE_LIB_SUGAR)
-    output = project.layout.buildDirectory.file(Outputs.signaturesCoreLib)
+    animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signaturesCoreLib)
     expediterOutput = project.layout.buildDirectory.file(Outputs.expediterCoreLib)
     outputDescription = "Android API ${project.name} with Core Library Desugaring"
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
-    artifact("$buildDir/${Outputs.signaturesCoreLib}") {
+    artifact(layout.buildDirectory.file(Outputs.signaturesCoreLib)) {
         extension = "signature"
         classifier = "coreLib"
         builtBy(tasks.named(Tasks.signaturesCoreLib))
     }
 
-    artifact("$buildDir/${Outputs.expediterCoreLib}") {
+    artifact(layout.buildDirectory.file(Outputs.expediterCoreLib)) {
         extension = "expediter"
         classifier = "coreLib"
         builtBy(tasks.named(Tasks.signaturesCoreLib))
@@ -55,8 +54,7 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
 
 tasks {
     test {
-        environment("platformCoreLib", "$buildDir/${Outputs.expediterCoreLib}")
-        inputs.file(layout.buildDirectory.file(Outputs.expediterCoreLib)).withPropertyName(Outputs.expediterCoreLib)
+        fileProperty("platformCoreLibDescriptors", layout.buildDirectory.file(Outputs.expediterCoreLib))
 
         dependsOn(Tasks.signaturesCoreLib)
     }

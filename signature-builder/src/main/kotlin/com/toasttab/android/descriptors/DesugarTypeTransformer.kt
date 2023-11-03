@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.toasttab.android.signature.animalsniffer
+package com.toasttab.android.descriptors
 
 import com.toasttab.android.signature.transform.DesugarClassNameTransformer
 import com.toasttab.android.signature.transform.ShouldTransform

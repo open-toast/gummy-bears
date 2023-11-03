@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Toast Inc.
+ * Copyright (c) 2023. Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.toasttab.android.signature.animalsniffer
+package com.toasttab.android.descriptors.sniffer
 
 import org.codehaus.mojo.animal_sniffer.Clazz
 import protokt.v1.toasttab.expediter.v1.MemberDescriptor
@@ -22,7 +22,7 @@ import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 object AnimalSnifferConverter {
     fun convert(type: TypeDescriptor) = Clazz(
         type.name,
-        (type.fields.map(::fieldSignature) + type.methods.map(::methodSignature)).toSet(),
+        (type.fields.map(AnimalSnifferConverter::fieldSignature) + type.methods.map(AnimalSnifferConverter::methodSignature)).toSet(),
         type.superName,
         type.interfaces.toTypedArray()
     )
