@@ -23,15 +23,16 @@ import com.toasttab.expediter.ClasspathScanner
 import com.toasttab.expediter.TypeParsers
 import protokt.v1.toasttab.expediter.v1.TypeDescriptors
 import java.io.File
+import java.io.OutputStream
 import java.util.zip.GZIPOutputStream
 
 class AndroidSignatureBuilder : CliktCommand() {
     private val sdk: String by option(help = "SDK jar").required()
     private val desugared: List<String> by option(help = "desugared API jar(s)").multiple()
 
-    private val description: String? by option(help = "description")
-    private val output: String? by option(help = "output")
-    private val expediterOutput: String? by option(help = "expediter-output")
+    private val description: String by option(help = "description").required()
+    private val output: String by option(help = "output").required()
+    private val expediterOutput: String by option(help = "expediter-output").required()
 
     override fun run() {
         ClasspathScanner(listOf(File(sdk))).scan { stream, _ -> TypeParsers.typeDescriptor(stream) }
@@ -44,29 +45,22 @@ class AndroidSignatureBuilder : CliktCommand() {
             }
         }
 
-        output?.let {
-            File(it).absoluteFile.run {
-                parentFile.mkdirs()
+        File(output).absoluteFile.run {
+            parentFile.mkdirs()
 
-                outputStream().use { out ->
-                    AnimalSnifferSerializer.serialize(signatures.classes().map(AnimalSnifferConverter::convert), out)
-                }
+            outputStream().use { out ->
+                AnimalSnifferSerializer.serialize(signatures.classes().map(AnimalSnifferConverter::convert), out)
             }
         }
 
-        expediterOutput?.let {
-            val file = File(it).absoluteFile
-            val descriptorsName = description ?: file.name
+        File(expediterOutput).absoluteFile.run {
+            parentFile.mkdirs()
 
-            file.run {
-                parentFile.mkdirs()
-
-                GZIPOutputStream(outputStream()).use { stream ->
-                    TypeDescriptors {
-                        description = descriptorsName
-                        types = signatures.classes().toList()
-                    }.serialize(stream)
-                }
+            GZIPOutputStream(outputStream()).use { stream ->
+                TypeDescriptors {
+                    description = this@AndroidSignatureBuilder.description
+                    types = signatures.classes().toList()
+                }.serialize(stream)
             }
         }
     }

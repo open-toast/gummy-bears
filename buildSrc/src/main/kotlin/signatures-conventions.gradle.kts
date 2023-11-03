@@ -87,12 +87,12 @@ tasks.register<SignaturesTask>(Tasks.signatures) {
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
-    artifact("$buildDir/${Outputs.signatures}") {
+    artifact(layout.buildDirectory.file(Outputs.signatures)) {
         extension = "signature"
         builtBy(tasks.named(Tasks.signatures))
     }
 
-    artifact("$buildDir/${Outputs.expediter}") {
+    artifact(layout.buildDirectory.file(Outputs.expediter)) {
         extension = "expediter"
         builtBy(tasks.named(Tasks.signatures))
     }
@@ -101,7 +101,7 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
 tasks {
     test {
         environment("platform", "$buildDir/${Outputs.expediter}")
-        inputs.file("$buildDir/${Outputs.expediter}").withPropertyName(Outputs.expediter)
+        inputs.file(layout.buildDirectory.file(Outputs.expediter)).withPropertyName(Outputs.expediter)
 
         dependsOn(Tasks.signatures)
     }

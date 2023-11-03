@@ -56,7 +56,7 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
 tasks {
     test {
         environment("platformCoreLib", "$buildDir/${Outputs.expediterCoreLib}")
-        inputs.file("$buildDir/${Outputs.expediterCoreLib}").withPropertyName(Outputs.expediterCoreLib)
+        inputs.file(layout.buildDirectory.file(Outputs.expediterCoreLib)).withPropertyName(Outputs.expediterCoreLib)
 
         dependsOn(Tasks.signaturesCoreLib)
     }
