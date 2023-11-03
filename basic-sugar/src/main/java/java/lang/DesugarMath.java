@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Math8 {
+public final class DesugarMath {
     public static int addExact(int x, int y) {
         throw new RuntimeException();
     }

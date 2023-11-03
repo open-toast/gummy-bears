@@ -14,7 +14,6 @@
  */
 
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
@@ -29,6 +28,7 @@ private object Tasks {
 
 private object Outputs {
     const val signatures = "signatures.sig"
+    const val expediter = "platform.expediter"
 }
 
 plugins {
@@ -60,37 +60,45 @@ dependencies {
     add(Configurations.EXERCISE_STANDARD_SUGAR, project(":test:basic-sugar-treadmill"))
     add(Configurations.CORE_LIB_SUGAR, libs.desugarJdkLibs)
 
-    add("testImplementation", project(":test:d8-runner"))
-    add("testImplementation", libs.junit)
-    add("testImplementation", libs.truth)
+    testImplementation(project(":test:d8-runner"))
+    testImplementation(libs.junit)
+    testImplementation(libs.strikt.core)
+    testImplementation(libs.expediter.core)
+    testImplementation(libs.protobuf.java)
 }
 
-tasks.named<Test>("test") {
-    dependsOn(":basic-sugar:build")
-    dependsOn(":test:basic-sugar-treadmill:build")
-
-    systemProperty("sdk", configurations.getByName(Configurations.SDK).asPath)
-    systemProperty("jar", configurations.getByName(Configurations.EXERCISE_STANDARD_SUGAR).asPath)
-    systemProperty("dexout", project.buildDir)
-}
-
-tasks.register<JavaExec>(Tasks.signatures) {
-    dependsOn(":basic-sugar:jar")
-    classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
-    mainClass.set("com.toasttab.android.signature.animalsniffer.AndroidSignatureBuilderKt")
-    args = listOf(
-        "--sdk",
-        configurations.getByName(Configurations.SDK).asPath,
-        "--desugared",
-        configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
-        "--output",
-        "$buildDir/${Outputs.signatures}"
-    )
+tasks.register<TypeDescriptorsTask>(Tasks.signatures) {
+    classpath = configurations.getByName(Configurations.GENERATOR)
+    sdk = configurations.getByName(Configurations.SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_SUGAR)
+    animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signatures)
+    expediterOutput = project.layout.buildDirectory.file(Outputs.expediter)
+    outputDescription = "Android API ${project.name}"
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
-    artifact("$buildDir/${Outputs.signatures}") {
+    artifact(layout.buildDirectory.file(Outputs.signatures)) {
         extension = "signature"
         builtBy(tasks.named(Tasks.signatures))
+    }
+
+    artifact(layout.buildDirectory.file(Outputs.expediter)) {
+        extension = "expediter"
+        builtBy(tasks.named(Tasks.signatures))
+    }
+}
+
+tasks {
+    test {
+        fileProperty("platformDescriptors", layout.buildDirectory.file(Outputs.expediter))
+        filesProperty("sdk", configurations.named(Configurations.SDK))
+        filesProperty("jar", configurations.named(Configurations.EXERCISE_STANDARD_SUGAR))
+
+        systemProperty("dexout", layout.buildDirectory.path)
+
+        dependsOn(":basic-sugar:build")
+        dependsOn(":test:basic-sugar-treadmill:build")
+
+        dependsOn(Tasks.signatures)
     }
 }

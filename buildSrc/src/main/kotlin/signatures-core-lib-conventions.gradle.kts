@@ -14,7 +14,6 @@
  */
 
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.JavaExec
 import org.gradle.kotlin.dsl.register
 
 private object Tasks {
@@ -23,32 +22,40 @@ private object Tasks {
 
 private object Outputs {
     const val signaturesCoreLib = "signaturesCoreLib.sig"
+    const val expediterCoreLib = "platformCoreLib.expediter"
 }
 
 plugins {
     id("signatures-conventions")
 }
 
-tasks.register<JavaExec>(Tasks.signaturesCoreLib) {
-    dependsOn(":basic-sugar:jar")
-    classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
-    mainClass.set("com.toasttab.android.signature.animalsniffer.AndroidSignatureBuilderKt")
-    args = listOf(
-        "--sdk",
-        configurations.getByName(Configurations.SDK).asPath,
-        "--desugared",
-        configurations.getByName(Configurations.CORE_LIB_SUGAR).asPath,
-        "--desugared",
-        configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
-        "--output",
-        "$buildDir/${Outputs.signaturesCoreLib}"
-    )
+tasks.register<TypeDescriptorsTask>(Tasks.signaturesCoreLib) {
+    classpath = configurations.getByName(Configurations.GENERATOR)
+    sdk = configurations.getByName(Configurations.SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_SUGAR) + configurations.getByName(Configurations.CORE_LIB_SUGAR)
+    animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signaturesCoreLib)
+    expediterOutput = project.layout.buildDirectory.file(Outputs.expediterCoreLib)
+    outputDescription = "Android API ${project.name} with Core Library Desugaring"
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
-    artifact("$buildDir/${Outputs.signaturesCoreLib}") {
+    artifact(layout.buildDirectory.file(Outputs.signaturesCoreLib)) {
         extension = "signature"
         classifier = "coreLib"
         builtBy(tasks.named(Tasks.signaturesCoreLib))
+    }
+
+    artifact(layout.buildDirectory.file(Outputs.expediterCoreLib)) {
+        extension = "expediter"
+        classifier = "coreLib"
+        builtBy(tasks.named(Tasks.signaturesCoreLib))
+    }
+}
+
+tasks {
+    test {
+        fileProperty("platformCoreLibDescriptors", layout.buildDirectory.file(Outputs.expediterCoreLib))
+
+        dependsOn(Tasks.signaturesCoreLib)
     }
 }

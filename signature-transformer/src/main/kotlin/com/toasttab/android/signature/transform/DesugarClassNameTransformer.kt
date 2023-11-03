@@ -21,11 +21,9 @@ sealed interface ShouldTransform {
 }
 
 object DesugarClassNameTransformer {
-    fun shouldTransform(name: String): ShouldTransform {
-        return if (name.endsWith("8")) {
-            ShouldTransform.Yes(name.removeSuffix("8"))
-        } else if (name.substringAfterLast("/").startsWith("Desugar")) {
-            ShouldTransform.Yes(name.substringBeforeLast("/") + "/" + name.substringAfterLast("/Desugar"))
+    fun shouldTransform(name: String, delimiter: Char = '.'): ShouldTransform {
+        return if (name.substringAfterLast(delimiter).startsWith("Desugar")) {
+            ShouldTransform.Yes(name.substringBeforeLast(delimiter) + delimiter + name.substringAfterLast("${delimiter}Desugar"))
         } else {
             ShouldTransform.No
         }

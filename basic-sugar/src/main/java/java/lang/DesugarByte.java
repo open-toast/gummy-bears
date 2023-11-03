@@ -1,6 +1,6 @@
 package java.lang;
 
-public abstract class Byte8 {
+public final class DesugarByte {
     public static int hashCode(byte i) {
         throw new RuntimeException();
     }

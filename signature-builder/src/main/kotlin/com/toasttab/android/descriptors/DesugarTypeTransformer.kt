@@ -13,23 +13,20 @@
  * limitations under the License.
  */
 
-package com.toasttab.android.signature.animalsniffer
+package com.toasttab.android.descriptors
 
 import com.toasttab.android.signature.transform.DesugarClassNameTransformer
 import com.toasttab.android.signature.transform.ShouldTransform
-import org.codehaus.mojo.animal_sniffer.Clazz
+import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 
-object DesugarSignatureTransformer {
-    fun shouldTransform(clz: Clazz) = DesugarClassNameTransformer.shouldTransform(clz.name)
+object DesugarTypeTransformer {
+    private fun shouldTransform(type: TypeDescriptor) = DesugarClassNameTransformer.shouldTransform(type.name, '/')
 
-    fun transform(clz: Clazz) =
-        when (val shouldTransform = shouldTransform(clz)) {
-            is ShouldTransform.No -> clz
-            is ShouldTransform.Yes -> Clazz(
-                shouldTransform.newName,
-                clz.signatures,
-                clz.superClass,
-                clz.superInterfaces
-            )
+    fun transform(type: TypeDescriptor) =
+        when (val shouldTransform = shouldTransform(type)) {
+            is ShouldTransform.No -> type
+            is ShouldTransform.Yes -> type.copy {
+                name = shouldTransform.newName
+            }
         }
 }

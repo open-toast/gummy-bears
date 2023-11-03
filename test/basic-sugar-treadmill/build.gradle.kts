@@ -34,7 +34,7 @@ tasks.register<JavaExec>("generateClasses") {
         "--jar",
         configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
         "--output",
-        "${project.buildDir}/generated-sources/java/main"
+        layout.buildDirectory.file("generated-sources/java/main").path
     )
 }
 
@@ -43,5 +43,5 @@ tasks.named<JavaCompile>("compileJava") {
 }
 
 sourceSets.main {
-    java.srcDir("${project.buildDir}/generated-sources/java/main")
+    java.srcDir(layout.buildDirectory.file("generated-sources/java/main"))
 }
