@@ -82,6 +82,10 @@ dependencies {
 </plugin>
 ```
 
+## Expediter
+
+As of version 0.6.0, this project also publishes [Expediter](https://github.com/open-toast/expediter) type descriptors.
+
 ## License
 
 This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE) file for details.
