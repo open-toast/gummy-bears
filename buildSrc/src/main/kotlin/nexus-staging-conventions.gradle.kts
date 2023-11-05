@@ -4,8 +4,6 @@ plugins {
 
 if (isRelease()) {
     nexusPublishing {
-        packageGroup = "com.toasttab"
-
         repositories {
             sonatype {
                 username.set(Remote.USERNAME)

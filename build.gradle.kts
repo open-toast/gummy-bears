@@ -23,3 +23,5 @@ buildscript {
 plugins {
     `nexus-staging-conventions`
 }
+
+group = "com.toasttab.android"

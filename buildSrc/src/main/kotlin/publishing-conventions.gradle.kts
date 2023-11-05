@@ -7,6 +7,9 @@ plugins {
     id("signing")
 }
 
+group = rootProject.group
+version = rootProject.version
+
 publishing {
     publications {
         create<MavenPublication>("main") {
