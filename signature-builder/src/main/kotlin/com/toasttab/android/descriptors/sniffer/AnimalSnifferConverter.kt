@@ -22,7 +22,7 @@ import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 object AnimalSnifferConverter {
     fun convert(type: TypeDescriptor) = Clazz(
         type.name,
-        (type.fields.map(AnimalSnifferConverter::fieldSignature) + type.methods.map(AnimalSnifferConverter::methodSignature)).toSet(),
+        (type.fields.map(AnimalSnifferConverter::fieldSignature) + type.methods.map(AnimalSnifferConverter::methodSignature)).toHashSet(),
         type.superName,
         type.interfaces.toTypedArray()
     )

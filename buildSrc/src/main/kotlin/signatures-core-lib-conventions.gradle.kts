@@ -55,6 +55,7 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
 tasks {
     test {
         fileProperty("platformCoreLibDescriptors", layout.buildDirectory.file(Outputs.expediterCoreLib))
+        fileProperty("coreLibSignatures", layout.buildDirectory.file(Outputs.signaturesCoreLib))
 
         dependsOn(Tasks.signaturesCoreLib)
     }
