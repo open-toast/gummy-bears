@@ -17,11 +17,6 @@ package com.toasttab.android
 
 import org.codehaus.mojo.animal_sniffer.Clazz
 import org.junit.Test
-import protokt.v1.toasttab.expediter.v1.AccessDeclaration
-import protokt.v1.toasttab.expediter.v1.AccessProtection
-import protokt.v1.toasttab.expediter.v1.MemberDescriptor
-import protokt.v1.toasttab.expediter.v1.SymbolicReference
-import protokt.v1.toasttab.expediter.v1.TypeDescriptors
 import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.contains
