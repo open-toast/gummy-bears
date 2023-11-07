@@ -65,6 +65,7 @@ dependencies {
     testImplementation(libs.strikt.core)
     testImplementation(libs.expediter.core)
     testImplementation(libs.protobuf.java)
+    testImplementation(libs.animalSniffer)
 }
 
 tasks.register<TypeDescriptorsTask>(Tasks.signatures) {
@@ -91,6 +92,7 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
 tasks {
     test {
         fileProperty("platformDescriptors", layout.buildDirectory.file(Outputs.expediter))
+        fileProperty("signatures", layout.buildDirectory.file(Outputs.signatures))
         filesProperty("sdk", configurations.named(Configurations.SDK))
         filesProperty("jar", configurations.named(Configurations.EXERCISE_STANDARD_SUGAR))
 
