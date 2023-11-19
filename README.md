@@ -31,8 +31,9 @@ This project provides a safe and more accurate set of signatures for Android 4.4
 
 This project also provides _experimental_ sets of signatures for APIs available via [core library desugaring](https://developer.android.com/studio/write/java8-support), including `java.time`, `ConcurrentHashMap`, etc. The artifacts are tagged with the `coreLib` classifier and are available for Android 4.4-8.1 (API 19-27).
 
-Two flavors of core library desugaring signatures are provided: v1, which requires `desugar_jdk_libs:1.2.3` or above and is published under the `coreLib`
-classifier, and v2, which requires `desugar_jdk_libs:2.0.4` or above and is published under the `coreLib2` classifier.
+Two versions of core library desugaring signatures are provided: v1, which requires `desugar_jdk_libs:1.2.3` or above and is published under the `coreLib`
+classifier, and v2, which requires `desugar_jdk_libs:2.0.4` and is published under the `coreLib2` classifier. Note that `desugar_jdk_libs` version `2`
+comes in three flavors: minimal, nio, and full. Currently, only the full flavor is supported.
 
 Using signatures with core library desugaring to validate a library effectively implies that all Android projects consuming the library
 must have core library desugaring enabled at build time and bring in the appropriate version of `desugar_jdk_libs`.
