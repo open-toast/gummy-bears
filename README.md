@@ -29,7 +29,7 @@ This project provides a safe and more accurate set of signatures for Android 4.4
 
 ### Core library desugaring
 
-This project also provides _experimental_ sets of signatures for APIs available via [core library desugaring](https://developer.android.com/studio/write/java8-support), including `java.time`, `ConcurrentHashMap`, etc. The artifacts are tagged with the `coreLib` classifier and are available for Android 4.4-8.1 (API 19-27).
+This project also provides _experimental_ sets of signatures for APIs available via [core library desugaring](https://developer.android.com/studio/write/java8-support), including `java.time`, `ConcurrentHashMap`, etc.
 
 Two versions of core library desugaring signatures are provided: v1, which requires `desugar_jdk_libs:1.2.3` or above and is published under the `coreLib`
 classifier, and v2, which requires `desugar_jdk_libs:2.0.4` and is published under the `coreLib2` classifier. Note that `desugar_jdk_libs` version `2`
@@ -62,7 +62,7 @@ dependencies {
 }
 ```
 
-With core library desugaring v2 (2.0.4+):
+With core library desugaring v2:
 
 ```groovy
 dependencies {
@@ -101,7 +101,7 @@ dependencies {
 
 ## Expediter
 
-As of version 0.6.0, this project also publishes [Expediter](https://github.com/open-toast/expediter) type descriptors. Expediter provides a superset
+As of version 0.6.0, this project also publishes native [Expediter](https://github.com/open-toast/expediter) type descriptors. Expediter provides a superset
 of the Animal Sniffer binary compatibility checks and comes with its own Gradle plugin.
 
 ## License

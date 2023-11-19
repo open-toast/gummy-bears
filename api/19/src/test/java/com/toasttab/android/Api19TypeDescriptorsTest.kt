@@ -75,6 +75,9 @@ class Api19TypeDescriptorsTest {
         }
     }
 
+    /**
+     * java.util.Base64 is included in desugar_jdk_libs starting with version 2.0.4
+     */
     @Test
     fun `core lib v2 type descriptors include Base64$Decoder#decode`() {
         val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
@@ -97,6 +100,10 @@ class Api19TypeDescriptorsTest {
         }
     }
 
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `LinuxFileSystemProvider` are provided,
+     * one extending `UnixFileSystemProvider` and another extending `FileSystem`
+     */
     @Test
     fun `core lib v2 LinuxFileSystemProvider extends UnixFileSystemProvider`() {
         val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
@@ -110,6 +117,10 @@ class Api19TypeDescriptorsTest {
         }
     }
 
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `MimeTypesFileTypeDetector` are
+     * provided, one with the transformed `desugar/sun/nio/fs/DesugarAbstractFileTypeDetector` name
+     */
     @Test
     fun `core lib v2 MimeTypesFileTypeDetector extends AbstractFileTypeDetector`() {
         val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
@@ -123,6 +134,10 @@ class Api19TypeDescriptorsTest {
         }
     }
 
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `IntStream`
+     * are provided; one is an interface, and another one is a class
+     */
     @Test
     fun `core lib v2 IntStream is an interface`() {
         val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
@@ -137,6 +152,10 @@ class Api19TypeDescriptorsTest {
         }
     }
 
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `Character`
+     * are provided; one is final, and another one is not
+     */
     @Test
     fun `core lib v2 Character is final`() {
         val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
