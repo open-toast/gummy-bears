@@ -14,7 +14,6 @@
  */
 
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
@@ -49,6 +48,7 @@ configurations {
     create(Configurations.STANDARD_SUGAR)
     create(Configurations.EXERCISE_STANDARD_SUGAR)
     create(Configurations.CORE_LIB_SUGAR).isTransitive = false
+    create(Configurations.CORE_LIB_SUGAR_2).isTransitive = false
 }
 
 dependencies {
@@ -59,6 +59,7 @@ dependencies {
     add(Configurations.STANDARD_SUGAR, project(":basic-sugar"))
     add(Configurations.EXERCISE_STANDARD_SUGAR, project(":test:basic-sugar-treadmill"))
     add(Configurations.CORE_LIB_SUGAR, libs.desugarJdkLibs)
+    add(Configurations.CORE_LIB_SUGAR_2, libs.desugarJdkLibs2)
 
     testImplementation(project(":test:d8-runner"))
     testImplementation(libs.junit)

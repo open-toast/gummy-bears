@@ -18,11 +18,14 @@ import org.gradle.kotlin.dsl.register
 
 private object Tasks {
     const val signaturesCoreLib = "buildSignaturesCoreLib"
+    const val signaturesCoreLib2 = "buildSignaturesCoreLib2"
 }
 
 private object Outputs {
     const val signaturesCoreLib = "signaturesCoreLib.sig"
     const val expediterCoreLib = "platformCoreLib.expediter"
+    const val signaturesCoreLib2 = "signaturesCoreLib-2.sig"
+    const val expediterCoreLib2 = "platformCoreLib-2.expediter"
 }
 
 plugins {
@@ -35,8 +38,18 @@ tasks.register<TypeDescriptorsTask>(Tasks.signaturesCoreLib) {
     desugar = configurations.getByName(Configurations.STANDARD_SUGAR) + configurations.getByName(Configurations.CORE_LIB_SUGAR)
     animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signaturesCoreLib)
     expediterOutput = project.layout.buildDirectory.file(Outputs.expediterCoreLib)
-    outputDescription = "Android API ${project.name} with Core Library Desugaring"
+    outputDescription = "Android API ${project.name} with Core Library Desugaring 1.x"
 }
+
+tasks.register<TypeDescriptorsTask>(Tasks.signaturesCoreLib2) {
+    classpath = configurations.getByName(Configurations.GENERATOR)
+    sdk = configurations.getByName(Configurations.SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_SUGAR) + configurations.getByName(Configurations.CORE_LIB_SUGAR_2)
+    animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signaturesCoreLib2)
+    expediterOutput = project.layout.buildDirectory.file(Outputs.expediterCoreLib2)
+    outputDescription = "Android API ${project.name} with Core Library Desugaring 2.x"
+}
+
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
     artifact(layout.buildDirectory.file(Outputs.signaturesCoreLib)) {
@@ -50,6 +63,18 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
         classifier = "coreLib"
         builtBy(tasks.named(Tasks.signaturesCoreLib))
     }
+
+    artifact(layout.buildDirectory.file(Outputs.signaturesCoreLib2)) {
+        extension = "signature"
+        classifier = "coreLib2"
+        builtBy(tasks.named(Tasks.signaturesCoreLib2))
+    }
+
+    artifact(layout.buildDirectory.file(Outputs.expediterCoreLib2)) {
+        extension = "expediter"
+        classifier = "coreLib2"
+        builtBy(tasks.named(Tasks.signaturesCoreLib2))
+    }
 }
 
 tasks {
@@ -57,6 +82,10 @@ tasks {
         fileProperty("platformCoreLibDescriptors", layout.buildDirectory.file(Outputs.expediterCoreLib))
         fileProperty("coreLibSignatures", layout.buildDirectory.file(Outputs.signaturesCoreLib))
 
+        fileProperty("platformCoreLibDescriptors2", layout.buildDirectory.file(Outputs.expediterCoreLib2))
+        fileProperty("coreLibSignatures2", layout.buildDirectory.file(Outputs.signaturesCoreLib2))
+
         dependsOn(Tasks.signaturesCoreLib)
+        dependsOn(Tasks.signaturesCoreLib2)
     }
 }

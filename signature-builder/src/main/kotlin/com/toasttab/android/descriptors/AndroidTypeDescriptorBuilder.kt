@@ -41,9 +41,11 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
         val signatures = MutableTypeDescriptors(ClasspathScanner(listOf(File(sdk))).scan { stream, _ -> TypeParsers.typeDescriptor(stream) })
 
         for (more in desugared) {
-            ClasspathScanner(listOf(File(more))).scan { stream, _ -> TypeParsers.typeDescriptor(stream) }.forEach {
-                signatures.add(DesugarTypeTransformer.transform(it))
-            }
+            ClasspathScanner(listOf(File(more))).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
+                .sortedBy { it.priority }
+                .forEach {
+                    signatures.add(it.toType())
+                }
         }
 
         File(animalSnifferOutput).absoluteFile.run {

@@ -16,17 +16,31 @@
 package com.toasttab.android.descriptors
 
 import com.toasttab.android.signature.transform.DesugarClassNameTransformer
-import com.toasttab.android.signature.transform.ShouldTransform
 import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 
-object DesugarTypeTransformer {
-    private fun shouldTransform(type: TypeDescriptor) = DesugarClassNameTransformer.shouldTransform(type.name, '/')
+class TransformedTypeDescriptor private constructor(
+    private val type: TypeDescriptor,
+    private val newName: String
+) {
+    constructor(type: TypeDescriptor) : this(type, transform(type.name))
 
-    fun transform(type: TypeDescriptor) =
-        when (val shouldTransform = shouldTransform(type)) {
-            is ShouldTransform.No -> type
-            is ShouldTransform.Yes -> type.copy {
-                name = shouldTransform.newName
-            }
+    val priority = if (type.name == newName) {
+        0
+    } else {
+        1
+    }
+
+    fun toType() = if (type.name == newName) {
+        type
+    } else {
+        type.copy {
+            name = newName
+            superName = superName?.let(::transform)
+            interfaces = type.interfaces.map(::transform)
         }
+    }
+
+    companion object {
+        private fun transform(name: String) = DesugarClassNameTransformer.transform(name, '/')
+    }
 }

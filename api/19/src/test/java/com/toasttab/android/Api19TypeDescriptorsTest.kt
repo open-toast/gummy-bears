@@ -51,7 +51,7 @@ class Api19TypeDescriptorsTest {
     }
 
     @Test
-    fun `type descriptors include Stream#count()`() {
+    fun `core lib type descriptors include Stream#count()`() {
         val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors")).inputStream()).use {
             TypeDescriptors.deserialize(it)
         }
@@ -64,6 +64,28 @@ class Api19TypeDescriptorsTest {
                     ref = SymbolicReference {
                         name = "count"
                         signature = "()J"
+                    }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.INSTANCE
+                }
+            )
+        }
+    }
+
+    @Test
+    fun `core lib v2 type descriptors include Base64$Decoder#decode`() {
+        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
+            TypeDescriptors.deserialize(it)
+        }
+
+        val stream = desc.types.find { it.name == "java/util/Base64\$Decoder" }
+
+        expectThat(stream).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref = SymbolicReference {
+                        name = "decode"
+                        signature = "([B)[B"
                     }
                     protection = AccessProtection.PUBLIC
                     declaration = AccessDeclaration.INSTANCE

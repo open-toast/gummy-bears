@@ -16,9 +16,3 @@
 plugins {
     `java-conventions`
 }
-
-java {
-    // necessary to compile classes in java.lang
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
