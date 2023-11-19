@@ -25,9 +25,17 @@ When the APK is assembled, D8 (the Android Dexer) transforms java bytecode into 
 
 ### Gummy Bears
 
-This project provides a safe and more accurate set of signatures for Android 4.4-13 (API 19-33). The additional _sugary_ signatures are generated from hand-written stubs. The reference for the stubs is the [D8 source code](https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java).
+This project provides a safe and more accurate set of signatures for Android 4.4-13 (API 19-34). The additional _sugary_ signatures are generated from hand-written stubs. The reference for the stubs is the [D8 source code](https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/ir/desugar/BackportedMethodRewriter.java).
 
-This project also provides experimental sets of signatures for APIs available via _core library desugaring_, including `java.time`, `ConcurrentHashMap`, etc. The artifacts are tagged with the `coreLib` classifier and are available for Android 4.4-8.1 (API 19-27).
+### Core library desugaring
+
+This project also provides _experimental_ sets of signatures for APIs available via [core library desugaring](https://developer.android.com/studio/write/java8-support), including `java.time`, `ConcurrentHashMap`, etc. The artifacts are tagged with the `coreLib` classifier and are available for Android 4.4-8.1 (API 19-27).
+
+Two flavors of core library desugaring signatures are provided: v1, which requires `desugar_jdk_libs:1.2.3` or above and is published under the `coreLib`
+classifier, and v2, which requires `desugar_jdk_libs:2.0.4` or above and is published under the `coreLib2` classifier.
+
+Using signatures with core library desugaring to validate a library effectively implies that all Android projects consuming the library
+must have core library desugaring enabled at build time and bring in the appropriate version of `desugar_jdk_libs`.
 
 ## How to use
 
@@ -41,7 +49,7 @@ plugins {
 }
 
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.3.0@signature')
+    signature('com.toasttab.android:gummy-bears-api-24:0.7.0@signature')
 }
 ```
 
@@ -49,7 +57,15 @@ With core library desugaring:
 
 ```groovy
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.5.0:coreLib@signature')
+    signature('com.toasttab.android:gummy-bears-api-24:0.7.0:coreLib@signature')
+}
+```
+
+With core library desugaring v2 (2.0.4+):
+
+```groovy
+dependencies {
+    signature('com.toasttab.android:gummy-bears-api-24:0.7.0:coreLib2@signature')
 }
 ```
 
@@ -61,7 +77,7 @@ plugins {
 }
 
 dependencies {
-    add("signature", "com.toasttab.android:gummy-bears-api-24:0.5.0@signature")
+    add("signature", "com.toasttab.android:gummy-bears-api-24:0.7.0@signature")
 }
 ```
 
@@ -76,7 +92,7 @@ dependencies {
         <signature>
             <groupId>com.toasttab.android</groupId>
             <artifactId>gummy-bears-api-21</artifactId>
-            <version>0.5.0</version>
+            <version>0.7.0</version>
         </signature>
     </configuration>
 </plugin>
@@ -84,7 +100,8 @@ dependencies {
 
 ## Expediter
 
-As of version 0.6.0, this project also publishes [Expediter](https://github.com/open-toast/expediter) type descriptors.
+As of version 0.6.0, this project also publishes [Expediter](https://github.com/open-toast/expediter) type descriptors. Expediter provides a superset
+of the Animal Sniffer binary compatibility checks and comes with its own Gradle plugin.
 
 ## License
 
