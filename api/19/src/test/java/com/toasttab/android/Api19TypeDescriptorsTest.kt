@@ -21,8 +21,11 @@ import protokt.v1.toasttab.expediter.v1.AccessProtection
 import protokt.v1.toasttab.expediter.v1.MemberDescriptor
 import protokt.v1.toasttab.expediter.v1.SymbolicReference
 import protokt.v1.toasttab.expediter.v1.TypeDescriptors
+import protokt.v1.toasttab.expediter.v1.TypeExtensibility
+import protokt.v1.toasttab.expediter.v1.TypeFlavor
 import strikt.api.expectThat
 import strikt.assertions.contains
+import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import java.io.File
 import java.util.zip.GZIPInputStream
@@ -51,7 +54,7 @@ class Api19TypeDescriptorsTest {
     }
 
     @Test
-    fun `type descriptors include Stream#count()`() {
+    fun `core lib type descriptors include Stream#count()`() {
         val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors")).inputStream()).use {
             TypeDescriptors.deserialize(it)
         }
@@ -69,6 +72,100 @@ class Api19TypeDescriptorsTest {
                     declaration = AccessDeclaration.INSTANCE
                 }
             )
+        }
+    }
+
+    /**
+     * java.util.Base64 is included in desugar_jdk_libs starting with version 2.0.4
+     */
+    @Test
+    fun `core lib v2 type descriptors include Base64$Decoder#decode`() {
+        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
+            TypeDescriptors.deserialize(it)
+        }
+
+        val decoder = desc.types.find { it.name == "java/util/Base64\$Decoder" }
+
+        expectThat(decoder).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref = SymbolicReference {
+                        name = "decode"
+                        signature = "([B)[B"
+                    }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.INSTANCE
+                }
+            )
+        }
+    }
+
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `LinuxFileSystemProvider` are provided,
+     * one extending `UnixFileSystemProvider` and another extending `FileSystem`
+     */
+    @Test
+    fun `core lib v2 LinuxFileSystemProvider extends UnixFileSystemProvider`() {
+        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
+            TypeDescriptors.deserialize(it)
+        }
+
+        val provider = desc.types.find { it.name == "sun/nio/fs/LinuxFileSystemProvider" }
+
+        expectThat(provider).isNotNull().and {
+            get { superName }.isEqualTo("sun/nio/fs/UnixFileSystemProvider")
+        }
+    }
+
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `MimeTypesFileTypeDetector` are
+     * provided, one with the transformed `desugar/sun/nio/fs/DesugarAbstractFileTypeDetector` name
+     */
+    @Test
+    fun `core lib v2 MimeTypesFileTypeDetector extends AbstractFileTypeDetector`() {
+        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
+            TypeDescriptors.deserialize(it)
+        }
+
+        val detector = desc.types.find { it.name == "sun/nio/fs/MimeTypesFileTypeDetector" }
+
+        expectThat(detector).isNotNull().and {
+            get { superName }.isEqualTo("sun/nio/fs/AbstractFileTypeDetector")
+        }
+    }
+
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `IntStream`
+     * are provided; one is an interface, and another one is a class
+     */
+    @Test
+    fun `core lib v2 IntStream is an interface`() {
+        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
+            TypeDescriptors.deserialize(it)
+        }
+
+        val stream = desc.types.find { it.name == "java/util/stream/IntStream" }
+
+        expectThat(stream).isNotNull().and {
+            get { flavor }.isEqualTo(TypeFlavor.INTERFACE)
+            get { extensibility }.isEqualTo(TypeExtensibility.NOT_FINAL)
+        }
+    }
+
+    /**
+     * Tests an edge case in merging type descriptors, where multiple versions of `Character`
+     * are provided; one is final, and another one is not
+     */
+    @Test
+    fun `core lib v2 Character is final`() {
+        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
+            TypeDescriptors.deserialize(it)
+        }
+
+        val character = desc.types.find { it.name == "java/lang/Character" }
+
+        expectThat(character).isNotNull().and {
+            get { extensibility }.isEqualTo(TypeExtensibility.FINAL)
         }
     }
 }

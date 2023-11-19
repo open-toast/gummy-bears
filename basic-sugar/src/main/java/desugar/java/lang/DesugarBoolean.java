@@ -1,4 +1,4 @@
-package java.lang;
+package desugar.java.lang;
 
 public final class DesugarBoolean {
     public static int hashCode(boolean b) {

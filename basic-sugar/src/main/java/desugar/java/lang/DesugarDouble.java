@@ -1,4 +1,4 @@
-package java.lang;
+package desugar.java.lang;
 
 public final class DesugarDouble {
     public static boolean isFinite(double d) {

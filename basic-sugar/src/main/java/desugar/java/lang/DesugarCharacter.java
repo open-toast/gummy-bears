@@ -1,4 +1,4 @@
-package java.lang;
+package desugar.java.lang;
 
 public final class DesugarCharacter {
     public static int compare(char a, char b) {

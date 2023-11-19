@@ -3,7 +3,8 @@ kotlin = "1.9.20"
 animalSniffer = "1.22"
 clikt = "4.2.1"
 expediter = "0.0.7"
-desugarJdkLibs = "1.2.2"
+desugarJdkLibs = "1.2.3"
+desugarJdkLibs2 = "2.0.4"
 r8 = "1.5.68"
 javapoet = "1.13.0"
 javassist = "3.29.2-GA"
@@ -16,6 +17,7 @@ strikt = "0.34.1"
 animalSniffer = { module = "org.codehaus.mojo:animal-sniffer", version.ref = "animalSniffer" }
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+desugarJdkLibs2 = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs2" }
 expediter-core = { module = "com.toasttab.expediter:core", version.ref = "expediter" }
 r8 = { module = "com.android.tools:r8", version.ref = "r8" }
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }

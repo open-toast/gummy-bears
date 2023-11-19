@@ -15,22 +15,17 @@
 
 package com.toasttab.android.signature.transform
 
-sealed interface ShouldTransform {
-    object No : ShouldTransform
-    class Yes(val newName: String) : ShouldTransform
-}
-
 object DesugarClassNameTransformer {
-    fun shouldTransform(name: String, delimiter: Char = '.'): ShouldTransform {
-        return if (name.substringAfterLast(delimiter).startsWith("Desugar")) {
-            ShouldTransform.Yes(name.substringBeforeLast(delimiter) + delimiter + name.substringAfterLast("${delimiter}Desugar"))
-        } else {
-            ShouldTransform.No
-        }
+    fun transform(name: String, delimiter: Char = '.'): String {
+        return removeClassPrefix(removePackagePrefix(name, delimiter), delimiter)
     }
 
-    fun transform(name: String) = when (val shouldTransform = shouldTransform(name)) {
-        ShouldTransform.No -> name
-        is ShouldTransform.Yes -> shouldTransform.newName
-    }
+    private fun removePackagePrefix(name: String, delimiter: Char) = name.removePrefix("desugar$delimiter")
+
+    private fun removeClassPrefix(name: String, delimiter: Char) =
+        if (name.substringAfterLast(delimiter).startsWith("Desugar")) {
+            name.substringBeforeLast(delimiter) + delimiter + name.substringAfterLast("${delimiter}Desugar")
+        } else {
+            name
+        }
 }

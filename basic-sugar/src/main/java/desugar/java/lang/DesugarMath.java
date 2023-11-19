@@ -1,4 +1,4 @@
-package java.lang;
+package desugar.java.lang;
 
 public final class DesugarMath {
     public static int addExact(int x, int y) {

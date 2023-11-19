@@ -54,6 +54,19 @@ class Api19SignaturesTest {
     }
 
     @Test
+    fun `core lib v2 signatures include Base64$Decoder#decode`() {
+        val desc = ObjectInputStream(GZIPInputStream(File(System.getProperty("coreLibSignatures2")).inputStream())).use {
+            generateSequence { it.readObject() as Clazz? }.toList()
+        }
+
+        val stream = desc.find { it.name == "java/util/Base64\$Decoder" }
+
+        expectThat(stream).isNotNull().and {
+            get { signatures }.contains("decode([B)[B")
+        }
+    }
+
+    @Test
     fun `signatures use HashSet`() {
         val desc = ObjectInputStream(GZIPInputStream(File(System.getProperty("signatures")).inputStream())).use {
             generateSequence { it.readObject() as Clazz? }.toList()

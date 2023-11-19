@@ -1,4 +1,4 @@
-package java.lang;
+package desugar.java.lang;
 
 public final class DesugarFloat {
     public static int hashCode(float d) {

@@ -19,6 +19,7 @@ object Configurations {
     const val STANDARD_SUGAR = "sugar"
     const val EXERCISE_STANDARD_SUGAR = "exerciseStandardSugar"
     const val CORE_LIB_SUGAR = "coreLibSugar"
+    const val CORE_LIB_SUGAR_2 = "coreLibSugar_2"
 }
 
 object Publications {

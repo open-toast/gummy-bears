@@ -24,24 +24,9 @@ class MutableTypeDescriptors(initial: Collection<TypeDescriptor>) {
 
     fun add(type: TypeDescriptor) {
         types.merge(type.name, type) { oldType, newType ->
-            val superClass = when (newType.superName) {
-                null -> oldType.superName
-                "java/lang/Object" -> oldType.superName
-                oldType.superName -> oldType.superName
-                else -> throw IllegalArgumentException("conflicting superclasses ${oldType.superName} != ${newType.superName} for ${type.name}")
-            }
-
-            if (oldType.flavor != newType.flavor) {
-                throw IllegalArgumentException("conflicting flavor ${oldType.flavor} != ${newType.flavor} for ${type.name}")
-            }
-
-            if (oldType.protection != newType.protection) {
-                throw IllegalArgumentException("conflicting protection ${oldType.flavor} != ${newType.flavor} for ${type.name}")
-            }
-
             TypeDescriptor {
                 name = type.name
-                superName = superClass
+                superName = oldType.superName
                 interfaces = oldType.interfaces.merge(newType.interfaces)
 
                 fields = oldType.fields.merge(newType.fields)
