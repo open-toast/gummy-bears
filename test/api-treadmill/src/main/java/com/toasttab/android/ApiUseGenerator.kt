@@ -77,7 +77,7 @@ class ApiUseGenerator : CliktCommand() {
                 }
             }
             .addCode(
-                "$instruction callee.${method.name}($params);\n"
+                "try { $instruction callee.${method.name}($params); } catch (Exception e) { throw new RuntimeException(e); }\n"
             )
             .build()
     }

@@ -56,7 +56,11 @@ dependencies {
 
     add(Configurations.GENERATOR, project(":signature-builder"))
 
-    add(Configurations.STANDARD_SUGAR, project(":basic-sugar"))
+    add(Configurations.STANDARD_SUGAR, project(":sugar:basic"))
+    add(Configurations.STANDARD_SUGAR, project(":sugar:unsafe"))
+    if (project.name.toInt() >= 24) {
+        add(Configurations.STANDARD_SUGAR, project(":sugar:unsafe24"))
+    }
     add(Configurations.EXERCISE_STANDARD_SUGAR, project(":test:basic-sugar-treadmill"))
     add(Configurations.CORE_LIB_SUGAR, libs.desugarJdkLibs)
     add(Configurations.CORE_LIB_SUGAR_2, libs.desugarJdkLibs2)
@@ -99,7 +103,7 @@ tasks {
 
         systemProperty("dexout", layout.buildDirectory.path)
 
-        dependsOn(":basic-sugar:build")
+        dependsOn(":sugar:basic:build")
         dependsOn(":test:basic-sugar-treadmill:build")
 
         dependsOn(Tasks.signatures)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Toast Inc.
+ * Copyright (c) 2023. Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,30 +13,6 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath("gradle.plugin.net.vivin:gradle-semantic-build-versioning:4.0.0")
-    }
-}
-
-apply(plugin = "net.vivin.gradle-semantic-build-versioning")
-
-rootProject.name = "gummybears"
-
-include(
-    "signature-builder",
-    "signature-transformer",
-    "sugar:basic",
-    "sugar:unsafe",
-    "sugar:unsafe24",
-    "test:d8-runner",
-    "test:api-treadmill",
-    "test:basic-sugar-treadmill"
-)
-
-(19..34).forEach {
-    include("api:$it")
+plugins {
+    `java-conventions`
 }

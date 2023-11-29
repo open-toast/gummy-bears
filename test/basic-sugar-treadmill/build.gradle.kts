@@ -23,7 +23,7 @@ configurations {
 }
 
 dependencies {
-    add(Configurations.STANDARD_SUGAR, project(":basic-sugar"))
+    add(Configurations.STANDARD_SUGAR, project(":sugar:basic"))
     add(Configurations.GENERATOR, project(":test:api-treadmill"))
 }
 
