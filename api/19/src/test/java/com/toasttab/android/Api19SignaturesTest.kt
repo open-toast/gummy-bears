@@ -26,7 +26,6 @@ import strikt.assertions.isNotNull
 import java.io.File
 import java.io.ObjectInputStream
 import java.util.zip.GZIPInputStream
-import kotlin.math.sign
 
 class Api19SignaturesTest {
     companion object {

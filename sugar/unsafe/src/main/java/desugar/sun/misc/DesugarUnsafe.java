@@ -55,55 +55,25 @@ public final class DesugarUnsafe {
         return 0;
     }
 
-    public void park(boolean absolute, long time) {
+    public void park(boolean absolute, long time) { }
 
-    }
+    public void unpark(Object obj) { }
 
-    public void unpark(Object obj) {
+    public void putInt(Object obj, long offset, int newValue) { }
 
-    }
+    public void putIntVolatile(Object obj, long offset, int newValue) { }
 
+    public void putLong(Object obj, long offset, long newValue) { }
 
-    public void putInt(Object obj, long offset, int newValue) {
+    public void putLongVolatile(Object obj, long offset, long newValue) { }
 
-    }
+    public void putObject(Object obj, long offset, Object newValue) { }
 
+    public void putObjectVolatile(Object obj, long offset, Object newValue) { }
 
-    public void putIntVolatile(Object obj, long offset, int newValue) {
+    public void putOrderedInt(Object obj, long offset, int newValue) { }
 
-    }
+    public void putOrderedLong(Object obj, long offset, long newValue) { }
 
-
-    public void putLong(Object obj, long offset, long newValue) {
-
-    }
-
-
-    public void putLongVolatile(Object obj, long offset, long newValue) {
-
-    }
-
-    public void putObject(Object obj, long offset, Object newValue) {
-
-    }
-
-
-    public void putObjectVolatile(Object obj, long offset, Object newValue) {
-
-    }
-
-
-    public void putOrderedInt(Object obj, long offset, int newValue) {
-
-    }
-
-
-    public void putOrderedLong(Object obj, long offset, long newValue) {
-
-    }
-
-
-    public void putOrderedObject(Object obj, long offset, Object newValue) {
-
-    }
+    public void putOrderedObject(Object obj, long offset, Object newValue) { }
 }

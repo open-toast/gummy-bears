@@ -18,15 +18,11 @@ package com.toasttab.android
 import org.codehaus.mojo.animal_sniffer.Clazz
 import org.junit.Test
 import strikt.api.expectThat
-import strikt.assertions.all
 import strikt.assertions.contains
-import strikt.assertions.doesNotContain
-import strikt.assertions.isA
 import strikt.assertions.isNotNull
 import java.io.File
 import java.io.ObjectInputStream
 import java.util.zip.GZIPInputStream
-import kotlin.math.sign
 
 class Api19SignaturesTest {
     companion object {
