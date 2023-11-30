@@ -16,6 +16,7 @@
 package com.toasttab.android
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.squareup.javapoet.ClassName
@@ -37,7 +38,7 @@ import java.util.jar.JarFile
 import javax.lang.model.element.Modifier
 
 class ApiUseGenerator : CliktCommand() {
-    private val jar: String by option(help = "jar with APIs").required()
+    private val jar: List<String> by option(help = "jar with APIs").multiple()
     private val output: String by option(help = "output directory for generated classes").required()
 
     private fun listClasses(jar: File): Sequence<ClassFile> {
@@ -106,7 +107,7 @@ class ApiUseGenerator : CliktCommand() {
     }
 
     override fun run() {
-        listClasses(File(jar)).forEach {
+        jar.flatMap { listClasses(File(it)) }.forEach {
             write(it, File(output))
         }
     }

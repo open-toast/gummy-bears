@@ -25,19 +25,34 @@ import protokt.v1.toasttab.expediter.v1.TypeExtensibility
 import protokt.v1.toasttab.expediter.v1.TypeFlavor
 import strikt.api.expectThat
 import strikt.assertions.contains
+import strikt.assertions.doesNotContain
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import java.io.File
 import java.util.zip.GZIPInputStream
 
 class Api19TypeDescriptorsTest {
-    @Test
-    fun `type descriptors include Integer#hashCode(int)`() {
-        val desc = GZIPInputStream(File(System.getProperty("platformDescriptors")).inputStream()).use {
-            TypeDescriptors.deserialize(it)
+    companion object {
+        private fun descriptors(name: String) =
+            GZIPInputStream(File(System.getProperty(name)).inputStream()).use {
+                TypeDescriptors.deserialize(it)
+            }
+
+        private val descriptors by lazy {
+            descriptors("platformDescriptors")
         }
 
-        val integer = desc.types.find { it.name == "java/lang/Integer" }
+        private val coreLibDescriptors by lazy {
+            descriptors("platformCoreLibDescriptors")
+        }
+
+        private val coreLibDescriptors2 by lazy {
+            descriptors("platformCoreLibDescriptors2")
+        }
+    }
+    @Test
+    fun `type descriptors include Integer#hashCode(int)`() {
+        val integer = descriptors.types.find { it.name == "java/lang/Integer" }
 
         expectThat(integer).isNotNull().and {
             get { methods }.contains(
@@ -55,11 +70,7 @@ class Api19TypeDescriptorsTest {
 
     @Test
     fun `core lib type descriptors include Stream#count()`() {
-        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors")).inputStream()).use {
-            TypeDescriptors.deserialize(it)
-        }
-
-        val stream = desc.types.find { it.name == "java/util/stream/Stream" }
+        val stream = coreLibDescriptors.types.find { it.name == "java/util/stream/Stream" }
 
         expectThat(stream).isNotNull().and {
             get { methods }.contains(
@@ -80,11 +91,7 @@ class Api19TypeDescriptorsTest {
      */
     @Test
     fun `core lib v2 type descriptors include Base64$Decoder#decode`() {
-        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
-            TypeDescriptors.deserialize(it)
-        }
-
-        val decoder = desc.types.find { it.name == "java/util/Base64\$Decoder" }
+        val decoder = coreLibDescriptors2.types.find { it.name == "java/util/Base64\$Decoder" }
 
         expectThat(decoder).isNotNull().and {
             get { methods }.contains(
@@ -106,11 +113,7 @@ class Api19TypeDescriptorsTest {
      */
     @Test
     fun `core lib v2 LinuxFileSystemProvider extends UnixFileSystemProvider`() {
-        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
-            TypeDescriptors.deserialize(it)
-        }
-
-        val provider = desc.types.find { it.name == "sun/nio/fs/LinuxFileSystemProvider" }
+        val provider = coreLibDescriptors2.types.find { it.name == "sun/nio/fs/LinuxFileSystemProvider" }
 
         expectThat(provider).isNotNull().and {
             get { superName }.isEqualTo("sun/nio/fs/UnixFileSystemProvider")
@@ -123,11 +126,7 @@ class Api19TypeDescriptorsTest {
      */
     @Test
     fun `core lib v2 MimeTypesFileTypeDetector extends AbstractFileTypeDetector`() {
-        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
-            TypeDescriptors.deserialize(it)
-        }
-
-        val detector = desc.types.find { it.name == "sun/nio/fs/MimeTypesFileTypeDetector" }
+        val detector = coreLibDescriptors2.types.find { it.name == "sun/nio/fs/MimeTypesFileTypeDetector" }
 
         expectThat(detector).isNotNull().and {
             get { superName }.isEqualTo("sun/nio/fs/AbstractFileTypeDetector")
@@ -140,11 +139,7 @@ class Api19TypeDescriptorsTest {
      */
     @Test
     fun `core lib v2 IntStream is an interface`() {
-        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
-            TypeDescriptors.deserialize(it)
-        }
-
-        val stream = desc.types.find { it.name == "java/util/stream/IntStream" }
+        val stream = coreLibDescriptors2.types.find { it.name == "java/util/stream/IntStream" }
 
         expectThat(stream).isNotNull().and {
             get { flavor }.isEqualTo(TypeFlavor.INTERFACE)
@@ -158,14 +153,44 @@ class Api19TypeDescriptorsTest {
      */
     @Test
     fun `core lib v2 Character is final`() {
-        val desc = GZIPInputStream(File(System.getProperty("platformCoreLibDescriptors2")).inputStream()).use {
-            TypeDescriptors.deserialize(it)
-        }
-
-        val character = desc.types.find { it.name == "java/lang/Character" }
+        val character = coreLibDescriptors2.types.find { it.name == "java/lang/Character" }
 
         expectThat(character).isNotNull().and {
             get { extensibility }.isEqualTo(TypeExtensibility.FINAL)
+        }
+    }
+
+    @Test
+    fun `descriptors include Unsafe#getInt`() {
+        val integer = descriptors.types.find { it.name == "sun/misc/Unsafe" }
+
+        expectThat(integer).isNotNull().and {
+            get { methods }.contains(MemberDescriptor {
+                ref = SymbolicReference {
+                    name = "getInt"
+                    signature = "(Ljava/lang/Object;J)I"
+                }
+                declaration = AccessDeclaration.INSTANCE
+                protection = AccessProtection.PUBLIC
+            })
+        }
+    }
+
+    @Test
+    fun `descriptors do not include Unsafe#storeFence`() {
+        val integer = descriptors.types.find { it.name == "sun/misc/Unsafe" }
+
+        expectThat(integer).isNotNull().and {
+            get { methods }.doesNotContain(
+                MemberDescriptor {
+                    ref = SymbolicReference {
+                        name = "storeFence"
+                        signature = "()V"
+                    }
+                    declaration = AccessDeclaration.INSTANCE
+                    protection = AccessProtection.PUBLIC
+                }
+            )
         }
     }
 }

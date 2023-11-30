@@ -24,6 +24,7 @@ configurations {
 
 dependencies {
     add(Configurations.STANDARD_SUGAR, project(":sugar:basic"))
+    add(Configurations.STANDARD_SUGAR, project(":sugar:unsafe"))
     add(Configurations.GENERATOR, project(":test:api-treadmill"))
 }
 
@@ -31,11 +32,11 @@ tasks.register<JavaExec>("generateClasses") {
     classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
     mainClass.set("com.toasttab.android.ApiUseGeneratorKt")
     args = listOf(
-        "--jar",
-        configurations.getByName(Configurations.STANDARD_SUGAR).asPath,
         "--output",
         layout.buildDirectory.file("generated-sources/java/main").path
-    )
+    ) + configurations.getByName(Configurations.STANDARD_SUGAR).flatMap {
+        listOf("--jar", it.path)
+    }
 }
 
 tasks.named<JavaCompile>("compileJava") {
