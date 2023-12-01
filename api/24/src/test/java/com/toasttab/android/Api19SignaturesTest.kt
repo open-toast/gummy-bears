@@ -18,10 +18,7 @@ package com.toasttab.android
 import org.codehaus.mojo.animal_sniffer.Clazz
 import org.junit.Test
 import strikt.api.expectThat
-import strikt.assertions.all
 import strikt.assertions.contains
-import strikt.assertions.doesNotContain
-import strikt.assertions.isA
 import strikt.assertions.isNotNull
 import java.io.File
 import java.io.ObjectInputStream
@@ -37,23 +34,6 @@ class Api19SignaturesTest {
         private val signatures by lazy {
             signatures("signatures")
         }
-
-        private val coreLibSignatures by lazy {
-            signatures("coreLibSignatures")
-        }
-
-        private val coreLibSignatures2 by lazy {
-            signatures("coreLibSignatures2")
-        }
-    }
-
-    @Test
-    fun `signatures include Integer#hashCode(int)`() {
-        val integer = signatures.find { it.name == "java/lang/Integer" }
-
-        expectThat(integer).isNotNull().and {
-            get { signatures }.contains("hashCode(I)I")
-        }
     }
 
     @Test
@@ -66,43 +46,11 @@ class Api19SignaturesTest {
     }
 
     @Test
-    fun `signatures do not include Unsafe#storeFence`() {
+    fun `signatures include Unsafe#storeFence`() {
         val integer = signatures.find { it.name == "sun/misc/Unsafe" }
 
         expectThat(integer).isNotNull().and {
-            get { signatures }.doesNotContain("storeFence()V")
-        }
-    }
-
-    @Test
-    fun `core lib signatures include Stream#count()`() {
-        val stream = coreLibSignatures.find { it.name == "java/util/stream/Stream" }
-
-        expectThat(stream).isNotNull().and {
-            get { signatures }.contains("count()J")
-        }
-    }
-
-    @Test
-    fun `core lib v2 signatures include Base64$Decoder#decode`() {
-        val stream = coreLibSignatures2.find { it.name == "java/util/Base64\$Decoder" }
-
-        expectThat(stream).isNotNull().and {
-            get { signatures }.contains("decode([B)[B")
-        }
-    }
-
-    @Test
-    fun `signatures use HashSet`() {
-        expectThat(signatures).all {
-            get { signatures }.isA<HashSet<*>>()
-        }
-    }
-
-    @Test
-    fun `core lib signatures use HashSet`() {
-        expectThat(coreLibSignatures).all {
-            get { signatures }.isA<HashSet<*>>()
+            get { signatures }.contains("storeFence()V")
         }
     }
 }
