@@ -34,6 +34,7 @@ import javassist.bytecode.Descriptor
 import javassist.bytecode.MethodInfo
 import java.io.DataInputStream
 import java.io.File
+import java.lang.Exception
 import java.util.jar.JarFile
 import javax.lang.model.element.Modifier
 
@@ -71,6 +72,7 @@ class ApiUseGenerator : CliktCommand() {
 
         return MethodSpec.methodBuilder(method.name)
             .addModifiers(Modifier.PUBLIC)
+            .addException(Exception::class.java)
             .returns(returnType.typeName())
             .apply {
                 paramTypes.forEachIndexed { i, p ->
@@ -78,7 +80,7 @@ class ApiUseGenerator : CliktCommand() {
                 }
             }
             .addCode(
-                "try { $instruction callee.${method.name}($params); } catch (Exception e) { throw new RuntimeException(e); }\n"
+                "$instruction callee.${method.name}($params);"
             )
             .build()
     }
