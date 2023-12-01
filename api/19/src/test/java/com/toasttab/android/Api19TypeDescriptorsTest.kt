@@ -50,6 +50,7 @@ class Api19TypeDescriptorsTest {
             descriptors("platformCoreLibDescriptors2")
         }
     }
+
     @Test
     fun `type descriptors include Integer#hashCode(int)`() {
         val integer = descriptors.types.find { it.name == "java/lang/Integer" }
@@ -165,14 +166,16 @@ class Api19TypeDescriptorsTest {
         val integer = descriptors.types.find { it.name == "sun/misc/Unsafe" }
 
         expectThat(integer).isNotNull().and {
-            get { methods }.contains(MemberDescriptor {
-                ref = SymbolicReference {
-                    name = "getInt"
-                    signature = "(Ljava/lang/Object;J)I"
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref = SymbolicReference {
+                        name = "getInt"
+                        signature = "(Ljava/lang/Object;J)I"
+                    }
+                    declaration = AccessDeclaration.INSTANCE
+                    protection = AccessProtection.PUBLIC
                 }
-                declaration = AccessDeclaration.INSTANCE
-                protection = AccessProtection.PUBLIC
-            })
+            )
         }
     }
 
