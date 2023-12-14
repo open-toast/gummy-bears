@@ -2,7 +2,7 @@
 kotlin = "1.9.21"
 animalSniffer = "1.23"
 clikt = "4.2.1"
-expediter = "0.0.11"
+expediter = "0.0.12"
 desugarJdkLibs = "1.2.3"
 desugarJdkLibs2 = "2.0.4"
 r8 = "1.5.68"
