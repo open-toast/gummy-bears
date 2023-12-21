@@ -21,8 +21,8 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.toasttab.android.descriptors.sniffer.AnimalSnifferConverter
 import com.toasttab.android.descriptors.sniffer.AnimalSnifferSerializer
-import com.toasttab.expediter.ClasspathScanner
-import com.toasttab.expediter.TypeParsers
+import com.toasttab.expediter.parser.TypeParsers
+import com.toasttab.expediter.scanner.ClasspathScanner
 import protokt.v1.toasttab.expediter.v1.TypeDescriptors
 import java.io.File
 import java.util.zip.GZIPOutputStream
