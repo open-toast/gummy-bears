@@ -46,11 +46,11 @@ Specify the latest version `com.toasttab.android:gummy-bears-api-${api}` as the 
 
 ```kotlin
 plugins {
-    id 'ru.vyarus.animalsniffer' version '1.6.0'
+    id 'ru.vyarus.animalsniffer' version '1.7.1'
 }
 
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.7.0@signature')
+    signature('com.toasttab.android:gummy-bears-api-24:0.8.0@signature')
 }
 ```
 
@@ -58,7 +58,7 @@ With core library desugaring:
 
 ```groovy
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.7.0:coreLib@signature')
+    signature('com.toasttab.android:gummy-bears-api-24:0.8.0:coreLib@signature')
 }
 ```
 
@@ -66,7 +66,7 @@ With core library desugaring v2:
 
 ```groovy
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.7.0:coreLib2@signature')
+    signature('com.toasttab.android:gummy-bears-api-24:0.8.0:coreLib2@signature')
 }
 ```
 
@@ -74,11 +74,11 @@ dependencies {
 
 ```kotlin
 plugins {
-    id("ru.vyarus.animalsniffer") version "1.6.0"
+    id("ru.vyarus.animalsniffer") version "1.7.1"
 }
 
 dependencies {
-    add("signature", "com.toasttab.android:gummy-bears-api-24:0.7.0@signature")
+    add("signature", "com.toasttab.android:gummy-bears-api-24:0.8.0@signature")
 }
 ```
 
@@ -88,12 +88,12 @@ dependencies {
 <plugin>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>animal-sniffer-maven-plugin</artifactId>
-    <version>1.22</version>
+    <version>1.23</version>
     <configuration>
         <signature>
             <groupId>com.toasttab.android</groupId>
             <artifactId>gummy-bears-api-21</artifactId>
-            <version>0.7.0</version>
+            <version>0.8.0</version>
         </signature>
     </configuration>
 </plugin>
