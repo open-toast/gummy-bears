@@ -23,6 +23,8 @@ import com.toasttab.android.descriptors.sniffer.AnimalSnifferConverter
 import com.toasttab.android.descriptors.sniffer.AnimalSnifferSerializer
 import com.toasttab.expediter.parser.TypeParsers
 import com.toasttab.expediter.scanner.ClasspathScanner
+import com.toasttab.expediter.types.ClassfileSource
+import com.toasttab.expediter.types.ClassfileSourceType
 import protokt.v1.toasttab.expediter.v1.TypeDescriptors
 import java.io.File
 import java.util.zip.GZIPOutputStream
@@ -36,12 +38,20 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
     private val expediterOutput: String by option(help = "expediter-output").required()
 
     override fun run() {
-        ClasspathScanner(listOf(File(sdk))).scan { stream, _ -> TypeParsers.typeDescriptor(stream) }
-
-        val signatures = MutableTypeDescriptors(ClasspathScanner(listOf(File(sdk))).scan { stream, _ -> TypeParsers.typeDescriptor(stream) })
+        val signatures = MutableTypeDescriptors(
+            ClasspathScanner(
+                listOf(
+                    ClassfileSource(File(sdk), ClassfileSourceType.UNKNOWN, sdk)
+                )
+            ).scan { stream, _ -> TypeParsers.typeDescriptor(stream) }
+        )
 
         for (more in desugared) {
-            ClasspathScanner(listOf(File(more))).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
+            ClasspathScanner(
+                listOf(
+                    ClassfileSource(File(more), ClassfileSourceType.UNKNOWN, more)
+                )
+            ).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
                 .sortedBy { it.priority }
                 .forEach {
                     signatures.add(it.toType())
