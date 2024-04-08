@@ -1,6 +1,6 @@
 # Gummy Bears
 
-[![CircleCI](https://circleci.com/gh/open-toast/gummy-bears.svg?style=svg)](https://circleci.com/gh/open-toast/gummy-bears)
+[![Github Actions](https://github.com/open-toast/gummy-bears/actions/workflows/ci.yml/badge.svg)](https://github.com/open-toast/gummy-bears/actions/workflows/ci.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.toasttab.android/gummy-bears-api-24)](https://search.maven.org/artifact/com.toasttab.android/gummy-bears-api-24)
 
 _D8 sugar for all of your animal sniffing needs_.
