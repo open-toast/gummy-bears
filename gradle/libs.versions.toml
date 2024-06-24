@@ -11,7 +11,7 @@ javassist = "3.30.2-GA"
 junit = "4.13.2"
 nexus = "2.0.0"
 protobuf = "4.27.1"
-strikt = "0.34.1"
+strikt = "0.35.1"
 
 [libraries]
 animalSniffer = { module = "org.codehaus.mojo:animal-sniffer", version.ref = "animalSniffer" }
