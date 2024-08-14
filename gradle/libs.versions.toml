@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 animalSniffer = "1.24"
 clikt = "4.4.0"
 expediter = "0.0.21"
