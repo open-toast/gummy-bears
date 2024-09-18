@@ -17,4 +17,4 @@ plugins {
     `signatures-conventions`
 }
 
-sdk("platform-34-ext12:r01")
+sdk("platform-35:r01")
