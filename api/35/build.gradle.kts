@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. Toast Inc.
+ * Copyright (c) 2024. Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,4 +17,4 @@ plugins {
     `signatures-conventions`
 }
 
-sdk("platform-34-ext12:r01")
+sdk("platform-35:r01")

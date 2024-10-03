@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. Toast Inc.
+ * Copyright (c) 2024. Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,16 @@
  * limitations under the License.
  */
 
-plugins {
-    `signatures-conventions`
-}
+package com.toasttab.android
 
-sdk("platform-34-ext12:r01")
+import com.toasttab.android.signature.test.D8Runner
+import org.junit.Test
+import strikt.api.expectThat
+import strikt.assertions.isEmpty
+
+class Api35DexTest {
+    @Test
+    fun `API35 desugaring should succeed`() {
+        expectThat(D8Runner.run(apiLevel = 35).warnings).isEmpty()
+    }
+}
