@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: corretto
-        java-version: 17
+        java-version: 21
     - name: Build
       run: ./gradlew check --stacktrace --no-daemon
     - name: Publish locally

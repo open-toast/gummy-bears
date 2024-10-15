@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
     id("java-conventions")
     kotlin("jvm")
@@ -11,8 +14,8 @@ spotless {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "11"
-        languageVersion = "1.6"
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
+        languageVersion = KotlinVersion.KOTLIN_1_8
     }
 }
