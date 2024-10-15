@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: corretto
-        java-version: 17
+        java-version: 21
     - name: Publish
       run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace --no-daemon
       env:
