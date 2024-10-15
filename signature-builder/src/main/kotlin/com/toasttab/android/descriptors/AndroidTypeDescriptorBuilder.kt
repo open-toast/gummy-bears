@@ -16,6 +16,7 @@
 package com.toasttab.android.descriptors
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
@@ -41,7 +42,7 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
         val signatures = MutableTypeDescriptors(
             ClasspathScanner(
                 listOf(
-                    ClassfileSource(File(sdk), ClassfileSourceType.UNKNOWN, sdk)
+                    ClassfileSource(File(sdk), ClassfileSourceType.UNKNOWN)
                 )
             ).scan { stream, _ -> TypeParsers.typeDescriptor(stream) }
         )
@@ -49,7 +50,7 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
         for (more in desugared) {
             ClasspathScanner(
                 listOf(
-                    ClassfileSource(File(more), ClassfileSourceType.UNKNOWN, more)
+                    ClassfileSource(File(more), ClassfileSourceType.UNKNOWN)
                 )
             ).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
                 .sortedBy { it.priority }
