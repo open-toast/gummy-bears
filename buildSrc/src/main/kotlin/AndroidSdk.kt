@@ -63,7 +63,7 @@ fun Project.extractSdk() {
             attribute(UNPACKED_SDK_ATTRIBUTE)
         }
 
-        artifactTypes.named("zip") {
+        artifactTypes.create("zip") {
             attributes.attribute(UNPACKED_SDK_ATTRIBUTE, false)
         }
 
