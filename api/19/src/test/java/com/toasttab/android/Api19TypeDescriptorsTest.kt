@@ -15,7 +15,7 @@
 
 package com.toasttab.android
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import protokt.v1.toasttab.expediter.v1.AccessDeclaration
 import protokt.v1.toasttab.expediter.v1.AccessProtection
 import protokt.v1.toasttab.expediter.v1.MemberDescriptor

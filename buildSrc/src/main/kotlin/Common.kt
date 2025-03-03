@@ -47,3 +47,12 @@ object Remote {
 
     val url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 }
+
+object Tasks {
+    const val signatures = "buildSignatures"
+}
+
+object Outputs {
+    const val signatures = "signatures.sig"
+    const val expediter = "platform.expediter"
+}

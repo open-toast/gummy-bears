@@ -16,7 +16,7 @@
 package com.toasttab.android
 
 import org.codehaus.mojo.animal_sniffer.Clazz
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isNotNull
@@ -24,7 +24,7 @@ import java.io.File
 import java.io.ObjectInputStream
 import java.util.zip.GZIPInputStream
 
-class Api19SignaturesTest {
+class Api24SignaturesTest {
     companion object {
         private fun signatures(name: String) =
             ObjectInputStream(GZIPInputStream(File(System.getProperty(name)).inputStream())).use {

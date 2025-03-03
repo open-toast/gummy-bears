@@ -5,10 +5,10 @@ clikt = "5.0.3"
 expediter = "0.0.23"
 desugarJdkLibs = "1.2.3"
 desugarJdkLibs2 = "2.0.4"
-r8 = "1.5.68"
-javapoet = "1.13.0"
+r8 = "8.7.18"
+javapoet = "0.6.0"
 javassist = "3.30.2-GA"
-junit = "4.13.2"
+junit = "5.12.0"
 nexus = "2.0.0"
 protobuf = "4.29.3"
 strikt = "0.34.1"
@@ -20,9 +20,12 @@ desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = 
 desugarJdkLibs2 = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs2" }
 expediter-core = { module = "com.toasttab.expediter:core", version.ref = "expediter" }
 r8 = { module = "com.android.tools:r8", version.ref = "r8" }
-javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
+javapoet = { module = "com.palantir.javapoet:javapoet", version.ref = "javapoet" }
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
-junit = { module = "junit:junit", version.ref = "junit" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 strikt-core = { module = "io.strikt:strikt-core", version.ref = "strikt" }
 

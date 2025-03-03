@@ -20,12 +20,13 @@ import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import com.squareup.javapoet.ClassName
-import com.squareup.javapoet.FieldSpec
-import com.squareup.javapoet.JavaFile
-import com.squareup.javapoet.MethodSpec
-import com.squareup.javapoet.TypeName
-import com.squareup.javapoet.TypeSpec
+import com.palantir.javapoet.ArrayTypeName
+import com.palantir.javapoet.ClassName
+import com.palantir.javapoet.FieldSpec
+import com.palantir.javapoet.JavaFile
+import com.palantir.javapoet.MethodSpec
+import com.palantir.javapoet.TypeName
+import com.palantir.javapoet.TypeSpec
 import com.toasttab.android.signature.transform.DesugarClassNameTransformer
 import javassist.ClassPool
 import javassist.CtClass
@@ -56,15 +57,15 @@ class ApiUseGenerator : CliktCommand() {
         if (this is CtPrimitiveType) {
             return fqnToClassName(wrapperName).unbox()
         } else if (this.isArray) {
-            return fqnToClassName(name)
+            return ArrayTypeName.of(this.componentType.typeName())
         } else {
             return fqnToClassName(name)
         }
     }
 
-    private fun fqnToClassName(fqn: String) = ClassName.get(fqn.substringBeforeLast("."), fqn.substringAfterLast("."))
+    private fun fqnToClassName(fqn: String) = ClassName.get(fqn.substringBeforeLast("."), fqn.substringAfterLast(".").replace('$', '.'))
 
-    private fun generateMethodStubCaller(method: MethodInfo): MethodSpec {
+    private fun generateMethodStubCaller(method: MethodInfo, calleeType: TypeName): MethodSpec {
         val paramTypes = Descriptor.getParameterTypes(method.descriptor, ClassPool.getDefault())
         val returnType = Descriptor.getReturnType(method.descriptor, ClassPool.getDefault())
 
@@ -79,30 +80,48 @@ class ApiUseGenerator : CliktCommand() {
                 paramTypes.forEachIndexed { i, p ->
                     addParameter(p.typeName(), "arg$i")
                 }
+
+                if (javassist.Modifier.isStatic(method.accessFlags)) {
+                    addCode(
+                        "$instruction \$T.${method.name}($params);",
+                        calleeType
+                    )
+                } else {
+                    addCode(
+                        "$instruction callee.${method.name}($params);"
+                    )
+                }
             }
-            .addCode(
-                "$instruction callee.${method.name}($params);"
-            )
             .build()
     }
 
     private fun generateStubCallers(cls: ClassFile): JavaFile {
         val className = cls.name.replace(".", "_")
 
-        val builder = TypeSpec.classBuilder(className)
-            .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-            .addField(
-                FieldSpec.builder(
-                    fqnToClassName(DesugarClassNameTransformer.transform(cls.name)),
-                    "callee"
-                ).build()
-            )
+        val calleeType = fqnToClassName(DesugarClassNameTransformer.transform(cls.name))
 
-        cls.methods.filter { it.isMethod }.forEach { method ->
-            builder.addMethod(generateMethodStubCaller(method))
+        val builder = TypeSpec.classBuilder(className).addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+
+        if (cls.methods.filter { it.isMethod }.any {
+            builder.addStubCaller(it, calleeType)
+        }
+        ) {
+            builder.addField(
+                FieldSpec.builder(calleeType, "callee").addModifiers(Modifier.FINAL, Modifier.PRIVATE).build()
+            ).addMethod(
+                MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC)
+                    .addParameter(calleeType, "callee")
+                    .addCode("this.callee = callee;")
+                    .build()
+            )
         }
 
         return JavaFile.builder("com.toasttab.android.stub", builder.build()).build()
+    }
+
+    private fun TypeSpec.Builder.addStubCaller(method: MethodInfo, calleeType: TypeName): Boolean {
+        addMethod(generateMethodStubCaller(method, calleeType))
+        return !javassist.Modifier.isStatic(method.accessFlags)
     }
 
     private fun write(cls: ClassFile, output: File) {

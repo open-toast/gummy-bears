@@ -32,4 +32,20 @@ public final class DesugarLong {
     public static long min(long a, long b) {
         throw new RuntimeException();
     }
+
+    public static String toUnsignedString(long a) {
+        throw new RuntimeException();
+    }
+
+    public static String toUnsignedString(long a, int b) {
+        throw new RuntimeException();
+    }
+
+    public static long parseUnsignedLong(String a) {
+        throw new RuntimeException();
+    }
+
+    public static long parseUnsignedLong(String a, int b) {
+        throw new RuntimeException();
+    }
 }

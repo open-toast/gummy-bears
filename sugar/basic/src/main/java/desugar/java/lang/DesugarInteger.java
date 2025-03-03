@@ -36,4 +36,20 @@ public final class DesugarInteger {
     public static int min(int a, int b) {
         throw new RuntimeException();
     }
+
+    public static int parseUnsignedInt(String a) {
+        throw new RuntimeException();
+    }
+
+    public static int parseUnsignedInt(String a, int b) {
+        throw new RuntimeException();
+    }
+
+    public static String toUnsignedString(int a) {
+        throw new RuntimeException();
+    }
+
+    public static String toUnsignedString(int a, int b) {
+        throw new RuntimeException();
+    }
 }

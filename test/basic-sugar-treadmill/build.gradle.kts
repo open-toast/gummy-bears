@@ -14,35 +14,9 @@
  */
 
 plugins {
-    `java-conventions`
-}
-
-configurations {
-    create(Configurations.STANDARD_SUGAR)
-    create(Configurations.GENERATOR)
+    `api-treadmill-conventions`
 }
 
 dependencies {
     add(Configurations.STANDARD_SUGAR, project(":sugar:basic"))
-    add(Configurations.STANDARD_SUGAR, project(":sugar:unsafe"))
-    add(Configurations.GENERATOR, project(":test:api-treadmill"))
-}
-
-tasks.register<JavaExec>("generateClasses") {
-    classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
-    mainClass.set("com.toasttab.android.ApiUseGeneratorKt")
-    args = listOf(
-        "--output",
-        layout.buildDirectory.file("generated-sources/java/main").path
-    ) + configurations.getByName(Configurations.STANDARD_SUGAR).flatMap {
-        listOf("--jar", it.path)
-    }
-}
-
-tasks.named<JavaCompile>("compileJava") {
-    dependsOn("generateClasses")
-}
-
-sourceSets.main {
-    java.srcDir(layout.buildDirectory.file("generated-sources/java/main"))
 }

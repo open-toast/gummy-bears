@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import gradle.kotlin.dsl.accessors._e054d9723d982fdb55b1e388b8ab0cbf.test
+import gradle.kotlin.dsl.accessors._e054d9723d982fdb55b1e388b8ab0cbf.testRuntimeOnly
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
@@ -21,41 +23,20 @@ import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.repositories
 
-private object Tasks {
-    const val signatures = "buildSignatures"
-}
-
-private object Outputs {
-    const val signatures = "signatures.sig"
-    const val expediter = "platform.expediter"
-}
-
 plugins {
-    id("kotlin-conventions")
     id("publishing-conventions")
-}
-
-repositories {
-    androidSdk()
+    id("generate-signatures-conventions")
 }
 
 group = "com.toasttab.android"
 version = rootProject.version
 
 configurations {
-    create(Configurations.SDK)
-    create(Configurations.GENERATOR)
-    create(Configurations.STANDARD_SUGAR)
-    create(Configurations.EXERCISE_STANDARD_SUGAR)
     create(Configurations.CORE_LIB_SUGAR).isTransitive = false
     create(Configurations.CORE_LIB_SUGAR_2).isTransitive = false
 }
 
 dependencies {
-    extractSdk()
-
-    add(Configurations.GENERATOR, project(":signature-builder"))
-
     add(Configurations.STANDARD_SUGAR, project(":sugar:basic"))
     add(Configurations.STANDARD_SUGAR, project(":sugar:unsafe"))
     if (project.name.toInt() >= 24) {
@@ -66,20 +47,12 @@ dependencies {
     add(Configurations.CORE_LIB_SUGAR_2, libs.desugarJdkLibs2)
 
     testImplementation(project(":test:d8-runner"))
-    testImplementation(libs.junit)
+    testImplementation(project(":test:base-api-tests"))
+
     testImplementation(libs.strikt.core)
     testImplementation(libs.expediter.core)
     testImplementation(libs.protobuf.java)
     testImplementation(libs.animalSniffer)
-}
-
-tasks.register<TypeDescriptorsTask>(Tasks.signatures) {
-    classpath = configurations.getByName(Configurations.GENERATOR)
-    sdk = configurations.getByName(Configurations.SDK)
-    desugar = configurations.getByName(Configurations.STANDARD_SUGAR)
-    animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signatures)
-    expediterOutput = project.layout.buildDirectory.file(Outputs.expediter)
-    outputDescription = "Android API ${project.name}"
 }
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
@@ -98,14 +71,8 @@ tasks {
     test {
         fileProperty("platformDescriptors", layout.buildDirectory.file(Outputs.expediter))
         fileProperty("signatures", layout.buildDirectory.file(Outputs.signatures))
-        filesProperty("sdk", configurations.named(Configurations.SDK))
-        filesProperty("jar", configurations.named(Configurations.EXERCISE_STANDARD_SUGAR))
-
-        systemProperty("dexout", layout.buildDirectory.path)
 
         dependsOn(":sugar:basic:build")
         dependsOn(":test:basic-sugar-treadmill:build")
-
-        dependsOn(Tasks.signatures)
     }
 }
