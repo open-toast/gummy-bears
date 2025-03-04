@@ -15,14 +15,11 @@
 
 package com.toasttab.android
 
-import com.toasttab.android.signature.test.D8Runner
-import org.junit.Test
-import strikt.api.expectThat
-import strikt.assertions.isEmpty
+import org.junit.jupiter.api.Test
 
-class Api30DexTest {
+class Api30DexTest : BaseApiTest() {
     @Test
     fun `API30 desugaring should succeed`() {
-        expectThat(D8Runner.run(apiLevel = 30).warnings).isEmpty()
+        testDesugaring(30)
     }
 }

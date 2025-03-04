@@ -17,11 +17,23 @@ public final class DesugarMath {
         throw new RuntimeException();
     }
 
+    public static long multiplyFull(int x, int y) {
+        throw new RuntimeException();
+    }
+
+    public static long multiplyHigh(long x, long y) {
+        throw new RuntimeException();
+    }
+
     public static int multiplyExact(int x, int y) {
         throw new RuntimeException();
     }
 
     public static long multiplyExact(long x, long y) {
+        throw new RuntimeException();
+    }
+
+    public static long multiplyExact(long x, int y) {
         throw new RuntimeException();
     }
 
@@ -61,11 +73,19 @@ public final class DesugarMath {
         throw new RuntimeException();
     }
 
+    public static long floorDiv(long x, int y) {
+        throw new RuntimeException();
+    }
+
     public static int floorMod(int x, int y) {
         throw new RuntimeException();
     }
 
     public static long floorMod(long x, long y) {
+        throw new RuntimeException();
+    }
+
+    public static long floorMod(long x, int y) {
         throw new RuntimeException();
     }
 

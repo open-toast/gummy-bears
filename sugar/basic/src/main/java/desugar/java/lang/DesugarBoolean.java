@@ -16,4 +16,8 @@ public final class DesugarBoolean {
     public static boolean logicalXor(boolean a, boolean b) {
         throw new RuntimeException();
     }
+
+    public static int compare(boolean a, boolean b) {
+        throw new RuntimeException();
+    }
 }

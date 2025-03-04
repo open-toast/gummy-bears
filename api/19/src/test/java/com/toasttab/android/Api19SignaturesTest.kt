@@ -16,7 +16,7 @@
 package com.toasttab.android
 
 import org.codehaus.mojo.animal_sniffer.Clazz
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.contains

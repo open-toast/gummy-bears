@@ -34,7 +34,10 @@ include(
     "sugar:unsafe24",
     "test:d8-runner",
     "test:api-treadmill",
-    "test:basic-sugar-treadmill"
+    "test:bad-sugar",
+    "test:bad-sugar-treadmill",
+    "test:basic-sugar-treadmill",
+    "test:base-api-tests"
 )
 
 (19..35).forEach {

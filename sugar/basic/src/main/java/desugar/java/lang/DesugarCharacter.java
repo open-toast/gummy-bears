@@ -5,7 +5,11 @@ public final class DesugarCharacter {
         throw new RuntimeException();
     }
 
-    public static int hashCode(char i) {
+    public static int hashCode(char a) {
+        throw new RuntimeException();
+    }
+
+    public static String toString(int i) {
         throw new RuntimeException();
     }
 }
