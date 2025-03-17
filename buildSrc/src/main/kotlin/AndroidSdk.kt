@@ -54,7 +54,7 @@ abstract class ExtractSdkTransform : TransformAction<TransformParameters.None> {
 }
 
 fun Project.extractSdk() {
-    configurations.named(Configurations.SDK) {
+    configurations.named(Configurations.ANDROID_SDK) {
         attributes.attribute(UNPACKED_SDK_ATTRIBUTE, true)
     }
 
@@ -98,6 +98,6 @@ fun RepositoryHandler.androidSdk() {
 
 fun Project.sdk(sdk: String) {
     dependencies {
-        add(Configurations.SDK, "$SDK_GROUP:$sdk@zip")
+        add(Configurations.ANDROID_SDK, "$SDK_GROUP:$sdk@zip")
     }
 }

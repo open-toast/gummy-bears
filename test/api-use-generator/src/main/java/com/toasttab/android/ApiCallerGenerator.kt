@@ -40,7 +40,7 @@ import java.lang.Exception
 import java.util.jar.JarFile
 import javax.lang.model.element.Modifier
 
-class ApiUseGenerator : CliktCommand() {
+class ApiCallerGenerator : CliktCommand() {
     private val jar: List<String> by option(help = "jar with APIs").multiple()
     private val output: String by option(help = "output directory for generated classes").required()
 
@@ -136,5 +136,5 @@ class ApiUseGenerator : CliktCommand() {
 }
 
 fun main(args: Array<String>) {
-    ApiUseGenerator().main(args)
+    ApiCallerGenerator().main(args)
 }

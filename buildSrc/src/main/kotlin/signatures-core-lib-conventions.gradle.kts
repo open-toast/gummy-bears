@@ -34,8 +34,8 @@ plugins {
 
 tasks.register<TypeDescriptorsTask>(Tasks.signaturesCoreLib) {
     classpath = configurations.getByName(Configurations.GENERATOR)
-    sdk = configurations.getByName(Configurations.SDK)
-    desugar = configurations.getByName(Configurations.STANDARD_SUGAR) + configurations.getByName(Configurations.CORE_LIB_SUGAR)
+    sdk = configurations.getByName(Configurations.ANDROID_SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_DESUGARED) + configurations.getByName(Configurations.CORE_LIB)
     animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signaturesCoreLib)
     expediterOutput = project.layout.buildDirectory.file(Outputs.expediterCoreLib)
     outputDescription = "Android API ${project.name} with Core Library Desugaring 1.x"
@@ -43,8 +43,8 @@ tasks.register<TypeDescriptorsTask>(Tasks.signaturesCoreLib) {
 
 tasks.register<TypeDescriptorsTask>(Tasks.signaturesCoreLib2) {
     classpath = configurations.getByName(Configurations.GENERATOR)
-    sdk = configurations.getByName(Configurations.SDK)
-    desugar = configurations.getByName(Configurations.STANDARD_SUGAR) + configurations.getByName(Configurations.CORE_LIB_SUGAR_2)
+    sdk = configurations.getByName(Configurations.ANDROID_SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_DESUGARED) + configurations.getByName(Configurations.CORE_LIB_2)
     animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signaturesCoreLib2)
     expediterOutput = project.layout.buildDirectory.file(Outputs.expediterCoreLib2)
     outputDescription = "Android API ${project.name} with Core Library Desugaring 2.x"

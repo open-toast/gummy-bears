@@ -29,15 +29,15 @@ rootProject.name = "gummybears"
 include(
     "signature-builder",
     "signature-transformer",
-    "sugar:basic",
-    "sugar:unsafe",
-    "sugar:unsafe24",
+    "desugared-signatures:basic",
+    "desugared-signatures:unsafe",
+    "desugared-signatures:unsafe24",
+    "test:base-api-tests",
     "test:d8-runner",
-    "test:api-treadmill",
-    "test:bad-sugar",
-    "test:bad-sugar-treadmill",
-    "test:basic-sugar-treadmill",
-    "test:base-api-tests"
+    "test:api-use-generator",
+    "test:generated-callers:basic",
+    "test:generated-callers:invalid",
+    "test:invalid-desugared-signatures"
 )
 
 (19..35).forEach {
