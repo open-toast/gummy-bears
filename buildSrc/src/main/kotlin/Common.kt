@@ -14,12 +14,12 @@
  */
 
 object Configurations {
-    const val GENERATOR = "generator"
-    const val SDK = "sdk"
-    const val STANDARD_SUGAR = "sugar"
-    const val EXERCISE_STANDARD_SUGAR = "exerciseStandardSugar"
-    const val CORE_LIB_SUGAR = "coreLibSugar"
-    const val CORE_LIB_SUGAR_2 = "coreLibSugar_2"
+    const val GENERATOR = "_generator_"
+    const val ANDROID_SDK = "_android_sdk_"
+    const val STANDARD_DESUGARED = "_standard_desugared_signatures_"
+    const val GENERATED_CALLERS = "_generated_callers_"
+    const val CORE_LIB = "_core_lib_"
+    const val CORE_LIB_2 = "_core_lib_2_"
 }
 
 object Publications {

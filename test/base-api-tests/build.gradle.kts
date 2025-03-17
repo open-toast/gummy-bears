@@ -20,19 +20,12 @@ plugins {
 sdk("platform-24:r02")
 
 dependencies {
-    add(Configurations.STANDARD_SUGAR, project(":test:bad-sugar"))
-    add(Configurations.EXERCISE_STANDARD_SUGAR, project(":test:bad-sugar-treadmill"))
+    add(Configurations.STANDARD_DESUGARED, project(":test:invalid-desugared-signatures"))
+    add(Configurations.GENERATED_CALLERS, project(":test:generated-callers:invalid"))
 
     implementation(platform(libs.junit.bom))
     implementation(libs.junit.jupiter.api)
     implementation(project(":test:d8-runner"))
     implementation(libs.strikt.core)
     implementation(libs.expediter.core)
-}
-
-tasks {
-    test {
-        dependsOn(":test:bad-sugar:build")
-        dependsOn(":test:bad-sugar-treadmill:build")
-    }
 }

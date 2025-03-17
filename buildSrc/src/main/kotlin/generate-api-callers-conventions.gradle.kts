@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
@@ -26,23 +25,20 @@ plugins {
 }
 
 configurations {
-    create(Configurations.STANDARD_SUGAR)
+    create(Configurations.STANDARD_DESUGARED)
     create(Configurations.GENERATOR)
 }
 
 dependencies {
-    add(Configurations.GENERATOR, project(":test:api-treadmill"))
+    add(Configurations.GENERATOR, project(":test:api-use-generator"))
 }
 
-tasks.register<JavaExec>("generateClasses") {
-    classpath = configurations.getByName(Configurations.GENERATOR).asFileTree
-    mainClass.set("com.toasttab.android.ApiUseGeneratorKt")
-    args = listOf(
-        "--output",
-        layout.buildDirectory.file("generated-sources/java/main").path
-    ) + configurations.getByName(Configurations.STANDARD_SUGAR).flatMap {
-        listOf("--jar", it.path)
-    }
+val generatedDir = layout.buildDirectory.dir("generated-sources/java/main")
+
+tasks.register<ApiCallerGeneratorTask>("generateClasses") {
+    generatorClasspath = configurations.getByName(Configurations.GENERATOR)
+    sugar = configurations.getByName(Configurations.STANDARD_DESUGARED)
+    output = generatedDir
 }
 
 tasks.named<JavaCompile>("compileJava") {
@@ -50,5 +46,5 @@ tasks.named<JavaCompile>("compileJava") {
 }
 
 sourceSets.main {
-    java.srcDir(layout.buildDirectory.file("generated-sources/java/main"))
+    java.srcDir(generatedDir)
 }

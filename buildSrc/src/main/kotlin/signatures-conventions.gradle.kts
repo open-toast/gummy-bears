@@ -14,14 +14,11 @@
  */
 
 import gradle.kotlin.dsl.accessors._e054d9723d982fdb55b1e388b8ab0cbf.test
-import gradle.kotlin.dsl.accessors._e054d9723d982fdb55b1e388b8ab0cbf.testRuntimeOnly
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.project
-import org.gradle.kotlin.dsl.register
-import org.gradle.kotlin.dsl.repositories
 
 plugins {
     id("publishing-conventions")
@@ -32,19 +29,19 @@ group = "com.toasttab.android"
 version = rootProject.version
 
 configurations {
-    create(Configurations.CORE_LIB_SUGAR).isTransitive = false
-    create(Configurations.CORE_LIB_SUGAR_2).isTransitive = false
+    create(Configurations.CORE_LIB).isTransitive = false
+    create(Configurations.CORE_LIB_2).isTransitive = false
 }
 
 dependencies {
-    add(Configurations.STANDARD_SUGAR, project(":sugar:basic"))
-    add(Configurations.STANDARD_SUGAR, project(":sugar:unsafe"))
+    add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:basic"))
+    add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe"))
     if (project.name.toInt() >= 24) {
-        add(Configurations.STANDARD_SUGAR, project(":sugar:unsafe24"))
+        add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe24"))
     }
-    add(Configurations.EXERCISE_STANDARD_SUGAR, project(":test:basic-sugar-treadmill"))
-    add(Configurations.CORE_LIB_SUGAR, libs.desugarJdkLibs)
-    add(Configurations.CORE_LIB_SUGAR_2, libs.desugarJdkLibs2)
+    add(Configurations.GENERATED_CALLERS, project(":test:generated-callers:basic"))
+    add(Configurations.CORE_LIB, libs.desugarJdkLibs)
+    add(Configurations.CORE_LIB_2, libs.desugarJdkLibs2)
 
     testImplementation(project(":test:d8-runner"))
     testImplementation(project(":test:base-api-tests"))
@@ -71,8 +68,5 @@ tasks {
     test {
         fileProperty("platformDescriptors", layout.buildDirectory.file(Outputs.expediter))
         fileProperty("signatures", layout.buildDirectory.file(Outputs.signatures))
-
-        dependsOn(":sugar:basic:build")
-        dependsOn(":test:basic-sugar-treadmill:build")
     }
 }

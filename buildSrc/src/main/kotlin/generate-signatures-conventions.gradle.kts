@@ -22,10 +22,10 @@ repositories {
 }
 
 configurations {
-    create(Configurations.SDK)
+    create(Configurations.ANDROID_SDK)
     create(Configurations.GENERATOR)
-    create(Configurations.STANDARD_SUGAR)
-    create(Configurations.EXERCISE_STANDARD_SUGAR)
+    create(Configurations.STANDARD_DESUGARED)
+    create(Configurations.GENERATED_CALLERS)
 }
 
 dependencies {
@@ -40,8 +40,8 @@ dependencies {
 
 tasks.register<TypeDescriptorsTask>(Tasks.signatures) {
     classpath = configurations.getByName(Configurations.GENERATOR)
-    sdk = configurations.getByName(Configurations.SDK)
-    desugar = configurations.getByName(Configurations.STANDARD_SUGAR)
+    sdk = configurations.getByName(Configurations.ANDROID_SDK)
+    desugar = configurations.getByName(Configurations.STANDARD_DESUGARED)
     animalSnifferOutput = project.layout.buildDirectory.file(Outputs.signatures)
     expediterOutput = project.layout.buildDirectory.file(Outputs.expediter)
     outputDescription = "Android API ${project.name}"
@@ -51,8 +51,8 @@ tasks {
     test {
         useJUnitPlatform()
 
-        filesProperty("sdk", configurations.named(Configurations.SDK))
-        filesProperty("jar", configurations.named(Configurations.EXERCISE_STANDARD_SUGAR))
+        filesProperty("sdk", configurations.named(Configurations.ANDROID_SDK))
+        filesProperty("jar", configurations.named(Configurations.GENERATED_CALLERS))
 
         dependsOn(Tasks.signatures)
     }
