@@ -37,6 +37,7 @@ include(
     "test:api-use-generator",
     "test:generated-callers:basic",
     "test:generated-callers:invalid",
+    "test:generated-callers:unsafe",
     "test:invalid-desugared-signatures"
 )
 
