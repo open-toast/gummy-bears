@@ -95,17 +95,20 @@ class ApiCallerGenerator : CliktCommand() {
             .build()
     }
 
-    private fun generateStubCallers(cls: ClassFile): JavaFile {
-        val className = cls.name.replace(".", "_")
+    private fun generateStubCallers(name: String, classes: Collection<ClassFile>): JavaFile {
+        val className = name.replace(".", "_")
 
-        val calleeType = fqnToClassName(DesugarClassNameTransformer.transform(cls.name))
+        val calleeType = fqnToClassName(DesugarClassNameTransformer.transform(name))
 
         val builder = TypeSpec.classBuilder(className).addModifiers(Modifier.PUBLIC, Modifier.FINAL)
 
-        if (cls.methods.filter { it.isMethod }.any {
-            builder.addStubCaller(it, calleeType)
+        val methods = classes.flatMap { it.methods.filter { it.isMethod } }
+
+        for (method in methods) {
+            builder.addMethod(generateMethodStubCaller(method, calleeType))
         }
-        ) {
+
+        if (methods.any { !javassist.Modifier.isStatic(it.accessFlags) }) {
             builder.addField(
                 FieldSpec.builder(calleeType, "callee").addModifiers(Modifier.FINAL, Modifier.PRIVATE).build()
             ).addMethod(
@@ -119,18 +122,13 @@ class ApiCallerGenerator : CliktCommand() {
         return JavaFile.builder("com.toasttab.android.stub", builder.build()).build()
     }
 
-    private fun TypeSpec.Builder.addStubCaller(method: MethodInfo, calleeType: TypeName): Boolean {
-        addMethod(generateMethodStubCaller(method, calleeType))
-        return !javassist.Modifier.isStatic(method.accessFlags)
-    }
-
-    private fun write(cls: ClassFile, output: File) {
-        generateStubCallers(cls).writeTo(output)
+    private fun write(name: String, classes: Collection<ClassFile>, output: File) {
+        generateStubCallers(name, classes).writeTo(output)
     }
 
     override fun run() {
-        jar.flatMap { listClasses(File(it)) }.forEach {
-            write(it, File(output))
+        jar.flatMap { listClasses(File(it)) }.groupBy { it.name }.forEach { (name, classes) ->
+            write(name, classes, File(output))
         }
     }
 }
