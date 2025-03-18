@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Toast Inc.
+ * Copyright (c) 2025. Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,5 +19,5 @@ plugins {
 
 dependencies {
     add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe"))
-//    add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe24"))
+    add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe24"))
 }
