@@ -53,6 +53,8 @@ include(
     "test:generated-callers:invalid",
     "test:generated-callers:unsafe",
     "test:invalid-desugared-signatures",
+    "test:generated-callers:unsafe",
+    "test:invalid-desugared-signatures",
     "test:instrumented"
 )
 
