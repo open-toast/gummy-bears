@@ -13,6 +13,9 @@ nexus = "2.0.0"
 protobuf = "4.30.0"
 strikt = "0.34.1"
 
+junit4 = "4.13.2"
+androidxTest = "1.6.2"
+
 [libraries]
 animalSniffer = { module = "org.codehaus.mojo:animal-sniffer", version.ref = "animalSniffer" }
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
@@ -29,6 +32,12 @@ junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 strikt-core = { module = "io.strikt:strikt-core", version.ref = "strikt" }
 
+junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+androidx-test = { module = "androidx.test:runner", version.ref = "androidxTest"}
+
 spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.11.0" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 nexus-publish = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }
+
+[plugins]
+android-library = { id = "com.android.library", version = "8.8.2"}

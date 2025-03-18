@@ -13,6 +13,20 @@
  * limitations under the License.
  */
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+    }
+}
+
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -38,7 +52,8 @@ include(
     "test:generated-callers:basic",
     "test:generated-callers:invalid",
     "test:generated-callers:unsafe",
-    "test:invalid-desugared-signatures"
+    "test:invalid-desugared-signatures",
+    "test:instrumented"
 )
 
 (19..35).forEach {

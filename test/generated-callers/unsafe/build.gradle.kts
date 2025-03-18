@@ -19,5 +19,5 @@ plugins {
 
 dependencies {
     add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe"))
-//    add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe24"))
+    add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe24"))
 }
