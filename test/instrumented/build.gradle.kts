@@ -18,7 +18,7 @@ plugins {
 }
 
 android {
-    namespace = "com.toasttab.desugartestapp"
+    namespace = "com.toasttab.android.test"
     compileSdk = 35
 
     defaultConfig {
