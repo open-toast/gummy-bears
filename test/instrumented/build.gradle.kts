@@ -30,7 +30,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":test:generated-callers:basic"))
     implementation(project(":test:generated-callers:unsafe"))
+    androidTestImplementation(project(":test:generated-callers:basic"))
     androidTestImplementation(project(":test:generated-callers:unsafe"))
     androidTestImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test)
