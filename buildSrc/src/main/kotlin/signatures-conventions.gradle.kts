@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import gradle.kotlin.dsl.accessors._e054d9723d982fdb55b1e388b8ab0cbf.test
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
