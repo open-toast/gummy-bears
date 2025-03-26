@@ -35,7 +35,7 @@ strikt-core = { module = "io.strikt:strikt-core", version.ref = "strikt" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-test = { module = "androidx.test:runner", version.ref = "androidxTest"}
 
-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.11.0" }
+spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.2" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 nexus-publish = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }
 
