@@ -33,7 +33,7 @@ This project also provides _experimental_ sets of signatures for APIs available 
 
 Two versions of core library desugaring signatures are provided: v1, which requires `desugar_jdk_libs:1.2.3` or above and is published under the `coreLib`
 classifier, and v2, which requires `desugar_jdk_libs:2.0.4` and is published under the `coreLib2` classifier. Note that `desugar_jdk_libs` version `2`
-comes in three flavors: minimal, nio, and full. Currently, only the full flavor is supported.
+comes in three flavors: [minimal](https://developer.android.com/studio/write/java11-minimal-support-table), [default](https://developer.android.com/studio/write/java11-default-support-table), and [nio](https://developer.android.com/studio/write/java11-nio-support-table). Currently, only the default flavor is supported.
 
 Using signatures with core library desugaring to validate a library effectively implies that all Android projects consuming the library
 must have core library desugaring enabled at build time and bring in the appropriate version of `desugar_jdk_libs`.
