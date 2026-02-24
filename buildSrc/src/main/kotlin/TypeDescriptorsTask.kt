@@ -23,9 +23,13 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.process.ExecOperations
+import javax.inject.Inject
 
 @CacheableTask
-abstract class TypeDescriptorsTask : DefaultTask() {
+abstract class TypeDescriptorsTask @Inject constructor(
+    private val exec: ExecOperations
+) : DefaultTask() {
     @Classpath
     lateinit var classpath: FileCollection
 
@@ -48,7 +52,7 @@ abstract class TypeDescriptorsTask : DefaultTask() {
 
     @TaskAction
     fun exec() {
-        project.javaexec {
+        exec.javaexec {
             mainClass.set("com.toasttab.android.descriptors.AndroidTypeDescriptorBuilderKt")
             classpath = this@TypeDescriptorsTask.classpath
 
