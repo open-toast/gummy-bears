@@ -20,25 +20,27 @@ import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 
 class TransformedTypeDescriptor private constructor(
     private val type: TypeDescriptor,
-    private val newName: String
+    private val newName: String,
 ) {
     constructor(type: TypeDescriptor) : this(type, transform(type.name))
 
-    val priority = if (type.name == newName) {
-        0
-    } else {
-        1
-    }
-
-    fun toType() = if (type.name == newName) {
-        type
-    } else {
-        type.copy {
-            name = newName
-            superName = superName?.let(::transform)
-            interfaces = type.interfaces.map(::transform)
+    val priority =
+        if (type.name == newName) {
+            0
+        } else {
+            1
         }
-    }
+
+    fun toType() =
+        if (type.name == newName) {
+            type
+        } else {
+            type.copy {
+                name = newName
+                superName = superName?.let(::transform)
+                interfaces = type.interfaces.map(::transform)
+            }
+        }
 
     companion object {
         private fun transform(name: String) = DesugarClassNameTransformer.transform(name, '/')

@@ -39,19 +39,20 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
     private val expediterOutput: String by option(help = "expediter-output").required()
 
     override fun run() {
-        val signatures = MutableTypeDescriptors(
-            ClasspathScanner(
-                listOf(
-                    ClassfileSource(File(sdk), ClassfileSourceType.UNKNOWN)
-                )
-            ).scan { stream, _ -> TypeParsers.typeDescriptor(stream) }
-        )
+        val signatures =
+            MutableTypeDescriptors(
+                ClasspathScanner(
+                    listOf(
+                        ClassfileSource(File(sdk), ClassfileSourceType.UNKNOWN),
+                    ),
+                ).scan { stream, _ -> TypeParsers.typeDescriptor(stream) },
+            )
 
         for (more in desugared) {
             ClasspathScanner(
                 listOf(
-                    ClassfileSource(File(more), ClassfileSourceType.UNKNOWN)
-                )
+                    ClassfileSource(File(more), ClassfileSourceType.UNKNOWN),
+                ),
             ).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
                 .sortedBy { it.priority }
                 .forEach {

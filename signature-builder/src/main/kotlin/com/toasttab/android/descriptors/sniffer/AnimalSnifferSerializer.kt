@@ -21,7 +21,10 @@ import java.io.OutputStream
 import java.util.zip.GZIPOutputStream
 
 object AnimalSnifferSerializer {
-    fun serialize(classes: Collection<Clazz>, out: OutputStream) {
+    fun serialize(
+        classes: Collection<Clazz>,
+        out: OutputStream,
+    ) {
         ObjectOutputStream(GZIPOutputStream(out)).use {
             for (cls in classes) {
                 it.writeObject(cls)

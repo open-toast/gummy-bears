@@ -65,14 +65,18 @@ class ApiCallerGenerator : CliktCommand() {
 
     private fun fqnToClassName(fqn: String) = ClassName.get(fqn.substringBeforeLast("."), fqn.substringAfterLast(".").replace('$', '.'))
 
-    private fun generateMethodStubCaller(method: MethodInfo, calleeType: TypeName): MethodSpec {
+    private fun generateMethodStubCaller(
+        method: MethodInfo,
+        calleeType: TypeName,
+    ): MethodSpec {
         val paramTypes = Descriptor.getParameterTypes(method.descriptor, ClassPool.getDefault())
         val returnType = Descriptor.getReturnType(method.descriptor, ClassPool.getDefault())
 
         val params = paramTypes.indices.joinToString { "arg$it" }
         val instruction = if (returnType == CtClass.voidType) "" else "return "
 
-        return MethodSpec.methodBuilder(method.name)
+        return MethodSpec
+            .methodBuilder(method.name)
             .addModifiers(Modifier.PUBLIC)
             .addException(Exception::class.java)
             .returns(returnType.typeName())
@@ -84,18 +88,20 @@ class ApiCallerGenerator : CliktCommand() {
                 if (javassist.Modifier.isStatic(method.accessFlags)) {
                     addCode(
                         "$instruction \$T.${method.name}($params);",
-                        calleeType
+                        calleeType,
                     )
                 } else {
                     addCode(
-                        "$instruction callee.${method.name}($params);"
+                        "$instruction callee.${method.name}($params);",
                     )
                 }
-            }
-            .build()
+            }.build()
     }
 
-    private fun generateStubCallers(name: String, classes: Collection<ClassFile>): JavaFile {
+    private fun generateStubCallers(
+        name: String,
+        classes: Collection<ClassFile>,
+    ): JavaFile {
         val className = name.replace(".", "_")
 
         val calleeType = fqnToClassName(DesugarClassNameTransformer.transform(name))
@@ -109,20 +115,27 @@ class ApiCallerGenerator : CliktCommand() {
         }
 
         if (methods.any { !javassist.Modifier.isStatic(it.accessFlags) }) {
-            builder.addField(
-                FieldSpec.builder(calleeType, "callee").addModifiers(Modifier.FINAL, Modifier.PRIVATE).build()
-            ).addMethod(
-                MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC)
-                    .addParameter(calleeType, "callee")
-                    .addCode("this.callee = callee;")
-                    .build()
-            )
+            builder
+                .addField(
+                    FieldSpec.builder(calleeType, "callee").addModifiers(Modifier.FINAL, Modifier.PRIVATE).build(),
+                ).addMethod(
+                    MethodSpec
+                        .constructorBuilder()
+                        .addModifiers(Modifier.PUBLIC)
+                        .addParameter(calleeType, "callee")
+                        .addCode("this.callee = callee;")
+                        .build(),
+                )
         }
 
         return JavaFile.builder("com.toasttab.android.stub", builder.build()).build()
     }
 
-    private fun write(name: String, classes: Collection<ClassFile>, output: File) {
+    private fun write(
+        name: String,
+        classes: Collection<ClassFile>,
+        output: File,
+    ) {
         generateStubCallers(name, classes).writeTo(output)
     }
 

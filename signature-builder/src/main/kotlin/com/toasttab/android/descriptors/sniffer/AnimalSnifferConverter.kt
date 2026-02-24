@@ -20,12 +20,16 @@ import protokt.v1.toasttab.expediter.v1.MemberDescriptor
 import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 
 object AnimalSnifferConverter {
-    fun convert(type: TypeDescriptor) = Clazz(
-        type.name,
-        (type.fields.map(AnimalSnifferConverter::fieldSignature) + type.methods.map(AnimalSnifferConverter::methodSignature)).toHashSet(),
-        type.superName,
-        type.interfaces.toTypedArray()
-    )
+    fun convert(type: TypeDescriptor) =
+        Clazz(
+            type.name,
+            (
+                type.fields.map(AnimalSnifferConverter::fieldSignature) +
+                    type.methods.map(AnimalSnifferConverter::methodSignature)
+            ).toHashSet(),
+            type.superName,
+            type.interfaces.toTypedArray(),
+        )
 
     private fun fieldSignature(descriptor: MemberDescriptor) = "${descriptor.ref.name}#${descriptor.ref.signature}"
 

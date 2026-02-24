@@ -17,10 +17,13 @@ package com.toasttab.android.descriptors
 
 import protokt.v1.toasttab.expediter.v1.TypeDescriptor
 
-class MutableTypeDescriptors(initial: Collection<TypeDescriptor>) {
-    private val types = hashMapOf<String, TypeDescriptor>().apply {
-        initial.associateByTo(this) { it.name }
-    }
+class MutableTypeDescriptors(
+    initial: Collection<TypeDescriptor>,
+) {
+    private val types =
+        hashMapOf<String, TypeDescriptor>().apply {
+            initial.associateByTo(this) { it.name }
+        }
 
     fun add(type: TypeDescriptor) {
         types.merge(type.name, type) { oldType, newType ->

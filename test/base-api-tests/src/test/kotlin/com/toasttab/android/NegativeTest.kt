@@ -31,15 +31,17 @@ open class NegativeTest : BaseApiTest() {
         expectThat(issues).containsExactly(
             Issue.MissingMember(
                 caller = "com/toasttab/android/stub/desugar_java_lang_DesugarClass",
-                member = MemberAccess.MethodAccess(
-                    targetType = "java/lang/Class",
-                    ref = MemberSymbolicReference(
-                        name = "isRecord",
-                        signature = "()Z"
+                member =
+                    MemberAccess.MethodAccess(
+                        targetType = "java/lang/Class",
+                        ref =
+                            MemberSymbolicReference(
+                                name = "isRecord",
+                                signature = "()Z",
+                            ),
+                        accessType = MethodAccessType.VIRTUAL,
                     ),
-                    accessType = MethodAccessType.VIRTUAL
-                )
-            )
+            ),
         )
     }
 }

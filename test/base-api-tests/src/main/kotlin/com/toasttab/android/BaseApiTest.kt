@@ -52,21 +52,22 @@ open class BaseApiTest {
      * This should return calls to APIs not present in the SDK that have not been desugared by d8.
      * Note that we are explicitly excluding Unsafe because it's not explicitly present in the Android SDKs.
      */
-    fun runExpediter(result: D8Result): Set<Issue> {
-        return Expediter(
+    fun runExpediter(result: D8Result): Set<Issue> =
+        Expediter(
             ignore = Ignore.TargetStartsWith("sun/misc/Unsafe"),
-            appTypes = ClasspathApplicationTypesProvider(
-                listOf(
-                    ClassfileSource(result.output.toFile(), ClassfileSourceType.UNKNOWN)
-                )
-            ),
-            platformTypeProvider = InMemoryPlatformTypeProvider(
-                ClasspathScanner(listOf(ClassfileSource(result.sdk.toFile(), ClassfileSourceType.UNKNOWN)))
-                    .scan { stream, s -> TypeParsers.typeDescriptor(stream) }
-            ),
-            rootSelector = RootSelector.All
+            appTypes =
+                ClasspathApplicationTypesProvider(
+                    listOf(
+                        ClassfileSource(result.output.toFile(), ClassfileSourceType.UNKNOWN),
+                    ),
+                ),
+            platformTypeProvider =
+                InMemoryPlatformTypeProvider(
+                    ClasspathScanner(listOf(ClassfileSource(result.sdk.toFile(), ClassfileSourceType.UNKNOWN)))
+                        .scan { stream, s -> TypeParsers.typeDescriptor(stream) },
+                ),
+            rootSelector = RootSelector.All,
         ).findIssues()
-    }
 
     fun testDesugaring(apiLevel: Int) {
         val result = runD8(apiLevel)
