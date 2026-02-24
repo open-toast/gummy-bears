@@ -26,7 +26,7 @@ import java.nio.file.Path
 class D8Result(
     val output: Path,
     val sdk: Path,
-    val desugaringWarnings: List<String>
+    val desugaringWarnings: List<String>,
 )
 
 class DesugarWarningCollector : DiagnosticsHandler {
@@ -46,17 +46,18 @@ object D8Runner {
         apiLevel: Int,
         sdk: Path,
         jar: Path,
-        output: Path
+        output: Path,
     ): D8Result {
         val collector = DesugarWarningCollector()
 
         D8.run(
-            D8Command.builder(collector)
+            D8Command
+                .builder(collector)
                 .addLibraryFiles(sdk)
                 .addProgramFiles(jar)
                 .setOutput(output, OutputMode.ClassFile)
                 .setMinApiLevel(apiLevel)
-                .build()
+                .build(),
         )
 
         return D8Result(output, sdk, collector.warnings())

@@ -58,13 +58,14 @@ class Api19TypeDescriptorsTest {
         expectThat(integer).isNotNull().and {
             get { methods }.contains(
                 MemberDescriptor {
-                    ref = SymbolicReference {
-                        name = "hashCode"
-                        signature = "(I)I"
-                    }
+                    ref =
+                        SymbolicReference {
+                            name = "hashCode"
+                            signature = "(I)I"
+                        }
                     protection = AccessProtection.PUBLIC
                     declaration = AccessDeclaration.STATIC
-                }
+                },
             )
         }
     }
@@ -76,13 +77,14 @@ class Api19TypeDescriptorsTest {
         expectThat(stream).isNotNull().and {
             get { methods }.contains(
                 MemberDescriptor {
-                    ref = SymbolicReference {
-                        name = "count"
-                        signature = "()J"
-                    }
+                    ref =
+                        SymbolicReference {
+                            name = "count"
+                            signature = "()J"
+                        }
                     protection = AccessProtection.PUBLIC
                     declaration = AccessDeclaration.INSTANCE
-                }
+                },
             )
         }
     }
@@ -97,13 +99,14 @@ class Api19TypeDescriptorsTest {
         expectThat(decoder).isNotNull().and {
             get { methods }.contains(
                 MemberDescriptor {
-                    ref = SymbolicReference {
-                        name = "decode"
-                        signature = "([B)[B"
-                    }
+                    ref =
+                        SymbolicReference {
+                            name = "decode"
+                            signature = "([B)[B"
+                        }
                     protection = AccessProtection.PUBLIC
                     declaration = AccessDeclaration.INSTANCE
-                }
+                },
             )
         }
     }
@@ -168,13 +171,14 @@ class Api19TypeDescriptorsTest {
         expectThat(integer).isNotNull().and {
             get { methods }.contains(
                 MemberDescriptor {
-                    ref = SymbolicReference {
-                        name = "getInt"
-                        signature = "(Ljava/lang/Object;J)I"
-                    }
+                    ref =
+                        SymbolicReference {
+                            name = "getInt"
+                            signature = "(Ljava/lang/Object;J)I"
+                        }
                     declaration = AccessDeclaration.INSTANCE
                     protection = AccessProtection.PUBLIC
-                }
+                },
             )
         }
     }
@@ -186,13 +190,14 @@ class Api19TypeDescriptorsTest {
         expectThat(integer).isNotNull().and {
             get { methods }.doesNotContain(
                 MemberDescriptor {
-                    ref = SymbolicReference {
-                        name = "storeFence"
-                        signature = "()V"
-                    }
+                    ref =
+                        SymbolicReference {
+                            name = "storeFence"
+                            signature = "()V"
+                        }
                     declaration = AccessDeclaration.INSTANCE
                     protection = AccessProtection.PUBLIC
-                }
+                },
             )
         }
     }

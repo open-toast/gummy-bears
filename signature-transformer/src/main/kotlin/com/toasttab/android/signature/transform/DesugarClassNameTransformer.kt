@@ -16,16 +16,22 @@
 package com.toasttab.android.signature.transform
 
 object DesugarClassNameTransformer {
-    fun transform(name: String, delimiter: Char = '.'): String {
-        return removeClassPrefix(removePackagePrefix(name, delimiter), delimiter)
+    fun transform(
+        name: String,
+        delimiter: Char = '.',
+    ): String = removeClassPrefix(removePackagePrefix(name, delimiter), delimiter)
+
+    private fun removePackagePrefix(
+        name: String,
+        delimiter: Char,
+    ) = name.removePrefix("desugar$delimiter")
+
+    private fun removeClassPrefix(
+        name: String,
+        delimiter: Char,
+    ) = if (name.substringAfterLast(delimiter).startsWith("Desugar")) {
+        name.substringBeforeLast(delimiter) + delimiter + name.substringAfterLast("${delimiter}Desugar")
+    } else {
+        name
     }
-
-    private fun removePackagePrefix(name: String, delimiter: Char) = name.removePrefix("desugar$delimiter")
-
-    private fun removeClassPrefix(name: String, delimiter: Char) =
-        if (name.substringAfterLast(delimiter).startsWith("Desugar")) {
-            name.substringBeforeLast(delimiter) + delimiter + name.substringAfterLast("${delimiter}Desugar")
-        } else {
-            name
-        }
 }
