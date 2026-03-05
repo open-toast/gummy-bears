@@ -33,12 +33,16 @@ import java.util.zip.GZIPOutputStream
 class AndroidTypeDescriptorBuilder : CliktCommand() {
     private val sdk: String by option(help = "SDK jar").required()
     private val desugared: List<String> by option(help = "desugared API jar(s)").multiple()
+    private val desugaredCorelib: List<String> by option("--desugared-corelib", help = "coreLib desugared API jar(s), filtered by lint file").multiple()
+    private val lintFile: String? by option("--lint-file", help = "desugared APIs lint file to filter coreLib classes")
 
     private val description: String by option(help = "description").required()
     private val animalSnifferOutput: String by option(help = "animal-sniffer-output").required()
     private val expediterOutput: String by option(help = "expediter-output").required()
 
     override fun run() {
+        val filter = lintFile?.let { LintFileFilter(File(it)) }
+
         val signatures =
             MutableTypeDescriptors(
                 ClasspathScanner(
@@ -48,7 +52,9 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
                 ).scan { stream, _ -> TypeParsers.typeDescriptor(stream) },
             )
 
-        for (more in desugared) {
+        for (more in desugared + desugaredCorelib) {
+            val applyFilter = filter != null && more in desugaredCorelib
+
             ClasspathScanner(
                 listOf(
                     ClassfileSource(File(more), ClassfileSourceType.UNKNOWN),
@@ -56,7 +62,11 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
             ).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
                 .sortedBy { it.priority }
                 .forEach {
-                    signatures.add(it.toType())
+                    val type = it.toType()
+                    val filtered = if (applyFilter) filter.filter(type) else type
+                    if (filtered != null) {
+                        signatures.add(filtered)
+                    }
                 }
         }
 

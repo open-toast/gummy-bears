@@ -4,7 +4,7 @@ animalSniffer = "1.27"
 clikt = "5.1.0"
 expediter = "0.0.23"
 desugarJdkLibs = "1.2.3"
-desugarJdkLibs2 = "2.0.4"
+desugarJdkLibs2 = "2.1.5"
 r8 = "8.13.19"
 javapoet = "0.11.0"
 javassist = "3.30.2-GA"
@@ -21,6 +21,7 @@ animalSniffer = { module = "org.codehaus.mojo:animal-sniffer", version.ref = "an
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 desugarJdkLibs2 = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs2" }
+desugarJdkLibsConfig2 = { module = "com.android.tools:desugar_jdk_libs_configuration", version.ref = "desugarJdkLibs2" }
 expediter-core = { module = "com.toasttab.expediter:core", version.ref = "expediter" }
 r8 = { module = "com.android.tools:r8", version.ref = "r8" }
 javapoet = { module = "com.palantir.javapoet:javapoet", version.ref = "javapoet" }
