@@ -44,7 +44,10 @@ tasks.register<TypeDescriptorsTask>(CoreLibTasks.signaturesCoreLib) {
 tasks.register<TypeDescriptorsTask>(CoreLibTasks.signaturesCoreLib2) {
     classpath = configurations.getByName(Configurations.GENERATOR)
     sdk = configurations.getByName(Configurations.ANDROID_SDK)
-    desugar = configurations.getByName(Configurations.STANDARD_DESUGARED) + configurations.getByName(Configurations.CORE_LIB_2)
+    desugar = configurations.getByName(Configurations.STANDARD_DESUGARED)
+    desugaredCorelib.set(configurations.getByName(Configurations.CORE_LIB_2))
+    coreLibConfigJar.set(configurations.getByName(Configurations.CORE_LIB_CONFIG_2))
+    apiLevel.set(project.name.toInt())
     animalSnifferOutput = project.layout.buildDirectory.file(CoreLibOutputs.signaturesCoreLib2)
     expediterOutput = project.layout.buildDirectory.file(CoreLibOutputs.expediterCoreLib2)
     outputDescription = "Android API ${project.name} with Core Library Desugaring 2.x"

@@ -13,12 +13,15 @@
  * limitations under the License.
  */
 
+import LintFileSelector.selectLintFile
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -41,6 +44,29 @@ abstract class TypeDescriptorsTask @Inject constructor(
     @PathSensitive(PathSensitivity.ABSOLUTE)
     lateinit var desugar: FileCollection
 
+    /**
+     * CoreLib desugared JAR(s) to be filtered by the lint file. Passed to the builder
+     * via `--desugared-corelib` so that the lint filter applies only to these JARs.
+     */
+    @get:InputFiles
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    abstract val desugaredCorelib: Property<FileCollection>
+
+    /**
+     * The `desugar_jdk_libs_configuration` JAR containing desugared API lint files.
+     * When set together with [apiLevel], the best lint file is extracted and passed
+     * to the builder to filter coreLib classes to only truly-desugared APIs.
+     */
+    @get:InputFiles
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val coreLibConfigJar: Property<FileCollection>
+
+    @get:Input
+    @get:Optional
+    abstract val apiLevel: Property<Int>
+
     @OutputFile
     lateinit var animalSnifferOutput: Any
 
@@ -52,21 +78,48 @@ abstract class TypeDescriptorsTask @Inject constructor(
 
     @TaskAction
     fun exec() {
+        val lintFile = if (coreLibConfigJar.isPresent && apiLevel.isPresent) {
+            selectLintFile(
+                coreLibConfigJar.get().singleFile,
+                apiLevel.get(),
+                temporaryDir
+            )
+        } else {
+            null
+        }
+
         exec.javaexec {
             mainClass.set("com.toasttab.android.descriptors.AndroidTypeDescriptorBuilderKt")
             classpath = this@TypeDescriptorsTask.classpath
 
-            args = listOf(
-                "--sdk",
-                sdk.singleFile.path,
-                "--animal-sniffer-output",
-                project.file(animalSnifferOutput).path,
-                "--expediter-output",
-                project.file(expediterOutput).path,
-                "--description",
-                outputDescription
-            ) + desugar.flatMap {
-                listOf("--desugared", it.path)
+            args = buildList {
+                addAll(
+                    listOf(
+                        "--sdk",
+                        sdk.singleFile.path,
+                        "--animal-sniffer-output",
+                        project.file(animalSnifferOutput).path,
+                        "--expediter-output",
+                        project.file(expediterOutput).path,
+                        "--description",
+                        outputDescription
+                    )
+                )
+                addAll(
+                    desugar.flatMap {
+                        listOf("--desugared", it.path)
+                    }
+                )
+                if (desugaredCorelib.isPresent) {
+                    addAll(
+                        desugaredCorelib.get().flatMap {
+                            listOf("--desugared-corelib", it.path)
+                        }
+                    )
+                }
+                if (lintFile != null) {
+                    addAll(listOf("--lint-file", lintFile.path))
+                }
             }
         }
     }
