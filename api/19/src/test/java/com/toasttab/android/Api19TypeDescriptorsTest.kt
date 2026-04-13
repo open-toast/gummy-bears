@@ -112,29 +112,39 @@ class Api19TypeDescriptorsTest {
     }
 
     /**
-     * Tests an edge case in merging type descriptors, where multiple versions of `LinuxFileSystemProvider` are provided,
-     * one extending `UnixFileSystemProvider` and another extending `FileSystem`
+     * Standard desugared methods (from DesugarInteger etc.) must be preserved in coreLib
+     * signatures even when lint file filtering is applied.
      */
     @Test
-    fun `core lib v2 LinuxFileSystemProvider extends UnixFileSystemProvider`() {
-        val provider = coreLibDescriptors2.types.find { it.name == "sun/nio/fs/LinuxFileSystemProvider" }
+    fun `core lib v2 type descriptors include Integer#hashCode(int)`() {
+        val integer = coreLibDescriptors2.types.find { it.name == "java/lang/Integer" }
 
-        expectThat(provider).isNotNull().and {
-            get { superName }.isEqualTo("sun/nio/fs/UnixFileSystemProvider")
+        expectThat(integer).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref =
+                        SymbolicReference {
+                            name = "hashCode"
+                            signature = "(I)I"
+                        }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.STATIC
+                },
+            )
         }
     }
 
     /**
-     * Tests an edge case in merging type descriptors, where multiple versions of `MimeTypesFileTypeDetector` are
-     * provided, one with the transformed `desugar/sun/nio/fs/DesugarAbstractFileTypeDetector` name
+     * Internal `sun/nio/fs` classes from the coreLib JAR are excluded by the lint file filter
+     * because they are not public desugared APIs.
      */
     @Test
-    fun `core lib v2 MimeTypesFileTypeDetector extends AbstractFileTypeDetector`() {
+    fun `core lib v2 excludes internal sun nio fs classes`() {
+        val provider = coreLibDescriptors2.types.find { it.name == "sun/nio/fs/LinuxFileSystemProvider" }
         val detector = coreLibDescriptors2.types.find { it.name == "sun/nio/fs/MimeTypesFileTypeDetector" }
 
-        expectThat(detector).isNotNull().and {
-            get { superName }.isEqualTo("sun/nio/fs/AbstractFileTypeDetector")
-        }
+        expectThat(provider).isEqualTo(null)
+        expectThat(detector).isEqualTo(null)
     }
 
     /**
