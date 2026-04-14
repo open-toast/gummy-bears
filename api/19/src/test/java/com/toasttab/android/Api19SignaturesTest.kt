@@ -38,10 +38,6 @@ class Api19SignaturesTest {
             signatures("signatures")
         }
 
-        private val coreLibSignatures by lazy {
-            signatures("coreLibSignatures")
-        }
-
         private val coreLibSignatures2 by lazy {
             signatures("coreLibSignatures2")
         }
@@ -75,8 +71,8 @@ class Api19SignaturesTest {
     }
 
     @Test
-    fun `core lib signatures include Stream#count()`() {
-        val stream = coreLibSignatures.find { it.name == "java/util/stream/Stream" }
+    fun `core lib v2 signatures include Stream#count()`() {
+        val stream = coreLibSignatures2.find { it.name == "java/util/stream/Stream" }
 
         expectThat(stream).isNotNull().and {
             get { signatures }.contains("count()J")
@@ -100,8 +96,8 @@ class Api19SignaturesTest {
     }
 
     @Test
-    fun `core lib signatures use HashSet`() {
-        expectThat(coreLibSignatures).all {
+    fun `core lib v2 signatures use HashSet`() {
+        expectThat(coreLibSignatures2).all {
             get { signatures }.isA<HashSet<*>>()
         }
     }

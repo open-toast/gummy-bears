@@ -17,28 +17,16 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.register
 
 private object CoreLibTasks {
-    const val signaturesCoreLib = "buildSignaturesCoreLib"
     const val signaturesCoreLib2 = "buildSignaturesCoreLib2"
 }
 
 private object CoreLibOutputs {
-    const val signaturesCoreLib = "signaturesCoreLib.sig"
-    const val expediterCoreLib = "platformCoreLib.expediter"
     const val signaturesCoreLib2 = "signaturesCoreLib-2.sig"
     const val expediterCoreLib2 = "platformCoreLib-2.expediter"
 }
 
 plugins {
     id("signatures-conventions")
-}
-
-tasks.register<TypeDescriptorsTask>(CoreLibTasks.signaturesCoreLib) {
-    classpath = configurations.getByName(Configurations.GENERATOR)
-    sdk = configurations.getByName(Configurations.ANDROID_SDK)
-    desugar = configurations.getByName(Configurations.STANDARD_DESUGARED) + configurations.getByName(Configurations.CORE_LIB)
-    animalSnifferOutput = project.layout.buildDirectory.file(CoreLibOutputs.signaturesCoreLib)
-    expediterOutput = project.layout.buildDirectory.file(CoreLibOutputs.expediterCoreLib)
-    outputDescription = "Android API ${project.name} with Core Library Desugaring 1.x"
 }
 
 tasks.register<TypeDescriptorsTask>(CoreLibTasks.signaturesCoreLib2) {
@@ -55,18 +43,6 @@ tasks.register<TypeDescriptorsTask>(CoreLibTasks.signaturesCoreLib2) {
 
 
 publishing.publications.named<MavenPublication>(Publications.MAIN) {
-    artifact(layout.buildDirectory.file(CoreLibOutputs.signaturesCoreLib)) {
-        extension = "signature"
-        classifier = "coreLib"
-        builtBy(tasks.named(CoreLibTasks.signaturesCoreLib))
-    }
-
-    artifact(layout.buildDirectory.file(CoreLibOutputs.expediterCoreLib)) {
-        extension = "expediter"
-        classifier = "coreLib"
-        builtBy(tasks.named(CoreLibTasks.signaturesCoreLib))
-    }
-
     artifact(layout.buildDirectory.file(CoreLibOutputs.signaturesCoreLib2)) {
         extension = "signature"
         classifier = "coreLib2"
@@ -82,13 +58,9 @@ publishing.publications.named<MavenPublication>(Publications.MAIN) {
 
 tasks {
     test {
-        fileProperty("platformCoreLibDescriptors", layout.buildDirectory.file(CoreLibOutputs.expediterCoreLib))
-        fileProperty("coreLibSignatures", layout.buildDirectory.file(CoreLibOutputs.signaturesCoreLib))
-
         fileProperty("platformCoreLibDescriptors2", layout.buildDirectory.file(CoreLibOutputs.expediterCoreLib2))
         fileProperty("coreLibSignatures2", layout.buildDirectory.file(CoreLibOutputs.signaturesCoreLib2))
 
-        dependsOn(CoreLibTasks.signaturesCoreLib)
         dependsOn(CoreLibTasks.signaturesCoreLib2)
     }
 }

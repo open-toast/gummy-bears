@@ -42,10 +42,6 @@ class Api19TypeDescriptorsTest {
             descriptors("platformDescriptors")
         }
 
-        private val coreLibDescriptors by lazy {
-            descriptors("platformCoreLibDescriptors")
-        }
-
         private val coreLibDescriptors2 by lazy {
             descriptors("platformCoreLibDescriptors2")
         }
@@ -71,8 +67,8 @@ class Api19TypeDescriptorsTest {
     }
 
     @Test
-    fun `core lib type descriptors include Stream#count()`() {
-        val stream = coreLibDescriptors.types.find { it.name == "java/util/stream/Stream" }
+    fun `core lib v2 type descriptors include Stream#count()`() {
+        val stream = coreLibDescriptors2.types.find { it.name == "java/util/stream/Stream" }
 
         expectThat(stream).isNotNull().and {
             get { methods }.contains(

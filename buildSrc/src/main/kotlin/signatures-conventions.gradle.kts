@@ -28,7 +28,6 @@ group = "com.toasttab.android"
 version = rootProject.version
 
 configurations {
-    create(Configurations.CORE_LIB).isTransitive = false
     create(Configurations.CORE_LIB_2).isTransitive = false
     create(Configurations.CORE_LIB_CONFIG_2).isTransitive = false
 }
@@ -40,7 +39,6 @@ dependencies {
         add(Configurations.STANDARD_DESUGARED, project(":desugared-signatures:unsafe24"))
     }
     add(Configurations.GENERATED_CALLERS, project(":test:generated-callers:basic"))
-    add(Configurations.CORE_LIB, libs.desugarJdkLibs)
     add(Configurations.CORE_LIB_2, libs.desugarJdkLibs2)
     add(Configurations.CORE_LIB_CONFIG_2, libs.desugarJdkLibsConfig2)
 
