@@ -71,6 +71,15 @@ class Api19SignaturesTest {
     }
 
     @Test
+    fun `core lib v2 signatures include Stream#count()`() {
+        val stream = coreLibSignatures2.find { it.name == "java/util/stream/Stream" }
+
+        expectThat(stream).isNotNull().and {
+            get { signatures }.contains("count()J")
+        }
+    }
+
+    @Test
     fun `core lib v2 signatures include Base64$Decoder#decode`() {
         val stream = coreLibSignatures2.find { it.name == "java/util/Base64\$Decoder" }
 
@@ -86,4 +95,10 @@ class Api19SignaturesTest {
         }
     }
 
+    @Test
+    fun `core lib v2 signatures use HashSet`() {
+        expectThat(coreLibSignatures2).all {
+            get { signatures }.isA<HashSet<*>>()
+        }
+    }
 }

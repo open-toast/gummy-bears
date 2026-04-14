@@ -66,6 +66,25 @@ class Api19TypeDescriptorsTest {
         }
     }
 
+    @Test
+    fun `core lib v2 type descriptors include Stream#count()`() {
+        val stream = coreLibDescriptors2.types.find { it.name == "java/util/stream/Stream" }
+
+        expectThat(stream).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref =
+                        SymbolicReference {
+                            name = "count"
+                            signature = "()J"
+                        }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.INSTANCE
+                },
+            )
+        }
+    }
+
     /**
      * java.util.Base64 is included in desugar_jdk_libs starting with version 2.0.4
      */
