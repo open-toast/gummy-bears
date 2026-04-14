@@ -18,7 +18,6 @@ object Configurations {
     const val ANDROID_SDK = "_android_sdk_"
     const val STANDARD_DESUGARED = "_standard_desugared_signatures_"
     const val GENERATED_CALLERS = "_generated_callers_"
-    const val CORE_LIB = "_core_lib_"
     const val CORE_LIB_2 = "_core_lib_2_"
     const val CORE_LIB_CONFIG_2 = "_core_lib_config_2_"
 }
