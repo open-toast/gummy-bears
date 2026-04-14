@@ -33,7 +33,10 @@ import java.util.zip.GZIPOutputStream
 class AndroidTypeDescriptorBuilder : CliktCommand() {
     private val sdk: String by option(help = "SDK jar").required()
     private val desugared: List<String> by option(help = "desugared API jar(s)").multiple()
-    private val desugaredCorelib: List<String> by option("--desugared-corelib", help = "coreLib desugared API jar(s), filtered by lint file").multiple()
+    private val desugaredCorelib: List<String> by option(
+        "--desugared-corelib",
+        help = "coreLib desugared API jar(s), filtered by lint file",
+    ).multiple()
     private val lintFile: String? by option("--lint-file", help = "desugared APIs lint file to filter coreLib classes")
 
     private val description: String by option(help = "description").required()

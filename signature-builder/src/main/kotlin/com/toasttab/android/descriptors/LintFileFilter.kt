@@ -27,7 +27,9 @@ import java.io.File
  * dependencies of the desugaring runtime and crash at runtime on older API levels — they must
  * be excluded from the signature.
  */
-class LintFileFilter(lintFile: File) {
+class LintFileFilter(
+    lintFile: File,
+) {
     /**
      * Classes listed without any member qualifiers (e.g. `java/util/Optional`). The entire
      * class is desugared, so all its methods and fields should be included.
@@ -102,11 +104,12 @@ class LintFileFilter(lintFile: File) {
             return type
         }
 
-        val filteredMethods = type.methods.filter { method ->
-            val ref = method.ref
-            val sig = ref.name + ref.signature
-            sig in allowedMethods || ref.name == "<init>" || ref.name == "<clinit>"
-        }
+        val filteredMethods =
+            type.methods.filter { method ->
+                val ref = method.ref
+                val sig = ref.name + ref.signature
+                sig in allowedMethods || ref.name == "<init>" || ref.name == "<clinit>"
+            }
 
         return type.copy {
             methods = filteredMethods
