@@ -106,7 +106,7 @@ class LintFileFilter(
 
         val filteredMethods =
             type.methods.filter { method ->
-                val ref = method.ref
+                val ref = method.requireRef
                 val sig = ref.name + ref.signature
                 sig in allowedMethods || ref.name == "<init>" || ref.name == "<clinit>"
             }

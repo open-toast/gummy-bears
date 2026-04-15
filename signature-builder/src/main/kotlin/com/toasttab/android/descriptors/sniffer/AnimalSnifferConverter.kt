@@ -23,15 +23,20 @@ object AnimalSnifferConverter {
     fun convert(type: TypeDescriptor) =
         Clazz(
             type.name,
-            (
-                type.fields.map(AnimalSnifferConverter::fieldSignature) +
-                    type.methods.map(AnimalSnifferConverter::methodSignature)
-            ).toHashSet(),
+            type.signatures(),
             type.superName,
             type.interfaces.toTypedArray(),
         )
 
-    private fun fieldSignature(descriptor: MemberDescriptor) = "${descriptor.ref.name}#${descriptor.ref.signature}"
+    private fun fieldSignature(descriptor: MemberDescriptor) =
+        "${descriptor.requireRef.name}#${descriptor.requireRef.signature}"
 
-    private fun methodSignature(descriptor: MemberDescriptor) = "${descriptor.ref.name}${descriptor.ref.signature}"
+    private fun methodSignature(descriptor: MemberDescriptor) =
+        "${descriptor.requireRef.name}${descriptor.requireRef.signature}"
+
+    private fun TypeDescriptor.fieldSignatures() = fields.map(AnimalSnifferConverter::fieldSignature)
+
+    private fun TypeDescriptor.methodSignatures() = methods.map(AnimalSnifferConverter::methodSignature)
+
+    private fun TypeDescriptor.signatures() = (fieldSignatures() + methodSignatures()).toHashSet()
 }
