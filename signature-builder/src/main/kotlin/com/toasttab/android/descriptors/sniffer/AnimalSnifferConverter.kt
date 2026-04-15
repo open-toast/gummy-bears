@@ -28,11 +28,9 @@ object AnimalSnifferConverter {
             type.interfaces.toTypedArray(),
         )
 
-    private fun fieldSignature(descriptor: MemberDescriptor) =
-        "${descriptor.requireRef.name}#${descriptor.requireRef.signature}"
+    private fun fieldSignature(descriptor: MemberDescriptor) = "${descriptor.requireRef.name}#${descriptor.requireRef.signature}"
 
-    private fun methodSignature(descriptor: MemberDescriptor) =
-        "${descriptor.requireRef.name}${descriptor.requireRef.signature}"
+    private fun methodSignature(descriptor: MemberDescriptor) = "${descriptor.requireRef.name}${descriptor.requireRef.signature}"
 
     private fun TypeDescriptor.fieldSignatures() = fields.map(AnimalSnifferConverter::fieldSignature)
 
