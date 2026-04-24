@@ -17,7 +17,7 @@ package com.toasttab.android.descriptors
 
 import protokt.v1.toasttab.expediter.v1.AccessProtection
 import protokt.v1.toasttab.expediter.v1.TypeDescriptor
-import java.io.File
+import java.net.URI
 
 /**
  * Filters and transforms core library desugaring types. Applies the following steps in order:
@@ -30,9 +30,9 @@ import java.io.File
  * Returns `null` if the type should be excluded entirely.
  */
 class CoreLibFilter(
-    lintFile: File?,
+    lintFileUri: URI?,
 ) {
-    private val lintFileFilter = lintFile?.let { LintFileFilter(it) }
+    private val lintFileFilter = lintFileUri?.let { LintFileFilter(it) }
 
     /**
      * Methods present in the core library desugaring jar that do not exist

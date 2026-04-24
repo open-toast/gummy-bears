@@ -28,6 +28,7 @@ import com.toasttab.expediter.types.ClassfileSource
 import com.toasttab.expediter.types.ClassfileSourceType
 import protokt.v1.toasttab.expediter.v1.TypeDescriptors
 import java.io.File
+import java.net.URI
 import java.util.zip.GZIPOutputStream
 
 class AndroidTypeDescriptorBuilder : CliktCommand() {
@@ -44,7 +45,7 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
     private val expediterOutput: String by option(help = "expediter-output").required()
 
     override fun run() {
-        val coreLibFilter = CoreLibFilter(lintFile?.let { File(it) })
+        val coreLibFilter = CoreLibFilter(lintFile?.let { URI(it) })
 
         val signatures =
             MutableTypeDescriptors(
