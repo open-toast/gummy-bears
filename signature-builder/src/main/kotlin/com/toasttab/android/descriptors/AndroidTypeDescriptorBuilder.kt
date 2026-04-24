@@ -44,7 +44,7 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
     private val expediterOutput: String by option(help = "expediter-output").required()
 
     override fun run() {
-        val filter = lintFile?.let { LintFileFilter(File(it)) }
+        val coreLibFilter = CoreLibFilter(lintFile?.let { File(it) })
 
         val signatures =
             MutableTypeDescriptors(
@@ -55,9 +55,7 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
                 ).scan { stream, _ -> TypeParsers.typeDescriptor(stream) },
             )
 
-        for (more in desugared + desugaredCorelib) {
-            val applyFilter = filter != null && more in desugaredCorelib
-
+        for (more in desugared) {
             ClasspathScanner(
                 listOf(
                     ClassfileSource(File(more), ClassfileSourceType.UNKNOWN),
@@ -65,11 +63,19 @@ class AndroidTypeDescriptorBuilder : CliktCommand() {
             ).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
                 .sortedBy { it.priority }
                 .forEach {
-                    val type = it.toType()
-                    val filtered = if (applyFilter) filter.filter(type) else type
-                    if (filtered != null) {
-                        signatures.add(filtered)
-                    }
+                    signatures.add(it.toType())
+                }
+        }
+
+        for (more in desugaredCorelib) {
+            ClasspathScanner(
+                listOf(
+                    ClassfileSource(File(more), ClassfileSourceType.UNKNOWN),
+                ),
+            ).scan { stream, _ -> TransformedTypeDescriptor(TypeParsers.typeDescriptor(stream)) }
+                .sortedBy { it.priority }
+                .forEach {
+                    coreLibFilter.filter(it.toType())?.let(signatures::add)
                 }
         }
 

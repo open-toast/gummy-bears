@@ -171,6 +171,108 @@ class Api19TypeDescriptorsTest {
     }
 
     @Test
+    fun `core lib v2 type descriptors include remapped Duration#toSeconds()`() {
+        val duration = coreLibDescriptors2.types.find { it.name == "java/time/Duration" }
+
+        expectThat(duration).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref =
+                        SymbolicReference {
+                            name = "toSeconds"
+                            signature = "()J"
+                        }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.INSTANCE
+                },
+            )
+        }
+    }
+
+    @Test
+    fun `core lib v2 type descriptors include remapped AtomicInteger#getAndUpdate()`() {
+        val atomicInt = coreLibDescriptors2.types.find { it.name == "java/util/concurrent/atomic/AtomicInteger" }
+
+        expectThat(atomicInt).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref =
+                        SymbolicReference {
+                            name = "getAndUpdate"
+                            signature = "(Ljava/util/function/IntUnaryOperator;)I"
+                        }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.INSTANCE
+                },
+            )
+        }
+    }
+
+    @Test
+    fun `core lib v2 type descriptors include LocalDate#datesUntil()`() {
+        val localDate = coreLibDescriptors2.types.find { it.name == "java/time/LocalDate" }
+
+        expectThat(localDate).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref =
+                        SymbolicReference {
+                            name = "datesUntil"
+                            signature = "(Ljava/time/LocalDate;)Ljava/util/stream/Stream;"
+                        }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.INSTANCE
+                },
+            )
+        }
+    }
+
+    @Test
+    fun `core lib v2 type descriptors include ConcurrentHashMap`() {
+        val chm = coreLibDescriptors2.types.find { it.name == "java/util/concurrent/ConcurrentHashMap" }
+
+        expectThat(chm).isNotNull()
+    }
+
+    @Test
+    fun `core lib v2 type descriptors include AtomicReference#compareAndSet()`() {
+        val atomicRef = coreLibDescriptors2.types.find { it.name == "java/util/concurrent/atomic/AtomicReference" }
+
+        expectThat(atomicRef).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref =
+                        SymbolicReference {
+                            name = "compareAndSet"
+                            signature = "(Ljava/lang/Object;Ljava/lang/Object;)Z"
+                        }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.INSTANCE
+                },
+            )
+        }
+    }
+
+    @Test
+    fun `core lib v2 type descriptors include Instant`() {
+        val instant = coreLibDescriptors2.types.find { it.name == "java/time/Instant" }
+
+        expectThat(instant).isNotNull().and {
+            get { methods }.contains(
+                MemberDescriptor {
+                    ref =
+                        SymbolicReference {
+                            name = "now"
+                            signature = "()Ljava/time/Instant;"
+                        }
+                    protection = AccessProtection.PUBLIC
+                    declaration = AccessDeclaration.STATIC
+                },
+            )
+        }
+    }
+
+    @Test
     fun `descriptors include Unsafe#getInt`() {
         val integer = descriptors.types.find { it.name == "sun/misc/Unsafe" }
 
