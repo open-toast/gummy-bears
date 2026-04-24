@@ -33,97 +33,117 @@ object CoreLibMethodRemapper {
      * Map from class name to the set of static method signatures that need to be remapped.
      * Each entry is in the format `methodName(staticDescriptor)returnType`.
      */
-    private val remappedMethods: Map<String, Set<String>> = mapOf(
-        "java/io/BufferedReader" to setOf(
-            "lines(Ljava/io/BufferedReader;)Ljava/util/stream/Stream;",
-        ),
-        "java/io/File" to setOf(
-            "toPath(Ljava/io/File;)Ljava/nio/file/Path;",
-        ),
-        "java/io/InputStream" to setOf(
-            "transferTo(Ljava/io/InputStream;Ljava/io/OutputStream;)J",
-        ),
-        "java/time/LocalTime" to setOf(
-            "toEpochSecond(Ljava/time/LocalTime;Ljava/time/LocalDate;Ljava/time/ZoneOffset;)J",
-        ),
-        "java/time/chrono/IsoChronology" to setOf(
-            "epochSecond(Ljava/time/chrono/IsoChronology;IIIIIILjava/time/ZoneOffset;)J",
-        ),
-        "java/time/LocalDate" to setOf(
-            "datesUntil(Ljava/time/LocalDate;Ljava/time/LocalDate;)Ljava/util/stream/Stream;",
-            "datesUntil(Ljava/time/LocalDate;Ljava/time/LocalDate;Ljava/time/Period;)Ljava/util/stream/Stream;",
-            "toEpochSecond(Ljava/time/LocalDate;Ljava/time/LocalTime;Ljava/time/ZoneOffset;)J",
-        ),
-        "java/time/Duration" to setOf(
-            "dividedBy(Ljava/time/Duration;Ljava/time/Duration;)J",
-            "toSeconds(Ljava/time/Duration;)J",
-            "toDaysPart(Ljava/time/Duration;)J",
-            "toHoursPart(Ljava/time/Duration;)I",
-            "toMinutesPart(Ljava/time/Duration;)I",
-            "toSecondsPart(Ljava/time/Duration;)I",
-            "toMillisPart(Ljava/time/Duration;)I",
-            "toNanosPart(Ljava/time/Duration;)I",
-            "truncatedTo(Ljava/time/Duration;Ljava/time/temporal/TemporalUnit;)Ljava/time/Duration;",
-        ),
-        "java/time/OffsetTime" to setOf(
-            "toEpochSecond(Ljava/time/OffsetTime;Ljava/time/LocalDate;)J",
-        ),
-        "java/util/TimeZone" to setOf(
-            "toZoneId(Ljava/util/TimeZone;)Ljava/time/ZoneId;",
-        ),
-        "java/util/LinkedHashSet" to setOf(
-            "spliterator(Ljava/util/LinkedHashSet;)Ljava/util/Spliterator;",
-        ),
-        "java/util/Date" to setOf(
-            "toInstant(Ljava/util/Date;)Ljava/time/Instant;",
-        ),
-        "java/util/GregorianCalendar" to setOf(
-            "toZonedDateTime(Ljava/util/GregorianCalendar;)Ljava/time/ZonedDateTime;",
-        ),
-        "java/util/Calendar" to setOf(
-            "toInstant(Ljava/util/Calendar;)Ljava/time/Instant;",
-        ),
-        "java/util/concurrent/atomic/AtomicLong" to setOf(
-            "getAndUpdate(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/function/LongUnaryOperator;)J",
-            "updateAndGet(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/function/LongUnaryOperator;)J",
-            "getAndAccumulate(Ljava/util/concurrent/atomic/AtomicLong;JLjava/util/function/LongBinaryOperator;)J",
-            "accumulateAndGet(Ljava/util/concurrent/atomic/AtomicLong;JLjava/util/function/LongBinaryOperator;)J",
-        ),
-        "java/util/concurrent/atomic/AtomicInteger" to setOf(
-            "getAndUpdate(Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/function/IntUnaryOperator;)I",
-            "updateAndGet(Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/function/IntUnaryOperator;)I",
-            "getAndAccumulate(Ljava/util/concurrent/atomic/AtomicInteger;ILjava/util/function/IntBinaryOperator;)I",
-            "accumulateAndGet(Ljava/util/concurrent/atomic/AtomicInteger;ILjava/util/function/IntBinaryOperator;)I",
-        ),
-        "java/util/concurrent/atomic/AtomicReference" to setOf(
-            "getAndUpdate(Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/function/UnaryOperator;)Ljava/lang/Object;",
-            "updateAndGet(Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/function/UnaryOperator;)Ljava/lang/Object;",
-            "getAndAccumulate(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Object;Ljava/util/function/BinaryOperator;)Ljava/lang/Object;",
-            "accumulateAndGet(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Object;Ljava/util/function/BinaryOperator;)Ljava/lang/Object;",
-        ),
-        "java/util/concurrent/TimeUnit" to setOf(
-            "toChronoUnit(Ljava/util/concurrent/TimeUnit;)Ljava/time/temporal/ChronoUnit;",
-            "convert(Ljava/util/concurrent/TimeUnit;Ljava/time/Duration;)J",
-        ),
-    )
+    private val remappedMethods: Map<String, Set<String>> =
+        mapOf(
+            "java/io/BufferedReader" to
+                setOf(
+                    "lines(Ljava/io/BufferedReader;)Ljava/util/stream/Stream;",
+                ),
+            "java/io/File" to
+                setOf(
+                    "toPath(Ljava/io/File;)Ljava/nio/file/Path;",
+                ),
+            "java/io/InputStream" to
+                setOf(
+                    "transferTo(Ljava/io/InputStream;Ljava/io/OutputStream;)J",
+                ),
+            "java/time/LocalTime" to
+                setOf(
+                    "toEpochSecond(Ljava/time/LocalTime;Ljava/time/LocalDate;Ljava/time/ZoneOffset;)J",
+                ),
+            "java/time/chrono/IsoChronology" to
+                setOf(
+                    "epochSecond(Ljava/time/chrono/IsoChronology;IIIIIILjava/time/ZoneOffset;)J",
+                ),
+            "java/time/LocalDate" to
+                setOf(
+                    "datesUntil(Ljava/time/LocalDate;Ljava/time/LocalDate;)Ljava/util/stream/Stream;",
+                    "datesUntil(Ljava/time/LocalDate;Ljava/time/LocalDate;Ljava/time/Period;)Ljava/util/stream/Stream;",
+                    "toEpochSecond(Ljava/time/LocalDate;Ljava/time/LocalTime;Ljava/time/ZoneOffset;)J",
+                ),
+            "java/time/Duration" to
+                setOf(
+                    "dividedBy(Ljava/time/Duration;Ljava/time/Duration;)J",
+                    "toSeconds(Ljava/time/Duration;)J",
+                    "toDaysPart(Ljava/time/Duration;)J",
+                    "toHoursPart(Ljava/time/Duration;)I",
+                    "toMinutesPart(Ljava/time/Duration;)I",
+                    "toSecondsPart(Ljava/time/Duration;)I",
+                    "toMillisPart(Ljava/time/Duration;)I",
+                    "toNanosPart(Ljava/time/Duration;)I",
+                    "truncatedTo(Ljava/time/Duration;Ljava/time/temporal/TemporalUnit;)Ljava/time/Duration;",
+                ),
+            "java/time/OffsetTime" to
+                setOf(
+                    "toEpochSecond(Ljava/time/OffsetTime;Ljava/time/LocalDate;)J",
+                ),
+            "java/util/TimeZone" to
+                setOf(
+                    "toZoneId(Ljava/util/TimeZone;)Ljava/time/ZoneId;",
+                ),
+            "java/util/LinkedHashSet" to
+                setOf(
+                    "spliterator(Ljava/util/LinkedHashSet;)Ljava/util/Spliterator;",
+                ),
+            "java/util/Date" to
+                setOf(
+                    "toInstant(Ljava/util/Date;)Ljava/time/Instant;",
+                ),
+            "java/util/GregorianCalendar" to
+                setOf(
+                    "toZonedDateTime(Ljava/util/GregorianCalendar;)Ljava/time/ZonedDateTime;",
+                ),
+            "java/util/Calendar" to
+                setOf(
+                    "toInstant(Ljava/util/Calendar;)Ljava/time/Instant;",
+                ),
+            "java/util/concurrent/atomic/AtomicLong" to
+                setOf(
+                    "getAndUpdate(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/function/LongUnaryOperator;)J",
+                    "updateAndGet(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/function/LongUnaryOperator;)J",
+                    "getAndAccumulate(Ljava/util/concurrent/atomic/AtomicLong;JLjava/util/function/LongBinaryOperator;)J",
+                    "accumulateAndGet(Ljava/util/concurrent/atomic/AtomicLong;JLjava/util/function/LongBinaryOperator;)J",
+                ),
+            "java/util/concurrent/atomic/AtomicInteger" to
+                setOf(
+                    "getAndUpdate(Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/function/IntUnaryOperator;)I",
+                    "updateAndGet(Ljava/util/concurrent/atomic/AtomicInteger;Ljava/util/function/IntUnaryOperator;)I",
+                    "getAndAccumulate(Ljava/util/concurrent/atomic/AtomicInteger;ILjava/util/function/IntBinaryOperator;)I",
+                    "accumulateAndGet(Ljava/util/concurrent/atomic/AtomicInteger;ILjava/util/function/IntBinaryOperator;)I",
+                ),
+            "java/util/concurrent/atomic/AtomicReference" to
+                setOf(
+                    "getAndUpdate(Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/function/UnaryOperator;)Ljava/lang/Object;",
+                    "updateAndGet(Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/function/UnaryOperator;)Ljava/lang/Object;",
+                    "getAndAccumulate(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Object;Ljava/util/function/BinaryOperator;)Ljava/lang/Object;",
+                    "accumulateAndGet(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Object;Ljava/util/function/BinaryOperator;)Ljava/lang/Object;",
+                ),
+            "java/util/concurrent/TimeUnit" to
+                setOf(
+                    "toChronoUnit(Ljava/util/concurrent/TimeUnit;)Ljava/time/temporal/ChronoUnit;",
+                    "convert(Ljava/util/concurrent/TimeUnit;Ljava/time/Duration;)J",
+                ),
+        )
 
     fun remap(type: TypeDescriptor): TypeDescriptor {
         val entries = remappedMethods[type.name] ?: return type
-        val methods = type.methods.map { method ->
-            val ref = method.requireRef
-            val key = ref.name + ref.signature
-            if (method.declaration == AccessDeclaration.STATIC && key in entries) {
-                method.copy {
-                    this.ref = SymbolicReference {
-                        name = ref.name
-                        signature = stripFirstParameter(ref.signature)
+        val methods =
+            type.methods.map { method ->
+                val ref = method.requireRef
+                val key = ref.name + ref.signature
+                if (method.declaration == AccessDeclaration.STATIC && key in entries) {
+                    method.copy {
+                        this.ref =
+                            SymbolicReference {
+                                name = ref.name
+                                signature = stripFirstParameter(ref.signature)
+                            }
+                        declaration = AccessDeclaration.INSTANCE
                     }
-                    declaration = AccessDeclaration.INSTANCE
+                } else {
+                    method
                 }
-            } else {
-                method
             }
-        }
         return type.copy { this.methods = methods }
     }
 

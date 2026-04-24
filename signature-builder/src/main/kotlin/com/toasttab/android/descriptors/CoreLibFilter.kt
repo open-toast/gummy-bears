@@ -29,18 +29,21 @@ import java.io.File
  *
  * Returns `null` if the type should be excluded entirely.
  */
-class CoreLibFilter(lintFile: File?) {
+class CoreLibFilter(
+    lintFile: File?,
+) {
     private val lintFileFilter = lintFile?.let { LintFileFilter(it) }
 
     /**
      * Methods present in the core library desugaring jar that do not exist
      * on JVM 17 and must be excluded from the signature.
      */
-    private val excludedMethods: Map<String, Set<String>> = mapOf(
-        "java/util/concurrent/ThreadLocalRandom" to setOf("nextGaussian()D"),
-        "java/time/chrono/IsoChronology" to setOf("<init>()V"),
-        "java/time/Duration" to setOf("<init>()V"),
-    )
+    private val excludedMethods: Map<String, Set<String>> =
+        mapOf(
+            "java/util/concurrent/ThreadLocalRandom" to setOf("nextGaussian()D"),
+            "java/time/chrono/IsoChronology" to setOf("<init>()V"),
+            "java/time/Duration" to setOf("<init>()V"),
+        )
 
     fun filter(type: TypeDescriptor): TypeDescriptor? {
         if (!type.name.startsWith("java/") && !type.name.startsWith("javax/")) {
@@ -51,28 +54,30 @@ class CoreLibFilter(lintFile: File?) {
             return null
         }
 
-        val publicMembers = type.copy {
-            methods = type.methods.filter { it.protection.isPublicOrProtected() }
-            fields = type.fields.filter { it.protection.isPublicOrProtected() }
-        }
+        val publicMembers =
+            type.copy {
+                methods = type.methods.filter { it.protection.isPublicOrProtected() }
+                fields = type.fields.filter { it.protection.isPublicOrProtected() }
+            }
 
         val remapped = CoreLibMethodRemapper.remap(publicMembers)
 
         val excluded = excludedMethods[remapped.name]
-        val cleaned = if (excluded != null) {
-            remapped.copy {
-                methods = remapped.methods.filter { m ->
-                    val ref = m.requireRef
-                    ref.name + ref.signature !in excluded
+        val cleaned =
+            if (excluded != null) {
+                remapped.copy {
+                    methods =
+                        remapped.methods.filter { m ->
+                            val ref = m.requireRef
+                            ref.name + ref.signature !in excluded
+                        }
                 }
+            } else {
+                remapped
             }
-        } else {
-            remapped
-        }
 
         return if (lintFileFilter != null) lintFileFilter.filter(cleaned) else cleaned
     }
 }
 
-private fun AccessProtection.isPublicOrProtected() =
-    this == AccessProtection.PUBLIC || this == AccessProtection.PROTECTED
+private fun AccessProtection.isPublicOrProtected() = this == AccessProtection.PUBLIC || this == AccessProtection.PROTECTED
