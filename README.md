@@ -31,9 +31,10 @@ This project provides a safe and more accurate set of signatures for Android 4.4
 
 This project also provides _experimental_ sets of signatures for APIs available via [core library desugaring](https://developer.android.com/studio/write/java8-support), including `java.time`, `ConcurrentHashMap`, etc.
 
-Two versions of core library desugaring signatures are provided: v1, which requires `desugar_jdk_libs:1.2.3` or above and is published under the `coreLib`
-classifier, and v2, which requires `desugar_jdk_libs:2.0.4` and is published under the `coreLib2` classifier. Note that `desugar_jdk_libs` version `2`
+Core library desugaring signatures require `desugar_jdk_libs:2.1.5` or above and are published under the `coreLib2` classifier. Note that `desugar_jdk_libs` version `2`
 comes in three flavors: [minimal](https://developer.android.com/studio/write/java11-minimal-support-table), [default](https://developer.android.com/studio/write/java11-default-support-table), and [nio](https://developer.android.com/studio/write/java11-nio-support-table). Currently, only the default flavor is supported.
+
+Core library desugaring v1 (`desugar_jdk_libs` 1.x / `coreLib` classifier) is no longer supported.
 
 Using signatures with core library desugaring to validate a library effectively implies that all Android projects consuming the library
 must have core library desugaring enabled at build time and bring in the appropriate version of `desugar_jdk_libs`.
@@ -46,11 +47,11 @@ Specify the latest version `com.toasttab.android:gummy-bears-api-${api}` as the 
 
 ```kotlin
 plugins {
-    id 'ru.vyarus.animalsniffer' version '1.7.1'
+    id 'ru.vyarus.animalsniffer' version '2.0.1'
 }
 
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.8.0@signature')
+    signature('com.toasttab.android:gummy-bears-api-24:0.14.0@signature')
 }
 ```
 
@@ -58,15 +59,7 @@ With core library desugaring:
 
 ```groovy
 dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.8.0:coreLib@signature')
-}
-```
-
-With core library desugaring v2:
-
-```groovy
-dependencies {
-    signature('com.toasttab.android:gummy-bears-api-24:0.8.0:coreLib2@signature')
+    signature('com.toasttab.android:gummy-bears-api-24:0.14.0:coreLib2@signature')
 }
 ```
 
@@ -74,11 +67,11 @@ dependencies {
 
 ```kotlin
 plugins {
-    id("ru.vyarus.animalsniffer") version "1.7.1"
+    id("ru.vyarus.animalsniffer") version "2.0.1"
 }
 
 dependencies {
-    add("signature", "com.toasttab.android:gummy-bears-api-24:0.8.0@signature")
+    add("signature", "com.toasttab.android:gummy-bears-api-24:0.14.0@signature")
 }
 ```
 
@@ -88,12 +81,12 @@ dependencies {
 <plugin>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>animal-sniffer-maven-plugin</artifactId>
-    <version>1.23</version>
+    <version>1.24</version>
     <configuration>
         <signature>
             <groupId>com.toasttab.android</groupId>
             <artifactId>gummy-bears-api-21</artifactId>
-            <version>0.8.0</version>
+            <version>0.14.0</version>
         </signature>
     </configuration>
 </plugin>
