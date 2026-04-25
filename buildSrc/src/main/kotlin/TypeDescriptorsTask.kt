@@ -78,11 +78,10 @@ abstract class TypeDescriptorsTask @Inject constructor(
 
     @TaskAction
     fun exec() {
-        val lintFile = if (coreLibConfigJar.isPresent && apiLevel.isPresent) {
+        val lintFileUri = if (coreLibConfigJar.isPresent && apiLevel.isPresent) {
             selectLintFile(
                 coreLibConfigJar.get().singleFile,
-                apiLevel.get(),
-                temporaryDir
+                apiLevel.get()
             )
         } else {
             null
@@ -117,8 +116,8 @@ abstract class TypeDescriptorsTask @Inject constructor(
                         }
                     )
                 }
-                if (lintFile != null) {
-                    addAll(listOf("--lint-file", lintFile.path))
+                if (lintFileUri != null) {
+                    addAll(listOf("--lint-file", lintFileUri.toString()))
                 }
             }
         }

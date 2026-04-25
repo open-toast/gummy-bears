@@ -16,7 +16,7 @@
 package com.toasttab.android.descriptors
 
 import protokt.v1.toasttab.expediter.v1.TypeDescriptor
-import java.io.File
+import java.net.URI
 
 /**
  * Filters [TypeDescriptor] entries based on a desugared APIs lint file from the
@@ -28,7 +28,7 @@ import java.io.File
  * be excluded from the signature.
  */
 class LintFileFilter(
-    lintFile: File,
+    lintFileUri: URI,
 ) {
     /**
      * Classes listed without any member qualifiers (e.g. `java/util/Optional`). The entire
@@ -49,7 +49,7 @@ class LintFileFilter(
         val methods = mutableMapOf<String, MutableSet<String>>()
         val classesWithMembers = mutableSetOf<String>()
 
-        for (line in lintFile.readLines()) {
+        for (line in lintFileUri.toURL().readText().lines()) {
             val trimmed = line.trim()
             if (trimmed.isEmpty()) continue
 
