@@ -27,16 +27,16 @@ dependencyResolutionManagement {
     }
 }
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath("gradle.plugin.net.vivin:gradle-semantic-build-versioning:4.0.0")
-    }
+plugins {
+    id("org.ajoberstar.reckon.settings") version "2.0.0"
 }
 
-apply(plugin = "net.vivin.gradle-semantic-build-versioning")
+extensions.configure<org.ajoberstar.reckon.gradle.ReckonExtension> {
+    setDefaultInferredScope("patch")
+    snapshots()
+    setScopeCalc(calcScopeFromProp())
+    setStageCalc(calcStageFromProp())
+}
 
 rootProject.name = "gummybears"
 
