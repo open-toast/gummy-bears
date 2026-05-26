@@ -9,7 +9,7 @@ javapoet = "0.15.0"
 javassist = "3.31.0-GA"
 junit = "6.1.0"
 nexus = "2.0.0"
-protobuf = "4.34.1"
+protobuf = "4.35.0"
 strikt = "0.34.1"
 
 junit4 = "4.13.2"
