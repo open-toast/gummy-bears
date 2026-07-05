@@ -115,6 +115,11 @@ class ApiCallerGenerator : CliktCommand() {
         }
 
         if (methods.any { !javassist.Modifier.isStatic(it.accessFlags) }) {
+            // The constructor takes Object (rather than the callee type) and casts,
+            // so callers can instantiate without compile-time access to the callee
+            // type. Overloading a typed constructor alongside this one would defeat
+            // that: to resolve the call for an Object argument, javac would have to
+            // load the callee type to check applicability of the typed overload.
             builder
                 .addField(
                     FieldSpec.builder(calleeType, "callee").addModifiers(Modifier.FINAL, Modifier.PRIVATE).build(),
@@ -122,8 +127,8 @@ class ApiCallerGenerator : CliktCommand() {
                     MethodSpec
                         .constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
-                        .addParameter(calleeType, "callee")
-                        .addCode("this.callee = callee;")
+                        .addParameter(ClassName.OBJECT, "callee")
+                        .addCode("this.callee = (\$T) callee;", calleeType)
                         .build(),
                 )
         }
