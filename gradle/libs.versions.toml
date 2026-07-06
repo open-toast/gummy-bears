@@ -10,7 +10,7 @@ javassist = "3.31.0-GA"
 junit = "6.1.0"
 nexus = "2.0.0"
 protobuf = "4.35.1"
-strikt = "0.34.1"
+strikt = "0.35.1"
 
 junit4 = "4.13.2"
 androidxTest = "1.7.0"
