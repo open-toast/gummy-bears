@@ -67,26 +67,6 @@ public final class DesugarUnsafe {
     public void copyMemory(long srcAddr, long dstAddr, long bytes) {
     }
 
-    public int getAndAddInt(Object o, long offset, int delta) {
-        return 0;
-    }
-
-    public long getAndAddLong(Object o, long offset, long delta) {
-        return 0;
-    }
-
-    public int getAndSetInt(Object o, long offset, int newValue) {
-        return 0;
-    }
-
-    public long getAndSetLong(Object o, long offset, long newValue) {
-        return 0;
-    }
-
-    public Object getAndSetObject(Object o, long offset, Object newValue) {
-        return 0;
-    }
-
     public void loadFence() {
     }
 
