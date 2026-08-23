@@ -44,10 +44,14 @@ class LintFileFilter(
      */
     private val methodEntries: Map<String, Set<String>>
 
+    /** Classes referenced by an allowed method signature but not necessarily listed themselves. */
+    private val referencedTypes: Set<String>
+
     init {
         val classOnly = mutableSetOf<String>()
         val methods = mutableMapOf<String, MutableSet<String>>()
         val classesWithMembers = mutableSetOf<String>()
+        val referenced = mutableSetOf<String>()
 
         for (line in lintFileUri.toURL().readText().lines()) {
             val trimmed = line.trim()
@@ -65,6 +69,7 @@ class LintFileFilter(
                 // Field entries lack type descriptors, so all fields are preserved during filtering.
                 if (memberSignature.contains("(")) {
                     methods.getOrPut(className) { mutableSetOf() }.add(memberSignature)
+                    objectTypePattern.findAll(memberSignature).mapTo(referenced) { it.groupValues[1] }
                 }
             }
         }
@@ -81,6 +86,7 @@ class LintFileFilter(
 
         classOnlyEntries = classOnly
         methodEntries = methods
+        referencedTypes = referenced
     }
 
     /**
@@ -97,7 +103,16 @@ class LintFileFilter(
             return type
         }
 
-        val allowedMethods = methodEntries[topLevel] ?: return null
+        val allowedMethods =
+            methodEntries[topLevel]
+                ?: return if (type.name in referencedTypes) {
+                    type.copy {
+                        methods = emptyList()
+                        fields = emptyList()
+                    }
+                } else {
+                    null
+                }
 
         // Inner classes of method-entry classes are kept as-is.
         if (type.name != topLevel) {
@@ -119,5 +134,9 @@ class LintFileFilter(
     private fun topLevelClass(name: String): String {
         val dollarIndex = name.indexOf('$')
         return if (dollarIndex >= 0) name.substring(0, dollarIndex) else name
+    }
+
+    private companion object {
+        val objectTypePattern = Regex("L([^;]+);")
     }
 }

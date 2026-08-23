@@ -31,8 +31,14 @@ This project provides a safe and more accurate set of signatures for Android 4.4
 
 This project also provides _experimental_ sets of signatures for APIs available via [core library desugaring](https://developer.android.com/studio/write/java8-support), including `java.time`, `ConcurrentHashMap`, etc.
 
-Core library desugaring signatures require `desugar_jdk_libs:2.1.5` or above and are published under the `coreLib2` classifier. Note that `desugar_jdk_libs` version `2`
-comes in three flavors: [minimal](https://developer.android.com/studio/write/java11-minimal-support-table), [default](https://developer.android.com/studio/write/java11-default-support-table), and [nio](https://developer.android.com/studio/write/java11-nio-support-table). Currently, only the default flavor is supported.
+Each `desugar_jdk_libs` 2.x flavor has its own signature.
+These signatures require version 2.1.5 or later:
+
+| Flavor | Classifier |
+| --- | --- |
+| [Minimal](https://developer.android.com/studio/write/java11-minimal-support-table) | `coreLib2Minimal` |
+| [Default](https://developer.android.com/studio/write/java11-default-support-table) | `coreLib2` |
+| [NIO](https://developer.android.com/studio/write/java11-nio-support-table) | `coreLib2Nio` |
 
 Core library desugaring v1 (`desugar_jdk_libs` 1.x / `coreLib` classifier) is no longer supported.
 
@@ -55,7 +61,7 @@ dependencies {
 }
 ```
 
-With core library desugaring:
+With the default flavor of core library desugaring:
 
 ```groovy
 dependencies {
