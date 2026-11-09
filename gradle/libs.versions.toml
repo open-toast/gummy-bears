@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.21"
-animalSniffer = "1.28"
+animalSniffer = "1.29"
 clikt = "5.1.0"
 expediter = "0.2.0"
 desugarJdkLibs2 = "2.1.5"
